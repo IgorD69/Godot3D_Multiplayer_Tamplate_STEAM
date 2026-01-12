@@ -1,0 +1,80 @@
+[gd_scene load_steps=14 format=3 uid="uid://52vw1loucx6j"]
+
+[ext_resource type="Texture2D" uid="uid://clqj3ibtnaggk" path="res://icon.svg" id="1_37kl0"]
+[ext_resource type="Script" uid="uid://bvhlyx4xa1nmu" path="res://Scripts/player.gd" id="2_8uh7m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8uh7m"]
+albedo_texture = ExtResource("1_37kl0")
+
+[sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ppyta"]
+cull_mode = 2
+albedo_color = Color(0.4288199, 0.21543661, 0.45837814, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8uh7m"]
+sky_top_color = Color(0.79645187, 0.46494347, 0.24903977, 1)
+sky_horizon_color = Color(0.82640964, 0.7357825, 0.6728066, 1)
+ground_horizon_color = Color(0.82640964, 0.7357825, 0.6728066, 1)
+
+[sub_resource type="Sky" id="Sky_6uqi0"]
+sky_material = SubResource("ProceduralSkyMaterial_8uh7m")
+
+[sub_resource type="Environment" id="Environment_ppyta"]
+background_mode = 2
+sky = SubResource("Sky_6uqi0")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ykrsh"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kne1u"]
+albedo_texture = ExtResource("1_37kl0")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xhfnw"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xhfnw"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(60.710514, 0, 0, 0, 1, 0, 0, 0, 58.45739, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_8uh7m")
+mesh = SubResource("BoxMesh_6uqi0")
+surface_material_override/0 = SubResource("StandardMaterial3D_ppyta")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.7241719, 0.68961954, 3.014423e-08, 0, -4.371139e-08, 1, 0.68961954, 0.7241719, 3.1654558e-08, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ppyta")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ykrsh")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.016471611, 0, 0, 0, 1, 0, 0, 0, 0.017106477, 0.08581834, 1.5, -0.043860313)
+script = ExtResource("2_8uh7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+material_override = SubResource("StandardMaterial3D_kne1u")
+mesh = SubResource("CapsuleMesh_0rwas")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_xhfnw")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.9524756, 0.30461493, 0, -0.30461493, 0.9524756, 0, 2.7935314, 4.839433)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="CharacterBody3D"]
+replication_config = SubResource("SceneReplicationConfig_xhfnw")
