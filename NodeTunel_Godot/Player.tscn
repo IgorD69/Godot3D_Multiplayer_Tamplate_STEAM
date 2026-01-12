@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://bb3qcv0kbqbo6"]
+
+[ext_resource type="Script" uid="uid://bvhlyx4xa1nmu" path="res://Scripts/player.gd" id="1_xhfnw"]
+[ext_resource type="Texture2D" uid="uid://clqj3ibtnaggk" path="res://icon.svg" id="2_kpjcp"]
+[ext_resource type="Script" uid="uid://bma8n0jw4gipu" path="res://multiplayer_synchronizer.gd" id="3_kne1u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kne1u"]
+albedo_texture = ExtResource("2_kpjcp")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xhfnw"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xhfnw"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_xhfnw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.5, 0, 4.4703484e-08, 0, 0.5, 0, -4.4703484e-08, 0, -0.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_kne1u")
+mesh = SubResource("CapsuleMesh_0rwas")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_xhfnw")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9524756, 0.30461493, 0, -0.30461493, 0.9524756, 0, 1.5520322, 2.4662561)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xhfnw")
+script = ExtResource("3_kne1u")
