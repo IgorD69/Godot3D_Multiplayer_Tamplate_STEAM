@@ -1,0 +1,473 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1562,
+      "max": [
+        1.0007580518722534,
+        2.126899480819702,
+        0.35699114203453064
+      ],
+      "min": [
+        -1.0,
+        -3.046116352081299,
+        -1.4332208633422852
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 18744,
+      "componentType": 5126,
+      "count": 1562,
+      "max": [
+        0.9945299029350281,
+        1.0,
+        0.99825119972229
+      ],
+      "min": [
+        -0.994529664516449,
+        -1.0,
+        -0.9823219776153564
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1562,
+      "max": [
+        0.98997962474823,
+        0.9995017051696777
+      ],
+      "min": [
+        0.0004983395338058472,
+        0.0004983431426808238
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 12496,
+      "componentType": 5126,
+      "count": 1562,
+      "max": [
+        0.98997962474823,
+        0.9995017051696777
+      ],
+      "min": [
+        0.0004983395338058472,
+        0.0004983431426808238
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 6351,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 37488,
+      "componentType": 5126,
+      "count": 212,
+      "max": [
+        0.5271881818771362,
+        -0.9253476858139038,
+        1.446068286895752
+      ],
+      "min": [
+        -0.5274125337600708,
+        -1.9741711616516113,
+        0.29418545961380005
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 40032,
+      "componentType": 5126,
+      "count": 212,
+      "max": [
+        0.9874195456504822,
+        0.9708065390586853,
+        1.0
+      ],
+      "min": [
+        -0.9877455830574036,
+        -0.9935101270675659,
+        -0.9982526302337646
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 24992,
+      "componentType": 5126,
+      "count": 212,
+      "max": [
+        0.8357542753219604,
+        0.874903678894043
+      ],
+      "min": [
+        0.0004983431426808238,
+        0.5537602305412292
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 26688,
+      "componentType": 5126,
+      "count": 212,
+      "max": [
+        0.8357542753219604,
+        0.874903678894043
+      ],
+      "min": [
+        0.0004983431426808238,
+        0.5537602305412292
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 25404,
+      "componentType": 5125,
+      "count": 894,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 42576,
+      "componentType": 5126,
+      "count": 7826,
+      "max": [
+        0.4253360629081726,
+        -1.061178207397461,
+        1.3007913827896118
+      ],
+      "min": [
+        -0.3892030119895935,
+        -1.8547288179397583,
+        0.34592071175575256
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 136488,
+      "componentType": 5126,
+      "count": 7826,
+      "max": [
+        0.9974051713943481,
+        0.9992534518241882,
+        0.9994615316390991
+      ],
+      "min": [
+        -0.9970451593399048,
+        -0.9995601177215576,
+        -0.9932999610900879
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 28384,
+      "componentType": 5126,
+      "count": 7826,
+      "max": [
+        0.8779870867729187,
+        0.9792059063911438
+      ],
+      "min": [
+        0.0004983431426808238,
+        0.7291513085365295
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 90992,
+      "componentType": 5126,
+      "count": 7826,
+      "max": [
+        0.8779870867729187,
+        0.9792059063911438
+      ],
+      "min": [
+        0.0004983431426808238,
+        0.7291513085365295
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 28980,
+      "componentType": 5125,
+      "count": 11340,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "sean4297 (https://sketchfab.com/sean4297)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/ricks-portal-gun-898eeef499634f24adabc2d6ec464cf0",
+      "title": "Rick's Portal gun"
+    },
+    "generator": "Sketchfab-12.68.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 74340,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 153600,
+      "byteOffset": 74340,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 230400,
+      "byteOffset": 227940,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 458340,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsUsed": [
+    "KHR_materials_transmission"
+  ],
+  "images": [
+    {
+      "uri": "textures/all_in_one_baseColor.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "all_in_one",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.3,
+        "roughnessFactor": 0.4035437607662833
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.9743928076305608
+        }
+      },
+      "name": "Glass",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8,
+          0.8,
+          0.8,
+          0.25
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.8040408205773457
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "blob",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.8211145618000169
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Portal Gun.001_all in one_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2,
+            "TEXCOORD_1": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Portal Gun.001_Glass_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TEXCOORD_0": 7,
+            "TEXCOORD_1": 8
+          },
+          "indices": 9,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Portal Gun.001_blob_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 11,
+            "POSITION": 10,
+            "TEXCOORD_0": 12,
+            "TEXCOORD_1": 13
+          },
+          "indices": 14,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "c3706a32e8cb40e9b87d52070ad00b45.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4,
+        5,
+        6
+      ],
+      "matrix": [
+        100.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.629206793918314e-05,
+        -99.99999999999868,
+        0.0,
+        0.0,
+        99.99999999999868,
+        -1.629206793918314e-05,
+        0.0,
+        300.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Portal Gun.001"
+    },
+    {
+      "mesh": 0,
+      "name": "Portal Gun.001_all in one_0"
+    },
+    {
+      "mesh": 1,
+      "name": "Portal Gun.001_Glass_0"
+    },
+    {
+      "mesh": 2,
+      "name": "Portal Gun.001_blob_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ]
+}

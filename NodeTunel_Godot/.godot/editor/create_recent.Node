@@ -1,0 +1,14 @@
+AnimationPlayer
+MultiMeshInstance3D
+Node
+StaticBody3D
+Node3D
+Label
+Control
+MeshInstance3D
+BoxContainer
+CanvasLayer
+AnimationTree
+CSGBox3D
+NavigationObstacle3D
+SpringArm3D

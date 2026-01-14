@@ -1,0 +1,11 @@
+Model Information:
+* title:	Free Pack - Tree
+* source:	https://sketchfab.com/3d-models/free-pack-tree-196525a9936a40c1ba7e74ce5c071d59
+* author:	PolyOne Studio (https://sketchfab.com/polyone)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Free Pack - Tree" (https://sketchfab.com/3d-models/free-pack-tree-196525a9936a40c1ba7e74ce5c071d59) by PolyOne Studio (https://sketchfab.com/polyone) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

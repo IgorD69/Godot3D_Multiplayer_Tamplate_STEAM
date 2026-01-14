@@ -45,22 +45,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ConnectionControls" type="VBoxContainer" parent="UI/Control"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -512.0
-offset_top = -196.0
-offset_right = -13.0
-offset_bottom = 254.38513
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="Host" type="Button" parent="UI/Control"]
 layout_mode = 0
 offset_left = 64.0

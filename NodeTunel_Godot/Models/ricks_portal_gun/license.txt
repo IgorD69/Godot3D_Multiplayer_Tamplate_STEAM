@@ -1,0 +1,11 @@
+Model Information:
+* title:	Rick's Portal gun
+* source:	https://sketchfab.com/3d-models/ricks-portal-gun-898eeef499634f24adabc2d6ec464cf0
+* author:	sean4297 (https://sketchfab.com/sean4297)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Rick's Portal gun" (https://sketchfab.com/3d-models/ricks-portal-gun-898eeef499634f24adabc2d6ec464cf0) by sean4297 (https://sketchfab.com/sean4297) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
