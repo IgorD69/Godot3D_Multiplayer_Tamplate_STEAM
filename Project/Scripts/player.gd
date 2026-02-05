@@ -10,16 +10,22 @@ var is_moving_state: bool = false
 var camera_v_rot: float = 0.0
 var current_anim: String = ""
 var player_name: String = ""
+var hand: Marker3D
+var mouse_input: Vector2
 
+@export var camera_rotation = 0.05
+@export var arm_camera_rotation = 0.07
+@export var arm_sway_amount = 0.03
+
+@onready var arm: Node3D = $CameraPivot/Camera3D/Arm
 @onready var camera_pivot: SpringArm3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/Camera3D
-@onready var PortalAnim: AnimationPlayer = $CameraPivot/Camera3D/Portal_Gun2/AnimationPlayer
+@onready var PortalAnim: AnimationPlayer = $CameraPivot/Camera3D/Arm/Portal_Gun2/AnimationPlayer
 @onready var MouseAnim: AnimationPlayer = $MOUSE/AnimationPlayer
 @onready var model: MeshInstance3D = $MOUSE/Model
 @onready var tab_canvas: CanvasLayer = $TAB
 @onready var box_container: BoxContainer = $TAB/BoxContainer
 
-var hand: Marker3D
 
 func _ready():
 	# Setăm authority-ul bazat pe numele nodului
@@ -34,7 +40,9 @@ func _ready():
 	print("Player authority ID: ", get_multiplayer_authority())
 	print("Is multiplayer authority: ", is_multiplayer_authority())
 	
+	#if Global.LAN == true:
 	player_name = Steam.getPersonaName()
+	
 	add_to_group("Players")
 	
 	# Ascunde TAB-ul la început
@@ -193,6 +201,9 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, current_target_speed)
 		
 		move_and_slide()
+		cam_tilt(input_dir.x, delta)
+		arm_tilt(input_dir.x, delta)
+		arm_sway(delta)
 		
 		# Sincronizează poziția și rotația cu ceilalți jucători
 		sync_transform.rpc(global_position, rotation.y)
@@ -212,6 +223,19 @@ func _physics_process(delta):
 			current_anim = next_anim
 			play_animation_rpc.rpc(next_anim)
 
+func cam_tilt(input_x, delta):
+	if camera:
+		camera.rotation.z = lerp(camera.rotation.z, -input_x * camera_rotation, 10 * delta)
+	
+func arm_tilt(input_x, delta):
+	if arm:
+		arm.rotation.z = lerp(arm.rotation.z, -input_x * camera_rotation, 10 * delta)
+		
+func arm_sway(delta):
+	mouse_input = lerp(mouse_input, Vector2.ZERO, 10 * delta)
+	arm.rotation.x = lerp(arm.rotation.x, mouse_input.y * arm_sway_amount, 10 * delta)
+	arm.rotation.y = lerp(arm.rotation.y, mouse_input.x * arm_sway_amount, 10 * delta)
+	
 # RPC pentru sincronizarea transformării
 @rpc("any_peer", "unreliable")
 func sync_transform(pos: Vector3, rot_y: float):
@@ -223,6 +247,12 @@ func _input(event):
 	if !is_multiplayer_authority():
 		return
 	
+	if event.is_action_pressed("esc"):
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:
 			tab_canvas.visible = true
@@ -240,6 +270,7 @@ func _input(event):
 		
 		camera_pivot.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
+		mouse_input = event.relative
 	
 	if event.is_action_pressed("L_Click"):
 		play_shoot_animation.rpc("Shoot")

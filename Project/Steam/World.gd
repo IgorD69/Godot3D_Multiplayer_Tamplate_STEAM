@@ -17,6 +17,18 @@ var local_player_name := ""
 @onready var lan_button: Button = $UI/Control/LanButton
 
 func _ready():
+	#var init_dict: Dictionary = Steam.steamInit()
+	var is_steam_running = Steam.steamInit()
+	
+	if not is_steam_running:
+		printerr("Steam nu a putut fi inițializat! Asigură-te că Steam este deschis.")
+		return
+
+	print("Steam inițializat cu succes!")
+
+	print("Steam este activ și rulează!")
+
+	print("Steam inițializat cu succes!")
 	var copy_btn = get_node_or_null("%Copy")
 	if copy_btn:
 		copy_btn.pressed.connect(_on_copy_pressed)
@@ -24,7 +36,6 @@ func _ready():
 	multiplayer.peer_connected.connect(_on_network_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_network_peer_disconnected)
 
-	var is_steam_running = Steam.steamInit()
 	
 	if not is_steam_running:
 		print("ATENȚIE: Steam nu rulează. Modul Online (Steam) va fi inactiv, dar LAN va funcționa.")
@@ -60,6 +71,7 @@ func update_ui_steam_info():
 func host_lobby():
 	is_host = true
 	Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, max_players)
+	#Steam.createLobby()
 	print("Sent request to Steam to create lobby...")
 
 func _on_lobby_created(success: int, new_lobby_id: int):
@@ -302,22 +314,28 @@ func _on_friends_pressed() -> void:
 
 func _on_lan_button_pressed() -> void:
 	var peer = ENetMultiplayerPeer.new()
-	var error = peer.create_server(7000, max_players)
+	var port = 7777 # Make sure this matches in both calls
+	Global.LAN = true
+	
+	# Try to host first
+	var error = peer.create_server(port, max_players)
 	if error == OK:
-		print("LAN: Server pornit pe portul 7000")
+		print("LAN: Server pornit pe portul: ", port)
 		multiplayer.multiplayer_peer = peer
 		is_host = true
-		spawn_player_rpc.rpc(multiplayer.get_unique_id())
+		# Host spawns themselves
+		spawn_player_rpc(multiplayer.get_unique_id()) 
 		lan_button.text = "LAN (Host Active)"
 	else:
+		# If hosting fails, try to join
 		print("LAN: Port ocupat, încercăm conectarea ca client...")
-		error = peer.create_client("127.0.0.1", 7000)
+		error = peer.create_client("127.0.0.1", port)
 		if error == OK:
 			multiplayer.multiplayer_peer = peer
 			is_host = false
 			lan_button.text = "LAN (Connected)"
 		else:
-			print("LAN Error: Nu s-a putut crea nici server, nici client.")
+			print("LAN Error: ", error)
 
 func _on_network_peer_connected(id: int):
 	print("=== PEER_CONNECTED SIGNAL ===")

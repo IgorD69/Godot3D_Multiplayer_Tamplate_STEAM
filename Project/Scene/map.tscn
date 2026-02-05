@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://ddghhujpyfx8f"]
+[gd_scene format=4 uid="uid://ddghhujpyfx8f"]
 
 [ext_resource type="Script" uid="uid://b4j72n7mk1svf" path="res://Scripts/test_map.gd" id="1_5vj6g"]
 [ext_resource type="PackedScene" uid="uid://cuixqud3u4ur4" path="res://objects/cube.tscn" id="2_ex5br"]
@@ -10,7 +10,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_7ap1n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81yfc"]
-albedo_color = Color(0.59607846, 0.8, 0.5137255, 1)
+albedo_color = Color(0.10779511, 0.17459857, 0.07983615, 1)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_81yfc"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
@@ -94,91 +94,89 @@ _data = {
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_54rcs"]
 
-[node name="Map" type="Node3D"]
+[node name="Map" type="Node3D" unique_id=441213601]
 script = ExtResource("1_5vj6g")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1335198774]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 light_color = Color(0.9783209, 0.44439447, 0.3967181, 1)
 shadow_enabled = true
 
-[node name="floor" type="StaticBody3D" parent="."]
+[node name="floor" type="StaticBody3D" parent="." unique_id=629783928]
 transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 60, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor" unique_id=1865701619]
 mesh = SubResource("PlaneMesh_7ap1n")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_81yfc")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor" unique_id=859819665]
 shape = SubResource("ConcavePolygonShape3D_81yfc")
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=520518065]
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_81yfc")
 
-[node name="grassBlade" type="MeshInstance3D" parent="."]
+[node name="grassBlade" type="MeshInstance3D" parent="." unique_id=405463090]
 transform = Transform3D(0.54106826, 0.07117916, 0.8001341, 0.058174726, 1.0213982, -0.113251865, -0.84321564, 0.11614151, 0.50561064, 0.11760855, -0.05675459, 0.21881008)
 mesh = SubResource("ArrayMesh_tgd20")
 skeleton = NodePath("")
 
-[node name="propps" type="Node3D" parent="."]
+[node name="propps" type="Node3D" parent="." unique_id=1874764620]
 
-[node name="Cube2" parent="propps" instance=ExtResource("2_ex5br")]
+[node name="Cube2" parent="propps" unique_id=539404185 instance=ExtResource("2_ex5br")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3416588, 0.49999905, 3.823136)
 
-[node name="Cube3" parent="propps" instance=ExtResource("2_ex5br")]
+[node name="Cube3" parent="propps" unique_id=1776636360 instance=ExtResource("2_ex5br")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1038525, 0.5, -6.104539)
 
-[node name="Cube4" parent="propps" instance=ExtResource("2_ex5br")]
+[node name="Cube4" parent="propps" unique_id=1638534563 instance=ExtResource("2_ex5br")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.849911, 0.5, -1.9562378)
 
-[node name="Cube5" parent="propps" instance=ExtResource("2_ex5br")]
+[node name="Cube5" parent="propps" unique_id=1153046987 instance=ExtResource("2_ex5br")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0991085, 0.5, -6.104539)
 
-[node name="wallStaticBody" type="StaticBody3D" parent="propps"]
+[node name="wallStaticBody" type="StaticBody3D" parent="propps" unique_id=824648420]
 transform = Transform3D(0.6505753, 0, 0, 0, 8.314056, 0, 0, 0, 12.474128, -6.93192, 4.157028, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="propps/wallStaticBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="propps/wallStaticBody" unique_id=1995432064]
 shape = SubResource("ConcavePolygonShape3D_s12we")
 
-[node name="wall" type="MeshInstance3D" parent="propps/wallStaticBody"]
+[node name="wall" type="MeshInstance3D" parent="propps/wallStaticBody" unique_id=1209261756]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.9999999, 0, 0, 0)
 material_override = ExtResource("6_54rcs")
 mesh = SubResource("BoxMesh_s12we")
 skeleton = NodePath("../..")
 
-[node name="Door2" parent="propps" instance=ExtResource("7_31wal")]
+[node name="Door2" parent="propps" unique_id=1652768612 instance=ExtResource("7_31wal")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6085417, 0.018886209, 5.974301)
 
-[node name="Ball2" parent="propps" instance=ExtResource("8_qftbs")]
+[node name="Ball2" parent="propps" unique_id=1899234986 instance=ExtResource("8_qftbs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6277251, 0.5, -5.7088976)
 
-[node name="Ball3" parent="propps" instance=ExtResource("8_qftbs")]
+[node name="Ball3" parent="propps" unique_id=1075627757 instance=ExtResource("8_qftbs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6277251, 0.5, -3.706411)
 
-[node name="button" type="Node3D" parent="propps"]
+[node name="button" type="Node3D" parent="propps" unique_id=1935791451]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -6.5028796, 1.3579648, -5.5130234)
 script = ExtResource("9_5vj6g")
 cooldown_time = 0.1
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="propps/button"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="propps/button" unique_id=767238594]
 transform = Transform3D(1, 0, 0, 0, 0.15417236, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_b5wgi")
 
-[node name="buttonArea" type="Area3D" parent="propps/button"]
+[node name="buttonArea" type="Area3D" parent="propps/button" unique_id=1937069338]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="propps/button/buttonArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="propps/button/buttonArea" unique_id=1488943073]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42129517, 0.19360352)
 shape = SubResource("BoxShape3D_ysgi6")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="propps/button"]
-libraries = {
-&"": SubResource("AnimationLibrary_wo3cx")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="propps/button" unique_id=233066242]
+libraries/ = SubResource("AnimationLibrary_wo3cx")
 speed_scale = 3.0
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=749256559]
 replication_config = SubResource("SceneReplicationConfig_54rcs")
 
 [connection signal="body_entered" from="propps/button/buttonArea" to="propps/button" method="_on_button_area_body_entered"]

@@ -1,0 +1,11 @@
+Model Information:
+* title:	LOW POLY - DERELICT FACTORY
+* source:	https://sketchfab.com/3d-models/low-poly-derelict-factory-4e033f90eaaa4e68931af60f0309f537
+* author:	Colin.Greenall (https://sketchfab.com/Colin.Greenall)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "LOW POLY - DERELICT FACTORY" (https://sketchfab.com/3d-models/low-poly-derelict-factory-4e033f90eaaa4e68931af60f0309f537) by Colin.Greenall (https://sketchfab.com/Colin.Greenall) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

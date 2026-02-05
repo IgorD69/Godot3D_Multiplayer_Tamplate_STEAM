@@ -1,8 +1,8 @@
 extends Node
-@onready var interaction_controller: Node = %Interaction_controller
-@onready var player_character: CharacterBody3D = $".."
-@onready var interaction_raycast: RayCast3D = $"../CameraPivot/Camera3D/InteractionRayCast"
-@onready var player_camera: Camera3D = $"../CameraPivot/Camera3D"
+@export var interaction_controller: Node
+@export var player_character: CharacterBody3D
+@export var interaction_raycast: RayCast3D
+@export var player_camera: Camera3D
 
 var current_object: Object
 var interaction_component: Node

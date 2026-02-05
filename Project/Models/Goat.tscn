@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxvg60x4rpl7c"]
+
+[ext_resource type="PackedScene" uid="uid://c2ojogoumanna" path="res://exported-model.glb" id="1_070hc"]
+
+[node name="exported-model" instance=ExtResource("1_070hc")]
+
+[node name="Skeleton3D" parent="Skinned Mesh 3" index="0"]
+bones/1/position = Vector3(0.0015912335, 0.03392542, 0.5951353)
+bones/1/rotation = Quaternion(0.7901085, -0.022514248, 0.0024198706, 0.61254865)
+bones/3/rotation = Quaternion(-0.036420006, -0.010608146, -0.0031874075, 0.99927527)
+bones/4/rotation = Quaternion(0.123212546, -0.030984955, 0.0187022, 0.99172014)
+bones/5/rotation = Quaternion(0.028124921, 0.018885149, -0.017517697, 0.99927247)
+bones/6/rotation = Quaternion(-0.03956044, 0.015136055, -0.023227666, 0.9988326)
+bones/8/rotation = Quaternion(-0.60618466, -0.34128717, -0.35277843, 0.62578803)
+bones/9/rotation = Quaternion(0.22499119, 0.5804391, -0.37587604, 0.68643034)
+bones/10/rotation = Quaternion(0.3476676, -0.18202162, -0.04142032, 0.918847)
+bones/11/rotation = Quaternion(0.20392972, 0.0103356335, -0.009365676, 0.97888625)
+bones/13/rotation = Quaternion(-0.6253668, 0.30471835, 0.31502628, 0.64561725)
+bones/14/rotation = Quaternion(0.059607845, -0.71386206, 0.27037057, 0.64323217)
+bones/15/rotation = Quaternion(0.26821828, -0.024188071, 0.055058133, 0.96147937)
+bones/16/rotation = Quaternion(0.044765763, -0.018502994, 0.011635247, 0.99875844)
+bones/18/rotation = Quaternion(0.99883306, -0.022222284, 0.002740091, 0.042793356)
+bones/19/rotation = Quaternion(0.35463127, -0.004396885, 0.0016607405, 0.9349945)
+bones/20/rotation = Quaternion(-0.50220585, -0.012077968, -0.0010880627, 0.864663)
+bones/21/rotation = Quaternion(-0.0005374101, 0.96168554, -0.2741538, -0.0005756951)
+bones/23/rotation = Quaternion(0.9400036, -0.012878111, 0.0015879374, 0.34091803)
+bones/24/rotation = Quaternion(0.3052417, -0.0025411912, 0.00080450455, 0.9522713)
+bones/25/rotation = Quaternion(-0.5753535, -0.016354019, -0.0050542075, 0.8177257)
+bones/26/rotation = Quaternion(-0.0001370847, 0.96430665, -0.26478755, -0.0004995231)
+
+[node name="Skinned Mesh 1" parent="Skinned Mesh 3/Skeleton3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.095, 0, 0, 0)

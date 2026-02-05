@@ -3,6 +3,7 @@ extends Node
 
 var debug
 #var player : Player
+var LAN: bool = false
 
 var is_focused: bool
 

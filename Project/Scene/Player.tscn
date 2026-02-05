@@ -1,18 +1,20 @@
-[gd_scene load_steps=40 format=4 uid="uid://bb3qcv0kbqbo6"]
+[gd_scene format=4 uid="uid://bb3qcv0kbqbo6"]
 
 [ext_resource type="Script" uid="uid://bvhlyx4xa1nmu" path="res://Scripts/player.gd" id="1_jvxg0"]
 [ext_resource type="Texture2D" uid="uid://dmis1cfxk4e6o" path="res://Models/ricks_portal_gun/textures/all_in_one_baseColor.png" id="3_3pik8"]
-[ext_resource type="Script" uid="uid://bma8n0jw4gipu" path="res://multiplayer_synchronizer.gd" id="3_fvocf"]
+[ext_resource type="Script" uid="uid://bma8n0jw4gipu" path="res://Scripts/multiplayer_synchronizer.gd" id="3_fvocf"]
 [ext_resource type="Shader" uid="uid://bm7ucacba4cqh" path="res://Shaders/PlayerPosteraziation.gdshader" id="4_g1hv4"]
+[ext_resource type="Script" uid="uid://qo0js8ativx0" path="res://Scripts/interaction_ray_cast.gd" id="4_jriwm"]
 [ext_resource type="Script" uid="uid://dvrdevqky5igc" path="res://Scripts/tab.gd" id="5_fvocf"]
 [ext_resource type="Texture2D" uid="uid://bwi7q5nr4lnu3" path="res://Models/MOUSE_0.png" id="5_pmp2f"]
 [ext_resource type="Script" uid="uid://hw8ff48sqp2b" path="res://Scripts/FPS.gd" id="6_pmp2f"]
 [ext_resource type="PackedScene" uid="uid://0vqe72ube683" path="res://interaction/Interaction_controller.tscn" id="8_adgam"]
 [ext_resource type="Animation" uid="uid://d26qiaspt20it" path="res://Scene/WalkExport.res" id="10_inyuv"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_fvocf"]
+[ext_resource type="Texture2D" uid="uid://c25hbgf4v1r3m" path="res://Models/icons8-target-24.png" id="10_liw1m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xhfnw"]
+radius = 0.72558594
+height = 4.8916016
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xhfnw"]
 properties/0/path = NodePath(".:position")
@@ -188,11 +190,11 @@ render_priority = 0
 shader = ExtResource("4_g1hv4")
 shader_parameter/zNear = 0.05
 shader_parameter/zFar = 100.0
-shader_parameter/enable_outline = true
+shader_parameter/enable_outline = false
 shader_parameter/outline_color = Color(0.029506553, 0.029506562, 0.029506536, 1)
-shader_parameter/outline_thickness = 0.2
+shader_parameter/outline_thickness = -0.908
 shader_parameter/enable_color_limit = true
-shader_parameter/color_levels = 16
+shader_parameter/color_levels = 32
 shader_parameter/enable_color_palette = false
 shader_parameter/color1 = Color(1, 0.925, 0.839, 1)
 shader_parameter/color2 = Color(1, 0.831, 0.639, 1)
@@ -203,7 +205,7 @@ shader_parameter/color6 = Color(0.329, 0.306, 0.408, 1)
 shader_parameter/color7 = Color(0.125, 0.236, 0.337, 1)
 shader_parameter/color8 = Color(0.05, 0.169, 0.271, 1)
 shader_parameter/enable_dithering = false
-shader_parameter/dither_strength = 0.710000033725
+shader_parameter/dither_strength = 0.3
 
 [sub_resource type="QuadMesh" id="QuadMesh_adgam"]
 lightmap_size_hint = Vector2i(12, 12)
@@ -1733,83 +1735,82 @@ _data = {
 
 [sub_resource type="QuadMesh" id="QuadMesh_g1hv4"]
 
-[node name="Player" type="CharacterBody3D" groups=["Player"]]
+[node name="Player" type="CharacterBody3D" unique_id=2096496475 groups=["Player"]]
 script = ExtResource("1_jvxg0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8716951, 0)
-visible = false
-mesh = SubResource("BoxMesh_fvocf")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1138248544]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.7229004, -0.30636322)
 shape = SubResource("CapsuleShape3D_xhfnw")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1188692273]
 replication_config = SubResource("SceneReplicationConfig_xhfnw")
 script = ExtResource("3_fvocf")
 
-[node name="CameraPivot" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5594739, 0)
+[node name="CameraPivot" type="SpringArm3D" parent="." unique_id=702114048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5594739, -1)
 shape = SubResource("SphereShape3D_mud5u")
 spring_length = 0.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1838066, -0.056571364)
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=1751684667]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3952762, 0.51204926)
 
-[node name="Portal_Gun2" type="Node3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(-0.1, 0, -1.509958e-08, 0, 0.1, 0, 1.509958e-08, 0, -0.1, 0.22895166, -0.43903378, -0.42883122)
+[node name="Arm" type="Node3D" parent="CameraPivot/Camera3D" unique_id=1396064513]
 
-[node name="Portal_Gun_Meshes" type="Node3D" parent="CameraPivot/Camera3D/Portal_Gun2"]
-transform = Transform3D(0.99999976, -3.5527124e-15, -1.5529398e-22, 0, -4.371139e-08, 0.9999999, -3.5527116e-15, -1, -4.3711385e-08, 0, 0, 0)
+[node name="Portal_Gun2" type="Node3D" parent="CameraPivot/Camera3D/Arm" unique_id=1654874189]
+transform = Transform3D(-0.1, 0, -1.509958e-08, 0, 0.1, 0, 1.509958e-08, 0, -0.1, 0.16748759, -0.18269312, -0.34364128)
 
-[node name="Portal Gun_001_all in one_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Portal_Gun2/Portal_Gun_Meshes"]
+[node name="Portal_Gun_Meshes" type="Node3D" parent="CameraPivot/Camera3D/Arm/Portal_Gun2" unique_id=1476369633]
+transform = Transform3D(0.99999976, -3.5527124e-15, -1.5529398e-22, 0, -4.371139e-08, 0.9999999, -3.5527116e-15, -1, -4.3711385e-08, -4, -5, 1.999999)
+
+[node name="Portal Gun_001_all in one_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Arm/Portal_Gun2/Portal_Gun_Meshes" unique_id=1892407816]
+transform = Transform3D(1, 0, 8.4703295e-22, -1.4210855e-14, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("ArrayMesh_t1m6c")
 skeleton = NodePath("")
 
-[node name="Portal Gun_001_Glass_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Portal_Gun2/Portal_Gun_Meshes"]
+[node name="Portal Gun_001_Glass_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Arm/Portal_Gun2/Portal_Gun_Meshes" unique_id=1588900766]
 mesh = SubResource("ArrayMesh_akkb4")
 skeleton = NodePath("")
 
-[node name="Portal Gun_001_blob_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Portal_Gun2/Portal_Gun_Meshes"]
+[node name="Portal Gun_001_blob_0" type="MeshInstance3D" parent="CameraPivot/Camera3D/Arm/Portal_Gun2/Portal_Gun_Meshes" unique_id=813872115]
 mesh = SubResource("ArrayMesh_tqfqx")
 skeleton = NodePath("")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CameraPivot/Camera3D/Portal_Gun2"]
-libraries = {
-&"": SubResource("AnimationLibrary_g2q3b")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CameraPivot/Camera3D/Arm/Portal_Gun2" unique_id=1844052566]
+libraries/ = SubResource("AnimationLibrary_g2q3b")
 speed_scale = 3.0
 
-[node name="InteractionRayCast" type="RayCast3D" parent="CameraPivot/Camera3D"]
+[node name="InteractionRayCast" type="RayCast3D" parent="CameraPivot/Camera3D" unique_id=429656247]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.020186007, 0.056571364)
-target_position = Vector3(0, 0, -1.4)
+target_position = Vector3(0, 0, -3)
 debug_shape_custom_color = Color(0.0023790465, 0.0010110053, 0.0061349096, 1)
 debug_shape_thickness = 5
+script = ExtResource("4_jriwm")
 
-[node name="hand" type="Marker3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45674512, -0.28219885, -1.5295314)
-gizmo_extents = 1.0
+[node name="hand" type="Marker3D" parent="CameraPivot/Camera3D" unique_id=1013468781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8453264)
+gizmo_extents = 0.0
 
-[node name="PostProces" type="MeshInstance3D" parent="CameraPivot/Camera3D"]
+[node name="PostProces" type="MeshInstance3D" parent="CameraPivot/Camera3D" unique_id=685489453]
 transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 0, 0, -0.7537614)
 visible = false
 cast_shadow = 0
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_adgam")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.43121338)
-light_color = Color(0.9603656, 0.90479857, 0.70698804, 1)
-light_energy = 2.0
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot/Camera3D" unique_id=705253734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.39856502)
+light_color = Color(0.93097204, 0.8477661, 0.5452398, 1)
+light_energy = 9.147
+light_volumetric_fog_energy = 0.1
+light_specular = 0.0
 shadow_enabled = true
-spot_range = 14.702765
-spot_angle = 39.79107
+spot_range = 100.0
+spot_angle_attenuation = 2.957653
 
-[node name="TAB" type="CanvasLayer" parent="."]
+[node name="TAB" type="CanvasLayer" parent="." unique_id=192892680]
 script = ExtResource("5_fvocf")
 
-[node name="BoxContainer" type="BoxContainer" parent="TAB"]
+[node name="BoxContainer" type="BoxContainer" parent="TAB" unique_id=1187067495]
 custom_minimum_size = Vector2(23.23, 0)
 anchors_preset = 4
 anchor_top = 0.5
@@ -1824,23 +1825,23 @@ size_flags_vertical = 4
 alignment = 1
 vertical = true
 
-[node name="Fps" type="Control" parent="."]
+[node name="Fps" type="Control" parent="." unique_id=2011226029]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_pmp2f")
 
-[node name="Label" type="Label" parent="Fps"]
+[node name="Label" type="Label" parent="Fps" unique_id=1500850542]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "FPS:"
 
-[node name="MOUSE" type="Node3D" parent="."]
-transform = Transform3D(-0.1, 0, -8.742278e-09, 0, 0.1, 0, 8.742278e-09, 0, -0.1, 0, -0.5, 0.3)
+[node name="MOUSE" type="Node3D" parent="." unique_id=1158369210]
+transform = Transform3D(-0.2, 0, -3.019916e-08, 0, 0.2, 0, 3.019916e-08, 0, -0.2, 0, -0.5, 0.3)
 
-[node name="Model" type="MeshInstance3D" parent="MOUSE"]
+[node name="Model" type="MeshInstance3D" parent="MOUSE" unique_id=293227110]
 transform = Transform3D(0.10000001, 0, 8.881784e-16, 0, 0.10000001, 0, -8.881784e-16, 0, 0.10000001, -0.16600026, 0, 3.03982)
 material_override = SubResource("StandardMaterial3D_3pik8")
 mesh = SubResource("ArrayMesh_cq1y3")
@@ -1860,7 +1861,7 @@ metadata/extras = {
 }
 }
 
-[node name="GeneralSkeleton" type="Skeleton3D" parent="MOUSE"]
+[node name="GeneralSkeleton" type="Skeleton3D" parent="MOUSE" unique_id=792002091]
 unique_name_in_owner = true
 transform = Transform3D(0.10000001, 0, 8.881784e-16, 0, 0.10000001, 0, -8.881784e-16, 0, 0.10000001, -0.16600026, 0, 3.03982)
 bones/0/name = "mixamorigHips"
@@ -2172,7 +2173,7 @@ bones/15/bone_meta/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0000000000000004, -7.523163845262643e-37, 2.1684043449710103e-19, 0.0, -8.648698754590241e-21, 0.9992042734817446, 0.03988508312413418, 0.0, -2.1666788881314159e-19, -0.03988508312413418, 0.9992042734817448, 0.0, 1.65945665742e-06, 3.64334981661316, 1.7101343e-09, 1.0]
+"elements": [1.0000000000000004, -7.523163845262643e-37, 2.1684043449710103e-19, 0.0, -8.648698754590241e-21, 0.9992042734817446, 0.03988508312413418, 0.0, -2.166678888131416e-19, -0.03988508312413418, 0.9992042734817448, 0.0, 1.65945665742e-06, 3.64334981661316, 1.7101343e-09, 1.0]
 },
 "preRotation": [-5.747366972400856, -1.987846675914698e-16, 0.0],
 "scale": [1.0000000000000002, 1.0, 1.0000000000000004],
@@ -2212,7 +2213,7 @@ bones/17/bone_meta/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [0.999769668635766, -0.02146181902660689, 2.981861253574525e-09, 0.0, 0.0214193119132391, 0.9977895412749472, 0.06290663239669962, 0.0, -0.00135009373534122, -0.0628921429623709, 0.9980194164446434, 0.0, -0.3279332639842105, 8.552532159788043, -0.29887967121624115, 1.0]
+"elements": [0.999769668635766, -0.02146181902660689, 2.9818612535745252e-09, 0.0, 0.0214193119132391, 0.9977895412749472, 0.06290663239669962, 0.0, -0.00135009373534122, -0.0628921429623709, 0.9980194164446434, 0.0, -0.3279332639842105, 8.552532159788043, -0.29887967121624115, 1.0]
 },
 "preRotation": [-4.69375068892701, -1.9878466759146982e-16, -3.975693351829397e-16],
 "scale": [1.0000000000000002, 1.0, 1.0000000000000004],
@@ -2291,7 +2292,7 @@ bones/21/bone_meta/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0, 5.5511150000000004e-17, 3.85186e-34, 0.0, -5.539736057405585e-17, 0.997950129754508, -0.0639963946090751, 0.0, -3.55251353939962e-18, 0.0639963946090751, 0.997950129754508, 0.0, 0.00618121594493903, 3.1264304229472373, -2.034610702139616e-09, 1.0]
+"elements": [1.0, 5.551115e-17, 3.85186e-34, 0.0, -5.539736057405585e-17, 0.997950129754508, -0.0639963946090751, 0.0, -3.55251353939962e-18, 0.0639963946090751, 0.997950129754508, 0.0, 0.00618121594493903, 3.1264304229472373, -2.034610702139616e-09, 1.0]
 },
 "preRotation": [14.382888804473216, -1.9878466759146975e-16, 0.0],
 "scale": [1.0, 1.0000000000000002, 1.0000000000000002],
@@ -2314,7 +2315,7 @@ bones/22/bone_meta/extras = {
 "elements": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 8.729338779408699e-26, 0.0, 0.0, -8.729338779408699e-26, 1.0, 0.0, 0.0, 9.169606451166274, -4.7616666e-09, 1.0]
 },
 "preRotation": [-71.39534733777609, -89.73959136126125, -179.89313282170875],
-"rotation": [1.0985959e-14, -1.5902773e-15, 1.9878467e-16],
+"rotation": [1.0985959e-14, -1.5902773e-15, 1.9878467000000002e-16],
 "scale": [0.9999999999999996, 1.0000000000000002, 1.0000000000000002],
 "translation": [-4.3921556, 8.82612231248332, -0.0198875794923995]
 }
@@ -2492,7 +2493,7 @@ bones/31/bone_meta/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0, 1.2037061999999999e-35, -3.4694469519536134e-18, 0.0, -7.613328466978056e-20, 0.9997592030801176, -0.0219439252780362, 0.0, 3.4686115198138867e-18, 0.0219439252780362, 0.9997592030801176, 0.0, -0.00083120268305059, 3.537454603125248, -1.826379e-08, 1.0]
+"elements": [1.0, 1.2037062e-35, -3.4694469519536134e-18, 0.0, -7.613328466978056e-20, 0.9997592030801176, -0.0219439252780362, 0.0, 3.4686115198138867e-18, 0.0219439252780362, 0.9997592030801176, 0.0, -0.00083120268305059, 3.537454603125248, -1.826379e-08, 1.0]
 },
 "preRotation": [-2.5479795186022893, 4.969616689786744e-17, 0.0],
 "scale": [1.0, 1.0, 1.0000000000000002],
@@ -2795,7 +2796,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigHead" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigHead" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=344084375]
 transform = Transform3D(0.9969453, -0.014093195, -0.076819584, 3.5464764e-06, 0.9835929, -0.1804018, 0.078101724, 0.17985047, 0.9805884, 1.1871382, 73.730225, 30.994486)
 bone_name = "mixamorigHead"
 bone_idx = 5
@@ -2811,7 +2812,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigHeadTop_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigHead"]
+[node name="mixamorigHeadTop_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigHead" unique_id=131556667]
 transform = Transform3D(1.0000001, 3.7252903e-09, -5.169879e-26, 2.7939677e-09, 1, 2.9802322e-08, 1.4901161e-08, -2.9802322e-08, 1.0000001, 6.399624e-07, 43.788605, -13.619638)
 metadata/extras = {
 "name": "mixamorigHeadTop_End",
@@ -2826,7 +2827,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandThumb3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigLeftHandThumb3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=1026334211]
 transform = Transform3D(0.3451297, -0.7424482, 0.57415676, -0.0065702163, -0.61364186, -0.78955704, 0.9385321, 0.26872677, -0.21666399, 13.827855, 25.755291, 37.541386)
 bone_name = "mixamorigLeftHandThumb3"
 bone_idx = 12
@@ -2844,7 +2845,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandThumb4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandThumb3"]
+[node name="mixamorigLeftHandThumb4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandThumb3" unique_id=748696348]
 transform = Transform3D(1, -1.110223e-16, 1.9683371e-24, -2.9802322e-08, 1, -4.380624e-08, 1.4901161e-08, 8.850972e-08, 1, 0.18743673, 2.1765962, -7.489763e-06)
 metadata/extras = {
 "name": "mixamorigLeftHandThumb4",
@@ -2860,7 +2861,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandIndex3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigLeftHandIndex3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=485764325]
 transform = Transform3D(0.8902225, -0.41879618, -0.1792019, -0.12494901, -0.60280335, 0.78804547, -0.43805376, -0.6791452, -0.5889571, 12.646268, 19.646793, 38.911194)
 bone_name = "mixamorigLeftHandIndex3"
 bone_idx = 15
@@ -2870,7 +2871,7 @@ metadata/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0000000000000004, -7.523163845262643e-37, 2.1684043449710103e-19, 0.0, -8.648698754590241e-21, 0.9992042734817446, 0.03988508312413418, 0.0, -2.1666788881314159e-19, -0.03988508312413418, 0.9992042734817448, 0.0, 1.65945665742e-06, 3.64334981661316, 1.7101343e-09, 1.0]
+"elements": [1.0000000000000004, -7.523163845262643e-37, 2.1684043449710103e-19, 0.0, -8.648698754590241e-21, 0.9992042734817446, 0.03988508312413418, 0.0, -2.166678888131416e-19, -0.03988508312413418, 0.9992042734817448, 0.0, 1.65945665742e-06, 3.64334981661316, 1.7101343e-09, 1.0]
 },
 "preRotation": [-5.747366972400856, -1.987846675914698e-16, 0.0],
 "scale": [1.0000000000000002, 1.0, 1.0000000000000004],
@@ -2878,7 +2879,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandIndex4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandIndex3"]
+[node name="mixamorigLeftHandIndex4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandIndex3" unique_id=580261533]
 transform = Transform3D(1.0000001, -2.9802322e-08, 2.9802322e-08, 2.9802322e-08, 1.0000001, -3.6231317e-08, -3.4694503e-18, 3.6231317e-08, 1, -0.0016610491, 2.4036667, 7.7126415e-06)
 metadata/extras = {
 "name": "mixamorigLeftHandIndex4",
@@ -2894,7 +2895,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandMiddle3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigLeftHandMiddle3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=917371865]
 transform = Transform3D(0.89100546, -0.42588782, -0.1572527, -0.14071926, -0.58839756, 0.79623246, -0.4316327, -0.6873193, -0.5841958, 14.72295, 18.415277, 38.38819)
 bone_name = "mixamorigLeftHandMiddle3"
 bone_idx = 18
@@ -2912,7 +2913,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandMiddle4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandMiddle3"]
+[node name="mixamorigLeftHandMiddle4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandMiddle3" unique_id=624202631]
 transform = Transform3D(1.0000001, -9.532555e-16, 2.9802322e-08, 2.9802322e-08, 1.0000001, 3.0356137e-08, 6.9388946e-17, 2.9248508e-08, 1.0000001, 0.014416711, 2.322523, 5.854464e-06)
 metadata/extras = {
 "name": "mixamorigLeftHandMiddle4",
@@ -2928,7 +2929,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandRing3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigLeftHandRing3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=2070074991]
 transform = Transform3D(0.9029301, -0.41292936, -0.119191006, -0.124814086, -0.5173072, 0.84664875, -0.41126442, -0.7495884, -0.51863134, 17.660105, 18.928318, 36.453228)
 bone_name = "mixamorigLeftHandRing3"
 bone_idx = 21
@@ -2938,7 +2939,7 @@ metadata/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0, 5.5511150000000004e-17, 3.85186e-34, 0.0, -5.539736057405585e-17, 0.997950129754508, -0.0639963946090751, 0.0, -3.55251353939962e-18, 0.0639963946090751, 0.997950129754508, 0.0, 0.00618121594493903, 3.1264304229472373, -2.034610702139616e-09, 1.0]
+"elements": [1.0, 5.551115e-17, 3.85186e-34, 0.0, -5.539736057405585e-17, 0.997950129754508, -0.0639963946090751, 0.0, -3.55251353939962e-18, 0.0639963946090751, 0.997950129754508, 0.0, 0.00618121594493903, 3.1264304229472373, -2.034610702139616e-09, 1.0]
 },
 "preRotation": [14.382888804473216, -1.9878466759146975e-16, 0.0],
 "scale": [1.0, 1.0000000000000002, 1.0000000000000002],
@@ -2946,7 +2947,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftHandRing4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandRing3"]
+[node name="mixamorigLeftHandRing4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftHandRing3" unique_id=1761758132]
 transform = Transform3D(1, 5.9604645e-08, -1.49011585e-08, -1.110223e-16, 1, 4.613256e-08, 2.0816683e-17, -4.613256e-08, 1, -0.018632943, 1.643921, 3.7644386e-06)
 metadata/extras = {
 "name": "mixamorigLeftHandRing4",
@@ -2962,7 +2963,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandThumb3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigRightHandThumb3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=220375249]
 transform = Transform3D(0.901897, -0.037485555, 0.43032122, 0.11050466, -0.94305253, -0.31375283, 0.41757655, 0.33052528, -0.8463939, -14.611576, 27.021564, 35.872517)
 bone_name = "mixamorigRightHandThumb3"
 bone_idx = 28
@@ -2980,7 +2981,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandThumb4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandThumb3"]
+[node name="mixamorigRightHandThumb4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandThumb3" unique_id=2064707742]
 transform = Transform3D(1, -1.4901161e-08, 2.9802322e-08, 1.110223e-16, 1, -4.3710738e-08, 2.9802322e-08, 1.3908416e-08, 0.99999994, -0.12186491, 2.3303094, -2.037035e-08)
 metadata/extras = {
 "name": "mixamorigRightHandThumb4",
@@ -2996,7 +2997,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandIndex3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigRightHandIndex3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=2078229240]
 transform = Transform3D(0.6485649, 0.6033574, 0.4640295, 0.060758647, -0.64872754, 0.7585914, 0.7587304, -0.46380192, -0.45740104, -15.364084, 20.459309, 35.596478)
 bone_name = "mixamorigRightHandIndex3"
 bone_idx = 31
@@ -3006,7 +3007,7 @@ metadata/extras = {
 "eulerOrder": "ZYX",
 "inheritType": 1.0,
 "parentMatrixWorld": {
-"elements": [1.0, 1.2037061999999999e-35, -3.4694469519536134e-18, 0.0, -7.613328466978056e-20, 0.9997592030801176, -0.0219439252780362, 0.0, 3.4686115198138867e-18, 0.0219439252780362, 0.9997592030801176, 0.0, -0.00083120268305059, 3.537454603125248, -1.826379e-08, 1.0]
+"elements": [1.0, 1.2037062e-35, -3.4694469519536134e-18, 0.0, -7.613328466978056e-20, 0.9997592030801176, -0.0219439252780362, 0.0, 3.4686115198138867e-18, 0.0219439252780362, 0.9997592030801176, 0.0, -0.00083120268305059, 3.537454603125248, -1.826379e-08, 1.0]
 },
 "preRotation": [-2.5479795186022893, 4.969616689786744e-17, 0.0],
 "scale": [1.0, 1.0, 1.0000000000000002],
@@ -3014,7 +3015,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandIndex4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandIndex3"]
+[node name="mixamorigRightHandIndex4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandIndex3" unique_id=208211538]
 transform = Transform3D(0.99999994, 5.9604645e-08, 4.9262887e-17, 5.551114e-17, 0.9999999, -2.8975828e-08, 3.3087223e-24, 5.8778152e-08, 1, -3.8803282e-05, 1.9330845, 2.977142e-06)
 metadata/extras = {
 "name": "mixamorigRightHandIndex4",
@@ -3030,7 +3031,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandMiddle3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigRightHandMiddle3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=1545420174]
 transform = Transform3D(0.65961534, 0.70282114, 0.26636422, 0.084007904, -0.421115, 0.90310854, 0.7468937, -0.5733274, -0.33681637, -16.718302, 19.88748, 33.3266)
 bone_name = "mixamorigRightHandMiddle3"
 bone_idx = 34
@@ -3048,7 +3049,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandMiddle4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandMiddle3"]
+[node name="mixamorigRightHandMiddle4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandMiddle3" unique_id=876689722]
 transform = Transform3D(0.99999994, -2.9802322e-08, -2.9802322e-08, 2.9802322e-08, 0.99999994, -3.0785e-08, 5.9604645e-08, -4.3720803e-08, 0.9999998, -0.0041919216, 2.3760426, 9.035117e-07)
 metadata/extras = {
 "name": "mixamorigRightHandMiddle4",
@@ -3063,7 +3064,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandRing3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigRightHandRing3" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=78741277]
 transform = Transform3D(0.63597006, 0.66198164, 0.39663884, 0.08964483, -0.5738635, 0.8140298, 0.7664895, -0.4821418, -0.42430317, -18.543816, 20.79962, 30.93159)
 bone_name = "mixamorigRightHandRing3"
 bone_idx = 37
@@ -3081,7 +3082,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightHandRing4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandRing3"]
+[node name="mixamorigRightHandRing4" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightHandRing3" unique_id=81210769]
 transform = Transform3D(0.99999994, -1.5702473e-16, -2.9802322e-08, 2.9802322e-08, 1.0000001, 2.8258736e-08, 6.418477e-17, -2.8258736e-08, 1.0000001, -0.0014037103, 2.0763898, 2.7962249e-06)
 metadata/extras = {
 "name": "mixamorigRightHandRing4",
@@ -3097,7 +3098,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftToeBase" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigLeftToeBase" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=1537184152]
 transform = Transform3D(-0.9982815, -0.058554657, 0.0023071393, 0.0012459978, 0.018151492, 0.9998348, -0.058586873, 0.9981193, -0.018047303, 10.965874, 0.3608055, 37.140656)
 bone_name = "mixamorigLeftToeBase"
 bone_idx = 41
@@ -3115,7 +3116,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigLeftToe_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftToeBase"]
+[node name="mixamorigLeftToe_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigLeftToeBase" unique_id=760726597]
 transform = Transform3D(1, 7.450581e-09, -3.6088748e-09, -7.450581e-09, 0.99999994, 4.5800277e-10, 7.683411e-09, -5.82e-08, 0.9999998, 3.3531187e-08, 4.491558, -2.170774e-06)
 metadata/extras = {
 "name": "mixamorigLeftToe_End",
@@ -3131,7 +3132,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightToeBase" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton"]
+[node name="mixamorigRightToeBase" type="BoneAttachment3D" parent="MOUSE/GeneralSkeleton" unique_id=576101611]
 transform = Transform3D(-0.92328376, -0.3811292, 0.047830224, 0.076107346, -0.0594604, 0.99532527, -0.37650332, 0.92260784, 0.0839054, -16.533243, 0.9969921, 22.33066)
 bone_name = "mixamorigRightToeBase"
 bone_idx = 45
@@ -3149,7 +3150,7 @@ metadata/extras = {
 }
 }
 
-[node name="mixamorigRightToe_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightToeBase"]
+[node name="mixamorigRightToe_End" type="Node3D" parent="MOUSE/GeneralSkeleton/mixamorigRightToeBase" unique_id=1617953336]
 transform = Transform3D(0.9999999, 5.9604645e-08, -1.1175871e-08, -2.9802322e-08, 0.9999999, 9.03716e-09, -1.8626451e-08, 5.8018067e-08, 0.99999994, -1.6424747e-06, 4.480693, -1.6383507e-06)
 metadata/extras = {
 "name": "mixamorigRightToe_End",
@@ -3165,17 +3166,40 @@ metadata/extras = {
 }
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="MOUSE"]
-libraries = {
-&"": SubResource("AnimationLibrary_xj71k")
-}
-autoplay = "Idle"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MOUSE" unique_id=878272489]
+libraries/ = SubResource("AnimationLibrary_xj71k")
+autoplay = &"Idle"
 playback_default_blend_time = 0.2
 
-[node name="Interaction_controller" parent="." instance=ExtResource("8_adgam")]
+[node name="Interaction_controller" parent="." unique_id=1417441145 node_paths=PackedStringArray("interaction_controller", "player_character", "interaction_raycast", "player_camera") instance=ExtResource("8_adgam")]
 unique_name_in_owner = true
+interaction_controller = NodePath(".")
+player_character = NodePath("..")
+interaction_raycast = NodePath("../CameraPivot/Camera3D/InteractionRayCast")
+player_camera = NodePath("../CameraPivot/Camera3D")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1829655903]
 transform = Transform3D(17.227768, 0, 0, 0, 11.7705555, 0, 0, 0, 1, 0, 0, -6.716219)
 visible = false
 mesh = SubResource("QuadMesh_g1hv4")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1524127715]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1061036879]
+modulate = Color(1, 1, 0.8117647, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_liw1m")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true

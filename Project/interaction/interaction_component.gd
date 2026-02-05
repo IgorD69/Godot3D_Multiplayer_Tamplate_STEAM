@@ -130,7 +130,6 @@ func _set_node_authority(id: int) -> void:
 	if object_referance is RigidBody3D:
 		if id != 1: # Un client îl ține
 			object_referance.freeze = true 
-			# KINEMATIC permite mutarea obiectului prin cod fără să cadă prin podea
 			object_referance.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 		else: # Serverul îl are înapoi
 			object_referance.freeze = false
@@ -138,18 +137,14 @@ func _set_node_authority(id: int) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func server_throw(direction: Vector3, strength: float, final_pos: Vector3) -> void:
 	if multiplayer.is_server():
-		# 1. Resetăm autoritatea la Server
 		_set_node_authority(1)
 		
 		var rigid_body_3d: RigidBody3D = object_referance as RigidBody3D
 		if rigid_body_3d:
-			# 2. REPARAT: Teleportăm obiectul la mâna jucătorului înainte de aruncare
 			rigid_body_3d.global_position = final_pos
 			
-			# 3. Aplicăm forța
 			rigid_body_3d.linear_velocity = direction * strength
 
-# --- ALTE INTERACTIUNI ---
 
 func open_or_close() -> void:
 	sync_open_close.rpc(!was_opened)
