@@ -11,20 +11,34 @@ var camera_v_rot: float = 0.0
 var current_anim: String = ""
 var player_name: String = ""
 var hand: Marker3D
-var mouse_input: Vector2
+var accumulated_mouse_input: Vector2 = Vector2.ZERO
+var ik_base_position: Vector3
+var ik_initialized: bool = false
 
 @export var camera_rotation = 0.05
 @export var arm_camera_rotation = 0.07
-@export var arm_sway_amount = 0.03
+@export var arm_sway_amount = 0.1  # Crescut pentru efect mai vizibil
 
+
+@onready var two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/TwoBoneIK3D
+@onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/HandMarker
 @onready var arm: Node3D = $CameraPivot/Camera3D/Arm
 @onready var camera_pivot: SpringArm3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/Camera3D
-@onready var PortalAnim: AnimationPlayer = $CameraPivot/Camera3D/Arm/Portal_Gun2/AnimationPlayer
-@onready var MouseAnim: AnimationPlayer = $MOUSE/AnimationPlayer
+@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/BoneAttachment3D/Portal_Gun2/AnimationPlayer
+
+@onready var Animation_Player: AnimationPlayer = $Character/AnimationPlayer
+
 @onready var model: MeshInstance3D = $MOUSE/Model
 @onready var tab_canvas: CanvasLayer = $TAB
 @onready var box_container: BoxContainer = $TAB/BoxContainer
+
+
+#HEAD MESHES
+@onready var head: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/head
+@onready var helmet: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/helmet
+@onready var ochelari: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/ochelari
+@onready var mask: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/mask
 
 
 func _ready():
@@ -72,7 +86,10 @@ func _ready():
 		print("✓ Setting up LOCAL player controls")
 		if camera:
 			camera.make_current()
-		model.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		head.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		helmet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		ochelari.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		mask.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		
 		# Amână capturarea mouse-ului până când fereastra este în focus
 		call_deferred("_setup_mouse_capture")
@@ -83,6 +100,9 @@ func _ready():
 		print("✓ Setting up REMOTE player (no controls)")
 		if camera:
 			camera.current = false
+			
+	if ik_target:
+		ik_base_position = ik_target.position
 
 func _send_player_name():
 	await get_tree().process_frame
@@ -203,25 +223,41 @@ func _physics_process(delta):
 		move_and_slide()
 		cam_tilt(input_dir.x, delta)
 		arm_tilt(input_dir.x, delta)
-		arm_sway(delta)
+		arm_sway(delta)  # Folosește accumulated_mouse_input
 		
 		# Sincronizează poziția și rotația cu ceilalți jucători
 		sync_transform.rpc(global_position, rotation.y)
-		
-		# Animații
+
 		var current_speed = Vector3(velocity.x, 0, velocity.z).length()
 		var next_anim = "Idle"
-		if current_speed > 0.1:
-			if Input.is_action_pressed("sprint"):
-				next_anim = "FastRun"
-			else:
-				next_anim = "Walk"
+		var playback_speed = 1.0
+
+		if not is_on_floor():
+			next_anim = "Jump"
+			playback_speed = 1.0 
 		else:
-			next_anim = "Idle"
-		
+			if current_speed > 0.1:
+				if Input.is_action_pressed("sprint"):
+					next_anim = "Run"
+					playback_speed = 2.0
+				else:
+					next_anim = "Walk"
+					playback_speed = 1.0
+			else:
+				next_anim = "Idle"
+				playback_speed = 0.5
+
+		if Animation_Player.current_animation != next_anim:
+			Animation_Player.play(next_anim, 0.2, playback_speed)
+		else:
+			Animation_Player.speed_scale = playback_speed
+
 		if current_anim != next_anim:
 			current_anim = next_anim
 			play_animation_rpc.rpc(next_anim)
+		
+		# RESETEAZĂ accumulated_mouse_input LA SFÂRȘIT
+		accumulated_mouse_input = Vector2.ZERO
 
 func cam_tilt(input_x, delta):
 	if camera:
@@ -230,11 +266,26 @@ func cam_tilt(input_x, delta):
 func arm_tilt(input_x, delta):
 	if arm:
 		arm.rotation.z = lerp(arm.rotation.z, -input_x * camera_rotation, 10 * delta)
-		
+
+
 func arm_sway(delta):
-	mouse_input = lerp(mouse_input, Vector2.ZERO, 10 * delta)
-	arm.rotation.x = lerp(arm.rotation.x, mouse_input.y * arm_sway_amount, 10 * delta)
-	arm.rotation.y = lerp(arm.rotation.y, mouse_input.x * arm_sway_amount, 10 * delta)
+	if ik_target:
+		print("IK position: ", ik_target.position)
+		print("IK base: ", ik_base_position)
+		print("Mouse input: ", accumulated_mouse_input)
+		
+
+	if ik_target and ik_initialized:
+		# Decay natural al mouse input-ului
+		accumulated_mouse_input = lerp(accumulated_mouse_input, Vector2.ZERO, 5 * delta)
+		
+		# Aplică sway cu valori mici
+		var sway_offset_x = accumulated_mouse_input.y * 0.0001
+		var sway_offset_y = accumulated_mouse_input.x * 0.0001
+		
+		var target_position = ik_base_position + Vector3(sway_offset_y, sway_offset_x, 0)
+		ik_target.position = lerp(ik_target.position, target_position, 10 * delta)
+		
 	
 # RPC pentru sincronizarea transformării
 @rpc("any_peer", "unreliable")
@@ -247,6 +298,13 @@ func _input(event):
 	if !is_multiplayer_authority():
 		return
 	
+	if event.is_action_pressed("flash"):
+		if two_bone_ik_3d.active:
+			two_bone_ik_3d.active = false
+		else:
+			two_bone_ik_3d.active = true
+			
+		
 	if event.is_action_pressed("esc"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -270,15 +328,17 @@ func _input(event):
 		
 		camera_pivot.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
-		mouse_input = event.relative
+		
+		# ACUMULĂM mișcarea mouse-ului pentru arm sway
+		accumulated_mouse_input += event.relative
 	
 	if event.is_action_pressed("L_Click"):
 		play_shoot_animation.rpc("Shoot")
 
 @rpc("any_peer", "call_local", "reliable")
 func play_animation_rpc(anim_name: String):
-	if MouseAnim and MouseAnim.has_animation(anim_name):
-		MouseAnim.play(anim_name, 0.2)
+	if Animation_Player and Animation_Player.has_animation(anim_name):
+		Animation_Player.play(anim_name, 0.2)
 
 @rpc("any_peer", "unreliable")
 func update_camera_rotation(vertical_rotation: float):

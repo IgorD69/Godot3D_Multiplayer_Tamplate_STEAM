@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://c8k8giesfgmeu" path="res://Models/Factorry Assets/Coal_Screenshot_20260205_125431.png" id="1_bt4lu"]
 [ext_resource type="Script" uid="uid://buqi7mk4p6y8m" path="res://Scripts/tray_button.gd" id="1_fhway"]
+[ext_resource type="AudioStream" uid="uid://dpmlt7j08wgqe" path="res://Music/DrawerSounds/CloseSound.mp3" id="3_q554f"]
+[ext_resource type="Script" uid="uid://cip2yl2k2jgek" path="res://Scripts/drawer_sounds.gd" id="4_gaf1t"]
+[ext_resource type="AudioStream" uid="uid://e75ylxqkvsmt" path="res://Music/DrawerSounds/Button.mp3" id="4_hh28i"]
+[ext_resource type="AudioStream" uid="uid://b1wees67mq6e3" path="res://Music/DrawerSounds/OpenSound.mp3" id="5_hh28i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhway"]
 albedo_color = Color(0.99215686, 0.29411766, 0.57254905, 1)
@@ -48,10 +52,11 @@ _data = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bt4lu"]
-size = Vector3(1, 15.114807, 1)
+size = Vector3(1, 10.726227, 1)
 
 [node name="TrayButton" type="StaticBody3D" unique_id=180132092]
 script = ExtResource("1_fhway")
+sfx_playlist = Array[AudioStream]([ExtResource("5_hh28i"), ExtResource("3_q554f")])
 
 [node name="TrayButtonMesh" type="MeshInstance3D" parent="." unique_id=645115717]
 transform = Transform3D(0.272, 0, 0, 0, 0.009165782, 0.25505912, 0, -0.024740737, 0.0944926, 0, 0, 0)
@@ -64,5 +69,14 @@ autoplay = &"RESET"
 speed_scale = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1639039537]
-transform = Transform3D(0.272, 0, 0, 0, 0.009165782, 0.25505912, 0, -0.024740737, 0.094492614, 0, 0.053199183, -0.1435979)
+transform = Transform3D(0.272, 0, 0, 0, 0.009165782, 0.25505912, 0, -0.024740737, 0.094492614, 0, 0.0330868, -0.08930954)
 shape = SubResource("BoxShape3D_bt4lu")
+debug_color = Color(0.9227449, 0.2407721, 0.3624273, 0.41960785)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=779054302]
+script = ExtResource("4_gaf1t")
+audio_list = Array[AudioStream]([ExtResource("5_hh28i"), ExtResource("3_q554f")])
+
+[node name="Button" type="AudioStreamPlayer3D" parent="." unique_id=1713155857]
+stream = ExtResource("4_hh28i")
+volume_db = -24.0
