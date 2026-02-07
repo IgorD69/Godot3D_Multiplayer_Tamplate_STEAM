@@ -59,3 +59,4 @@ shape = SubResource("SphereShape3D_glyai")
 [node name="InteractionComponent" parent="." unique_id=2009653683 node_paths=PackedStringArray("object_referance") instance=ExtResource("2_epcf5")]
 object_referance = NodePath("..")
 interaction_type = 0
+maximum_rotation = 110.0

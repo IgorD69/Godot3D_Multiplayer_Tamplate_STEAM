@@ -1,14 +1,17 @@
 [gd_scene format=4 uid="uid://beehu2dulgjte"]
 
-[ext_resource type="Texture2D" uid="uid://bqhehy1wwin25" path="res://Scene/Factorry_23.jpg" id="1_8sewn"]
-[ext_resource type="Texture2D" uid="uid://c2vdikgasxwcp" path="res://Scene/Factorry_5.jpg" id="2_8sewn"]
+[ext_resource type="Texture2D" uid="uid://bqhehy1wwin25" path="res://Models/Factorry Assets/Factorry_23.jpg" id="1_8sewn"]
+[ext_resource type="Texture2D" uid="uid://c2vdikgasxwcp" path="res://Models/Factorry Assets/Factorry_5.jpg" id="2_8sewn"]
 [ext_resource type="PackedScene" uid="uid://bb3qcv0kbqbo6" path="res://Scene/Player.tscn" id="2_oitlh"]
+[ext_resource type="Texture2D" uid="uid://xvpf0d5qqtn" path="res://Models/oldPCTexture.png" id="3_dmtjc"]
 [ext_resource type="PackedScene" uid="uid://k7sx6rdehj4o" path="res://Scene/tray_button.tscn" id="3_i8usg"]
 [ext_resource type="PackedScene" uid="uid://ce5w7q02q7w6r" path="res://objects/barrel.tscn" id="5_xvlbi"]
 [ext_resource type="PackedScene" uid="uid://xivybfni25mk" path="res://Models/Factorry Assets/StoneCUtter.glb" id="7_s8oih"]
 [ext_resource type="Texture2D" uid="uid://prsnen3r43s3" path="res://Models/Factorry Assets/gEARS_50.jpg" id="8_s8oih"]
 [ext_resource type="PackedScene" uid="uid://mwr2bdy5qk5k" path="res://objects/GEARS_Machiene.tscn" id="9_i8usg"]
 [ext_resource type="PackedScene" uid="uid://dfr0kyfq81nww" path="res://objects/coal.tscn" id="9_tuhq5"]
+[ext_resource type="PackedScene" uid="uid://c2ojogoumanna" path="res://exported-model.glb" id="11_dmtjc"]
+[ext_resource type="PackedScene" uid="uid://bm2b477vmb8ff" path="res://Models/Factorry Assets/Lada.glb" id="12_aefqf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qxdst"]
 sky_top_color = Color(0.31692132, 0.16890651, 0.16400301, 1)
@@ -270,6 +273,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_718cp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aefqf"]
+albedo_texture = ExtResource("3_dmtjc")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pop2i"]
 resource_name = "Material.001"
@@ -935,7 +941,25 @@ _data = {
 &"open": SubResource("Animation_ajtn8")
 }
 
-[node name="Node3D" type="Node3D" unique_id=1946195362]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmtjc"]
+albedo_texture = ExtResource("2_8sewn")
+uv1_scale = Vector3(1.28, 3.06, 1.745)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_aefqf"]
+_surfaces = [{
+"aabb": AABB(-97.70049, -0.5, -35.13791, 195.40099, 1, 70.27582),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("p2bDwgAAAL84jQxCp2bDwgAAAL84jQzCp2bDwgAAAD84jQzCp2bDQgAAAL84jQzCp2bDwgAAAL84jQzCp2bDwgAAAL84jQxCp2bDwgAAAD84jQzCp2bDwgAAAL84jQzCp2bDQgAAAL84jQzCp2bDwgAAAD84jQzCp2bDwgAAAD84jQxCp2bDwgAAAL84jQxCp2bDwgAAAL84jQxCp2bDwgAAAD84jQxCp2bDQgAAAD84jQxCp2bDQgAAAD84jQxCp2bDwgAAAD84jQxCp2bDwgAAAD84jQzCp2bDwgAAAL84jQxCp2bDQgAAAL84jQxCp2bDQgAAAL84jQzCp2bDQgAAAD84jQxCp2bDQgAAAL84jQxCp2bDwgAAAL84jQxCp2bDQgAAAL84jQzCp2bDQgAAAL84jQxCp2bDQgAAAD84jQxCp2bDQgAAAL84jQzCp2bDQgAAAD84jQzCp2bDwgAAAD84jQzCp2bDwgAAAD84jQzCp2bDQgAAAD84jQzCp2bDQgAAAD84jQxCp2bDQgAAAD84jQxCp2bDQgAAAD84jQzCp2bDQgAAAL84jQzCAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_e48ja"]
+data = PackedVector3Array(-97.70049, -0.5, 35.13791, -97.70049, -0.5, -35.13791, -97.70049, 0.5, -35.13791, 97.70049, -0.5, -35.13791, -97.70049, -0.5, -35.13791, -97.70049, -0.5, 35.13791, -97.70049, 0.5, -35.13791, -97.70049, -0.5, -35.13791, 97.70049, -0.5, -35.13791, -97.70049, 0.5, -35.13791, -97.70049, 0.5, 35.13791, -97.70049, -0.5, 35.13791, -97.70049, -0.5, 35.13791, -97.70049, 0.5, 35.13791, 97.70049, 0.5, 35.13791, 97.70049, 0.5, 35.13791, -97.70049, 0.5, 35.13791, -97.70049, 0.5, -35.13791, -97.70049, -0.5, 35.13791, 97.70049, -0.5, 35.13791, 97.70049, -0.5, -35.13791, 97.70049, 0.5, 35.13791, 97.70049, -0.5, 35.13791, -97.70049, -0.5, 35.13791, 97.70049, -0.5, -35.13791, 97.70049, -0.5, 35.13791, 97.70049, 0.5, 35.13791, 97.70049, -0.5, -35.13791, 97.70049, 0.5, -35.13791, -97.70049, 0.5, -35.13791, -97.70049, 0.5, -35.13791, 97.70049, 0.5, -35.13791, 97.70049, 0.5, 35.13791, 97.70049, 0.5, 35.13791, 97.70049, 0.5, -35.13791, 97.70049, -0.5, -35.13791)
+
+[node name="Map" type="Node3D" unique_id=1946195362]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2798266, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=334881723]
@@ -981,7 +1005,8 @@ mesh = SubResource("ArrayMesh_ih8em")
 skeleton = NodePath("")
 
 [node name="Keyboard" type="MeshInstance3D" parent="Factorry" unique_id=1508319037]
-transform = Transform3D(-2.3791904e-08, 0, 0.52295154, 0, 0.032653805, 0, -0.19958092, 0, -6.234069e-08, 5.6259913, -0.7301508, -3.7035654)
+transform = Transform3D(-2.3791904e-08, 0, 0.52295154, 0, 0.032653805, 0, -0.19958092, 0, -6.234069e-08, 5.6259913, -0.7621925, -3.7035654)
+material_override = SubResource("StandardMaterial3D_aefqf")
 mesh = SubResource("ArrayMesh_a6ywv")
 skeleton = NodePath("")
 
@@ -1089,12 +1114,6 @@ skeleton = NodePath("")
 [node name="TrayButton" parent="Factorry" unique_id=180132092 instance=ExtResource("3_i8usg")]
 transform = Transform3D(1.2642225, 0, 0, 0, 1.2642225, 0, 0, 0, 1.2642225, 9.185676, -0.34732723, -1.2799976)
 
-[node name="floor" type="CSGBox3D" parent="." unique_id=291603905]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.233055, -2.0033786, 17.852203)
-material_override = SubResource("StandardMaterial3D_xvlbi")
-use_collision = true
-size = Vector3(195.40099, 1, 70.27582)
-
 [node name="top" type="CSGBox3D" parent="." unique_id=2128588655]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.200693, 15.541926, 17.852203)
 material_override = SubResource("StandardMaterial3D_xvlbi")
@@ -1102,7 +1121,7 @@ use_collision = true
 size = Vector3(62.88406, 1, 70.27582)
 
 [node name="Player" parent="." unique_id=2096496475 instance=ExtResource("2_oitlh")]
-transform = Transform3D(-0.8390815, 0, -0.5440058, 0, 1, 0, 0.5440058, 0, -0.8390815, 4.912487, -1.0033786, -7.9544554)
+transform = Transform3D(-0.8390815, 0, -0.5440058, 0, 1, 0, 0.5440058, 0, -0.8390815, 4.912487, -1.2462983, -7.9544554)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1485907396]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.392401, 2.5359392, -5.5731316)
@@ -1114,7 +1133,6 @@ omni_range = 59.92194
 
 [node name="Barrel" parent="." unique_id=1749049335 instance=ExtResource("5_xvlbi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3829172, -1.488279, -2.7349079)
-mass = 20.0
 
 [node name="StoneCUtter" parent="." unique_id=1324589479 instance=ExtResource("7_s8oih")]
 transform = Transform3D(-2.2292808e-08, 0, -0.51, 0, 0.51, 0, 0.51, 0, -2.2292808e-08, 17.868597, -0.5303781, 7.2261333)
@@ -1144,3 +1162,21 @@ libraries/ = SubResource("AnimationLibrary_f1sg3")
 
 [node name="Gear" parent="." unique_id=1514742458 instance=ExtResource("9_i8usg")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.330427, 2.539095, -5.7377286)
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1473472685]
+
+[node name="floorMesh" type="MeshInstance3D" parent="Floor" unique_id=275187653]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.233055, -2.0033786, 17.852203)
+material_override = SubResource("StandardMaterial3D_dmtjc")
+mesh = SubResource("ArrayMesh_aefqf")
+skeleton = NodePath("../..")
+
+[node name="FloorCol" type="CollisionShape3D" parent="Floor" unique_id=504418337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.233055, -2.0033786, 17.852203)
+shape = SubResource("ConcavePolygonShape3D_e48ja")
+
+[node name="exported-model" parent="." unique_id=513002097 instance=ExtResource("11_dmtjc")]
+transform = Transform3D(-1.7094998, 0, -6.37994, 0, 6.605, 0, 6.37994, 0, -1.7094998, 17.545662, -1.5141186, -0.9189334)
+
+[node name="Lada" parent="." unique_id=117228114 instance=ExtResource("12_aefqf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.982089, -1.4932206, -5.3114305)

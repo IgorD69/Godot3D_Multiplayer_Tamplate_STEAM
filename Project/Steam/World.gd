@@ -1,6 +1,11 @@
-extends Node3D
+extends Control
 
 @export var PLAYER_SCENE: PackedScene
+const FACTORY = preload("uid://beehu2dulgjte")
+@export var SETTINGS_MENU = preload("uid://dsr4sx6v6qsiv")
+
+
+
 
 var steam_id: int = 0
 var lobby_id: int = 0
@@ -8,13 +13,14 @@ var max_players := 8
 var is_host := false
 var local_player_name := ""
 
-@onready var host_button: Button = $UI/Control/Host
-@onready var join_button: Button = $UI/Control/Join
-@onready var copy_button: Button = $UI/Control/Copy
 @onready var control: Control = %Control
 @onready var leave_room: Button = %LeaveRoom
 @onready var id_label: Label = %JoinInput
-@onready var lan_button: Button = $UI/Control/LanButton
+@onready var lan_button: Button = $UI/SinglePlayer/LanButton
+@onready var host_button: Button = $UI/Multiplayer/Host
+@onready var join_button: Button = $UI/Multiplayer/Join
+@onready var friends: Button = $UI/Multiplayer/Friends
+@onready var copy_button: Button = $UI/Multiplayer/Copy
 
 func _ready():
 	#var init_dict: Dictionary = Steam.steamInit()
@@ -252,6 +258,7 @@ func get_player_name() -> String:
 
 func _on_host_pressed() -> void:
 	host_lobby()
+	get_tree().change_scene_to_file("res://Scene/Factory.tscn")
 
 func _on_join_pressed():
 	var input_field = %JoinInput
@@ -314,28 +321,34 @@ func _on_friends_pressed() -> void:
 
 func _on_lan_button_pressed() -> void:
 	var peer = ENetMultiplayerPeer.new()
-	var port = 7777 # Make sure this matches in both calls
+	var port = 7777
 	Global.LAN = true
 	
-	# Try to host first
+	# IMPORTANT: Configurăm peer-ul ÎNAINTE de schimbarea scenei
 	var error = peer.create_server(port, max_players)
 	if error == OK:
 		print("LAN: Server pornit pe portul: ", port)
 		multiplayer.multiplayer_peer = peer
 		is_host = true
-		# Host spawns themselves
-		spawn_player_rpc(multiplayer.get_unique_id()) 
 		lan_button.text = "LAN (Host Active)"
+		
+		# ✓ ACUM schimbăm scena DUPĂ ce peer-ul este configurat
+		get_tree().change_scene_to_file("res://Scene/Factory.tscn")
+		
 	else:
-		# If hosting fails, try to join
+		# Dacă hosting-ul eșuează, încercăm să ne conectăm ca client
 		print("LAN: Port ocupat, încercăm conectarea ca client...")
 		error = peer.create_client("127.0.0.1", port)
 		if error == OK:
 			multiplayer.multiplayer_peer = peer
 			is_host = false
 			lan_button.text = "LAN (Connected)"
+			
+			# ✓ Schimbăm scena după conectare reușită
+			get_tree().change_scene_to_file("res://Scene/Factory.tscn")
 		else:
 			print("LAN Error: ", error)
+			# Nu schimbăm scena dacă conexiunea a eșuat
 
 func _on_network_peer_connected(id: int):
 	print("=== PEER_CONNECTED SIGNAL ===")
@@ -366,3 +379,8 @@ func _on_network_peer_disconnected(id: int):
 	var player_to_remove = get_node_or_null(str(id))
 	if player_to_remove:
 		player_to_remove.queue_free()
+
+
+func _on_settings_pressed() -> void:
+	var SETTINGS_MENU = SETTINGS_MENU.instantiate()
+	add_child(SETTINGS_MENU)

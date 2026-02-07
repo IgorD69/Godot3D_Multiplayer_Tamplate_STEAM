@@ -5,6 +5,7 @@ const SPRINT_SPEED = 10.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.002
 
+
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_moving_state: bool = false 
 var camera_v_rot: float = 0.0
@@ -14,6 +15,9 @@ var hand: Marker3D
 var accumulated_mouse_input: Vector2 = Vector2.ZERO
 var ik_base_position: Vector3
 var ik_initialized: bool = false
+var esc_menu_instance = null
+
+@export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
 
 @export var camera_rotation = 0.05
 @export var arm_camera_rotation = 0.07
@@ -22,10 +26,15 @@ var ik_initialized: bool = false
 
 @onready var two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/TwoBoneIK3D
 @onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/HandMarker
-@onready var arm: Node3D = $CameraPivot/Camera3D/Arm
-@onready var camera_pivot: SpringArm3D = $CameraPivot
-@onready var camera: Camera3D = $CameraPivot/Camera3D
-@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/BoneAttachment3D/Portal_Gun2/AnimationPlayer
+#@onready var arm: Node3D = $Camera3D/Arm
+@onready var arm: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm
+
+#@onready var camera_pivot: SpringArm3D = $CameraPivot
+#@onready var camera: Camera3D = $CameraPivot/Camera3D
+
+@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm/Portal_Gun2/AnimationPlayer
+@onready var FlashLight: SpotLight3D = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm/Portal_Gun2/SpotLight3D
+@onready var camera: Camera3D = $Camera3D
 
 @onready var Animation_Player: AnimationPlayer = $Character/AnimationPlayer
 
@@ -269,12 +278,6 @@ func arm_tilt(input_x, delta):
 
 
 func arm_sway(delta):
-	if ik_target:
-		print("IK position: ", ik_target.position)
-		print("IK base: ", ik_base_position)
-		print("Mouse input: ", accumulated_mouse_input)
-		
-
 	if ik_target and ik_initialized:
 		# Decay natural al mouse input-ului
 		accumulated_mouse_input = lerp(accumulated_mouse_input, Vector2.ZERO, 5 * delta)
@@ -294,6 +297,21 @@ func sync_transform(pos: Vector3, rot_y: float):
 		global_position = pos
 		rotation.y = rot_y
 
+
+func toggle_esc_menu():
+	# 1. Verificăm dacă instanța (copia de pe ecran) există
+	if esc_menu_instance != null:
+		esc_menu_instance.queue_free()
+		esc_menu_instance = null
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	else:
+		# 2. Dacă nu există, folosim MATRIȚA (ESC_MENU_SCENE) pentru a crea una
+		esc_menu_instance = ESC_MENU_SCENE.instantiate()
+		add_child(esc_menu_instance)
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+
 func _input(event):
 	if !is_multiplayer_authority():
 		return
@@ -301,15 +319,16 @@ func _input(event):
 	if event.is_action_pressed("flash"):
 		if two_bone_ik_3d.active:
 			two_bone_ik_3d.active = false
+			FlashLight.visible = false
+			
 		else:
 			two_bone_ik_3d.active = true
+			FlashLight.visible = true
+			
 			
 		
 	if event.is_action_pressed("esc"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		toggle_esc_menu()
 			
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:
@@ -326,7 +345,7 @@ func _input(event):
 		camera_v_rot -= event.relative.y * MOUSE_SENSITIVITY
 		camera_v_rot = clamp(camera_v_rot, deg_to_rad(-80), deg_to_rad(80))
 		
-		camera_pivot.rotation.x = camera_v_rot
+		camera.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
 		
 		# ACUMULĂM mișcarea mouse-ului pentru arm sway
@@ -343,7 +362,7 @@ func play_animation_rpc(anim_name: String):
 @rpc("any_peer", "unreliable")
 func update_camera_rotation(vertical_rotation: float):
 	if not is_multiplayer_authority():
-		camera_pivot.rotation.x = vertical_rotation
+		camera.rotation.x = vertical_rotation
 
 @rpc("any_peer", "call_local", "reliable")
 func play_shoot_animation(_tip: String):

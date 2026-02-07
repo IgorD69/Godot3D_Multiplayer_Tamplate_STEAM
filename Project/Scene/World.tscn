@@ -2,42 +2,13 @@
 
 [ext_resource type="Script" uid="uid://dw2684s3n2kv2" path="res://Steam/World.gd" id="1_3vc68"]
 [ext_resource type="PackedScene" uid="uid://bb3qcv0kbqbo6" path="res://Scene/Player.tscn" id="2_gx810"]
-[ext_resource type="Script" uid="uid://c6cuqomu1um57" path="res://Scripts/ui.gd" id="2_njlop"]
-[ext_resource type="PackedScene" uid="uid://beehu2dulgjte" path="res://Scene/Factory.tscn" id="4_njlop"]
+[ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="3_3vc68"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pe4km"]
-sky_top_color = Color(0.19482246, 0.064513355, 0.033502575, 1)
-sky_horizon_color = Color(0.21392033, 0.14476058, 0.09572456, 1)
-ground_horizon_color = Color(0.15010512, 0.11128948, 0.08280683, 1)
-
-[sub_resource type="Sky" id="Sky_jvpx1"]
-sky_material = SubResource("ProceduralSkyMaterial_pe4km")
-
-[sub_resource type="Environment" id="Environment_p1dnn"]
-background_mode = 2
-sky = SubResource("Sky_jvpx1")
-tonemap_mode = 3
-fog_mode = 1
-fog_density = 1.0
-volumetric_fog_density = 0.0673
-volumetric_fog_albedo = Color(0.33180594, 0.19975814, 0.09796975, 1)
-volumetric_fog_emission = Color(0.23762688, 0.15239868, 0.09236839, 1)
-volumetric_fog_emission_energy = 0.2
-adjustment_enabled = true
-adjustment_brightness = 0.75
-
-[node name="NodeTunnelDemo" type="Node3D" unique_id=2136653602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+[node name="MainSceen" type="Control" unique_id=2021502316]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_3vc68")
 PLAYER_SCENE = ExtResource("2_gx810")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1664074161]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-light_color = Color(0.9232465, 0.6183493, 0.4719348, 1)
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1130502872]
-environment = SubResource("Environment_p1dnn")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=3665235]
 _spawnable_scenes = PackedStringArray("uid://bb3qcv0kbqbo6")
@@ -46,49 +17,32 @@ spawn_path = NodePath("..")
 [node name="UI" type="CanvasLayer" parent="." unique_id=1869115639]
 unique_name_in_owner = true
 follow_viewport_enabled = true
-script = ExtResource("2_njlop")
 
-[node name="Control" type="Control" parent="UI" unique_id=1587847268]
+[node name="Background" type="ColorRect" parent="UI" unique_id=268776758]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03137255, 0, 0, 1)
+
+[node name="Control" type="TabBar" parent="UI" unique_id=1348305540]
 unique_name_in_owner = true
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Host" type="Button" parent="UI/Control" unique_id=1043740546]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 128.0
-offset_right = 219.0
-offset_bottom = 183.0
-action_mode = 0
-text = "Host"
-
-[node name="HSeparator" type="HSeparator" parent="UI/Control" unique_id=1536461173]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 187.0
-offset_right = 405.0
-offset_bottom = 195.0
-
 [node name="HostID" type="LineEdit" parent="UI/Control" unique_id=1785885755]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 64.0
 offset_top = 195.0
 offset_right = 405.0
 offset_bottom = 226.0
 placeholder_text = "Host ID"
-
-[node name="Join" type="Button" parent="UI/Control" unique_id=652689619]
-layout_mode = 0
-offset_left = 250.0
-offset_top = 128.0
-offset_right = 405.0
-offset_bottom = 183.0
-text = "Join by ID"
 
 [node name="JoinInput" type="Label" parent="UI/Control" unique_id=437367482]
 unique_name_in_owner = true
@@ -99,52 +53,96 @@ offset_right = 944.0
 offset_bottom = 52.0
 horizontal_alignment = 2
 
-[node name="Copy" type="Button" parent="UI/Control" unique_id=1337875879]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 247.0
-offset_right = 201.0
-offset_bottom = 303.0
-text = "Copy Lobby-ID"
-
 [node name="ExitButton" type="Button" parent="UI/Control" unique_id=467388850]
 layout_mode = 0
-offset_left = 770.0
-offset_top = 458.0
-offset_right = 949.0
-offset_bottom = 528.0
+offset_left = 737.0
+offset_top = 459.0
+offset_right = 907.0
+offset_bottom = 497.5965
+theme_override_fonts/font = ExtResource("3_3vc68")
 text = "Quit Game"
 
 [node name="LeaveRoom" type="Button" parent="UI/Control" unique_id=2121205769]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 64.0
 offset_top = 321.0
 offset_right = 236.0
 offset_bottom = 373.0
+theme_override_fonts/font = ExtResource("3_3vc68")
 text = "Main Manu"
 
-[node name="LanButton" type="Button" parent="UI/Control" unique_id=37941725]
-layout_mode = 0
-offset_right = 84.0
-offset_bottom = 31.0
-text = "Lan Mode"
+[node name="SinglePlayer" type="TabBar" parent="UI" unique_id=1280689145]
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Friends" type="Button" parent="UI/Control" unique_id=502271004]
+[node name="LanButton" type="Button" parent="UI/SinglePlayer" unique_id=37941725]
 layout_mode = 0
-offset_left = 448.0
-offset_top = 128.0
-offset_right = 585.0
-offset_bottom = 183.0
-text = "Friends
+offset_left = 737.0
+offset_top = 63.0
+offset_right = 901.0
+offset_bottom = 105.0
+theme_override_fonts/font = ExtResource("3_3vc68")
+text = "Single Player"
+
+[node name="Multiplayer" type="TabBar" parent="UI" unique_id=425648208]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Host" type="Button" parent="UI/Multiplayer" unique_id=1043740546]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 63.0
+offset_right = 233.96362
+offset_bottom = 104.0
+theme_override_fonts/font = ExtResource("3_3vc68")
+action_mode = 0
+text = "Host"
+
+[node name="Join" type="Button" parent="UI/Multiplayer" unique_id=652689619]
+visible = false
+layout_mode = 0
+offset_left = 320.0
+offset_top = 321.0
+offset_right = 544.0
+offset_bottom = 376.0
+theme_override_fonts/font = ExtResource("3_3vc68")
+text = "Join by ID"
+
+[node name="Friends" type="Button" parent="UI/Multiplayer" unique_id=502271004]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 63.0
+offset_right = 456.0
+offset_bottom = 104.74107
+theme_override_fonts/font = ExtResource("3_3vc68")
+text = "Join Friend
 "
 
-[node name="Map" parent="." unique_id=1946195362 instance=ExtResource("4_njlop")]
+[node name="Copy" type="Button" parent="UI/Multiplayer" unique_id=1337875879]
+visible = false
+layout_mode = 0
+offset_left = 784.0
+offset_top = 459.0
+offset_right = 921.0
+offset_bottom = 515.0
+theme_override_fonts/font = ExtResource("3_3vc68")
+text = "Copy Lobby-ID"
 
-[connection signal="pressed" from="UI/Control/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="UI/Control/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="UI/Control/Copy" to="." method="_on_copy_pressed"]
+[node name="Settings" type="Button" parent="UI" unique_id=1934092907]
+offset_left = 64.0
+offset_top = 150.0
+offset_right = 234.0
+offset_bottom = 188.5965
+theme_override_fonts/font = ExtResource("3_3vc68")
+text = "Settings"
+
 [connection signal="pressed" from="UI/Control/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="UI/Control/LeaveRoom" to="." method="_on_leave_room_pressed"]
-[connection signal="pressed" from="UI/Control/LanButton" to="." method="_on_lan_button_pressed"]
-[connection signal="pressed" from="UI/Control/Friends" to="." method="_on_friends_pressed"]
+[connection signal="pressed" from="UI/SinglePlayer/LanButton" to="." method="_on_lan_button_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/Friends" to="." method="_on_friends_pressed"]
+[connection signal="pressed" from="UI/Multiplayer/Copy" to="." method="_on_copy_pressed"]
+[connection signal="pressed" from="UI/Settings" to="." method="_on_settings_pressed"]

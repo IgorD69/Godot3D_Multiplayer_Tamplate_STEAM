@@ -8,6 +8,22 @@ enum InteractionType { DEFAULT, DOOR, SWITCH, LAPTOP }
 @export var pivit_point: Node3D
 @export var nodes_to_affect: Array[Node]
 
+# Parametri pentru throw
+@export_group("Throw Settings")
+@export var base_throw_force: float = 15.0  # Forța de bază pentru aruncarea obiectelor
+@export var min_throw_strength: float = 5.0  # Puterea minimă de aruncare
+@export var max_throw_strength: float = 30.0  # Puterea maximă de aruncare
+
+# Parametri pentru greutate și handling
+@export_group("Weight & Handling")
+@export var light_object_mass: float = 1.0  # Sub această masă = obiect ușor
+@export var heavy_object_mass: float = 5.0  # Peste această masă = obiect greu
+@export var max_height_offset: float = 0.0  # Offset-ul Y pentru obiecte ușoare (0 = centru)
+@export var min_height_offset: float = -0.5  # Offset-ul Y pentru obiecte grele (negativ = mai jos)
+@export var light_object_speed: float = 25.0  # Viteza de răspuns pentru obiecte ușoare
+@export var heavy_object_speed: float = 8.0  # Viteza de răspuns pentru obiecte grele
+@export var lerp_smoothness: float = 10.0  # Cât de smooth e tranziția (mai mare = mai rapid)
+
 var can_interact: bool = true
 var is_interacting: bool = false
 var lock_camera: bool = false
@@ -16,6 +32,14 @@ var is_front: bool
 var player_hand: Marker3D
 var was_opened: bool = false
 var is_focused: bool = false
+
+# Variabile pentru sistem de greutate
+var current_weight_factor: float = 0.0  # 0 = ușor, 1 = greu
+var current_height_offset: float = 0.0
+var current_speed_multiplier: float = 1.0
+var target_hand_position: Vector3 = Vector3.ZERO
+var pickup_progress: float = 0.0  # Progres de la 0 la 1 pentru animația de ridicare
+var is_picking_up: bool = false
 
 func _ready() -> void:
 	match interaction_type:
@@ -26,8 +50,17 @@ func _ready() -> void:
 		InteractionType.LAPTOP:
 			starting_rotation = pivit_point.rotation.z
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if is_interacting and interaction_type == InteractionType.DEFAULT:
+		# Animație de ridicare progresivă
+		if is_picking_up and pickup_progress < 1.0:
+			# Obiecte grele au o animație mai lentă de ridicare
+			var pickup_speed = lerp(3.0, 1.0, current_weight_factor)  # 3.0 pentru ușoare, 1.0 pentru grele
+			pickup_progress = min(pickup_progress + delta * pickup_speed, 1.0)
+			
+			if pickup_progress >= 1.0:
+				is_picking_up = false
+		
 		if object_referance:
 			# Dacă NU suntem serverul, trimitem poziția noastră către server constant
 			if not multiplayer.is_server():
@@ -35,7 +68,7 @@ func _physics_process(_delta: float) -> void:
 			
 			# Aplicăm mișcarea locală
 			if object_referance.is_multiplayer_authority() or not multiplayer.is_server():
-				_default_interact()
+				_default_interact(delta)
 
 @rpc("any_peer", "unreliable")
 func update_remote_position(pos: Vector3, rot: Vector3) -> void:
@@ -55,6 +88,30 @@ func preInteract() -> void:
 				if player.is_multiplayer_authority():
 					player_hand = player.find_child("hand", true, false)
 					break
+			
+			# Calculăm factorul de greutate bazat pe masa obiectului
+			if object_referance and object_referance is RigidBody3D:
+				var mass = (object_referance as RigidBody3D).mass
+				
+				# Normalizăm masa între 0 (ușor) și 1 (greu)
+				current_weight_factor = clamp(
+					(mass - light_object_mass) / (heavy_object_mass - light_object_mass),
+					0.0,
+					1.0
+				)
+				
+				# Calculăm offset-ul de înălțime bazat pe greutate
+				# Obiecte ușoare = sus (max_height_offset)
+				# Obiecte grele = jos (min_height_offset)
+				current_height_offset = lerp(max_height_offset, min_height_offset, current_weight_factor)
+				
+				# Calculăm viteza de răspuns
+				current_speed_multiplier = lerp(light_object_speed, heavy_object_speed, current_weight_factor)
+				
+				# Inițializăm animația de ridicare
+				pickup_progress = 0.0
+				is_picking_up = true
+				
 		InteractionType.DOOR, InteractionType.SWITCH, InteractionType.LAPTOP:
 			lock_camera = true
 
@@ -77,6 +134,8 @@ func postInteract() -> void:
 	is_interacting = false
 	lock_camera = false
 	player_hand = null
+	pickup_progress = 0.0
+	is_picking_up = false
 
 func set_direction(_normal: Vector3) -> void:
 	for player in get_tree().get_nodes_in_group("Players"):
@@ -88,22 +147,49 @@ func set_direction(_normal: Vector3) -> void:
 
 # --- LOGICA DEFAULT (CUBURI) ---
 
-func _default_interact() -> void:
+func _default_interact(delta: float) -> void:
 	if player_hand == null or object_referance == null: return
-	var object_distance: Vector3 = player_hand.global_transform.origin - object_referance.global_transform.origin
+	
 	var rigid_body_3d: RigidBody3D = object_referance as RigidBody3D
 	if rigid_body_3d:
-		# Seteaza viteza pentru a urmari mana
-		rigid_body_3d.linear_velocity = object_distance * 25.0
+		# Calculăm poziția țintă cu offset de greutate
+		var hand_world_pos = player_hand.global_transform.origin
+		
+		# Aplicăm progresiv offset-ul în timpul ridicării
+		var current_offset = current_height_offset * pickup_progress
+		var adjusted_hand_pos = hand_world_pos + Vector3(0, current_offset, 0)
+		
+		# Smooth lerp către poziția țintă
+		var current_pos = rigid_body_3d.global_transform.origin
+		target_hand_position = adjusted_hand_pos
+		
+		# Calculăm diferența cu lerp pentru smooth transition
+		var object_distance: Vector3 = target_hand_position - current_pos
+		
+		# Aplicăm viteza bazată pe greutate
+		# Obiecte grele se mișcă mai încet, obiecte ușoare mai repede
+		rigid_body_3d.linear_velocity = object_distance * current_speed_multiplier
+		
+		# Damping rotațional bazat pe greutate (obiecte grele se rotesc mai greu)
+		var angular_damping = lerp(0.5, 2.0, current_weight_factor)
+		rigid_body_3d.angular_velocity = rigid_body_3d.angular_velocity.lerp(Vector3.ZERO, angular_damping * delta)
 
 func _default_throw() -> void:
 	if player_hand == null or object_referance == null: return
 	var rigid_body_3d = object_referance as RigidBody3D
 	if rigid_body_3d:
 		var throw_direction: Vector3 = -player_hand.global_transform.basis.z.normalized()
-		var throw_strength: float = 90.0 / rigid_body_3d.mass
 		
-		# REPARAT: Trimitem și poziția globală unde se află obiectul în mână
+		# Calcul al puterii bazat pe masă folosind variabilele export
+		var mass_factor: float = rigid_body_3d.mass
+		
+		# Obiectele mai grele sunt mai greu de aruncat (putere inversă proporțională cu masa)
+		var throw_strength: float = max(base_throw_force / mass_factor, min_throw_strength)
+		
+		# Limităm puterea maximă pentru obiecte foarte ușoare
+		throw_strength = min(throw_strength, max_throw_strength)
+		
+		# Trimitem poziția globală unde se află obiectul în mână
 		server_throw.rpc(throw_direction, throw_strength, object_referance.global_position)
 	postInteract()
 

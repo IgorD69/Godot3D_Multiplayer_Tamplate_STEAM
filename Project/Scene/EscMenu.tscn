@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://b84p0jqodhcxg"]
+
+[ext_resource type="Script" uid="uid://dl034mxfa502y" path="res://addons/assets/scripts/esc_menu.gd" id="1_6ijls"]
+[ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="2_ixgor"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6ijls"]
+blend_mode = 2
+
+[node name="EscMenu" type="CanvasLayer" unique_id=594504008]
+script = ExtResource("1_6ijls")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1238834178]
+material = SubResource("CanvasItemMaterial_6ijls")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03137255, 0, 0, 1)
+
+[node name="Resume" type="Button" parent="." unique_id=1290140651]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 192.0
+offset_bottom = 112.0
+theme_override_fonts/font = ExtResource("2_ixgor")
+text = "Resume"
+
+[node name="Settings" type="Button" parent="." unique_id=1225750920]
+offset_left = 64.0
+offset_top = 343.0
+offset_right = 192.0
+offset_bottom = 391.0
+theme_override_fonts/font = ExtResource("2_ixgor")
+text = "Settings"
+
+[node name="MainMenu" type="Button" parent="." unique_id=1057701839]
+offset_left = 64.0
+offset_top = 423.0
+offset_right = 192.0
+offset_bottom = 471.0
+theme_override_fonts/font = ExtResource("2_ixgor")
+text = "MainMenu"
+
+[connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MainMenu" to="." method="_on_main_menu_pressed"]

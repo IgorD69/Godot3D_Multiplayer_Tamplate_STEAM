@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cem3iiopmlmsa"]
 
-[ext_resource type="Texture2D" uid="uid://c2vdikgasxwcp" path="res://Scene/Factorry_5.jpg" id="1_d5ka1"]
+[ext_resource type="Texture2D" uid="uid://c2vdikgasxwcp" path="res://Models/Factorry Assets/Factorry_5.jpg" id="1_d5ka1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d5ka1"]
 albedo_texture = ExtResource("1_d5ka1")

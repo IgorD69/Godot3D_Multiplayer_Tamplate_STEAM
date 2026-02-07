@@ -82,6 +82,7 @@ height = 0.9173584
 radius = 0.3125
 
 [node name="Barrel" type="RigidBody3D" unique_id=1749049335]
+mass = 50.0
 
 [node name="Oil barrel_Red" type="MeshInstance3D" parent="." unique_id=1994722777]
 mesh = SubResource("ArrayMesh_e3703")
