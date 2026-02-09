@@ -233,16 +233,28 @@ func _on_focus_gained(_node = null): # Adăugăm un argument opțional
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
-	if multiplayer.multiplayer_peer == null:
+	if multiplayer.multiplayer_peer == null or not is_multiplayer_authority() or not is_inside_tree():
 		return
-		
-	if not is_multiplayer_authority():
-		return
-		
+
+	# GRAVITAȚIA (Esențială!)
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	elif velocity.y < 0:
+		velocity.y = 0
+
+	# GESTIONARE BLOCARE
 	if is_instance_valid(esc_menu_instance) or is_frozen:
+		# DACĂ ZBORI ÎN SUS (velocity.y > 0) și ești în meniu, tăiem forța imediat
+		if velocity.y > 0:
+			velocity.y = 0
+		
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+		
 		move_and_slide()
+		
+		if multiplayer.multiplayer_peer:
+			sync_transform.rpc(global_position, rotation.y)
 		return
 		
 	# SOLUȚIE ERORI EXIT: Verificăm dacă nodul mai este în scenă
