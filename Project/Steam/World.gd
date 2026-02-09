@@ -1,8 +1,12 @@
 extends Control
 
 @export var PLAYER_SCENE: PackedScene
-# Folosim un path de string pentru siguranță la încărcare
+
 const FACTORY_SCENE_PATH = "res://Scene/Factory.tscn"
+
+var settings_instance = null
+@export var SETTINGS_SCENE: PackedScene = preload("uid://dsr4sx6v6qsiv")
+
 @export var SETTINGS_MENU: PackedScene
 
 var steam_id: int = 0
@@ -60,7 +64,7 @@ func _on_server_disconnected():
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
-	get_tree().call_deferred("change_scene_to_file", "res://Scene/World.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://Scene/MainScreen.tscn")
 	
 func update_ui_steam_info():
 	var label = get_node_or_null("%SteamInfoLabel")
@@ -192,7 +196,7 @@ func _on_leave_room_pressed():
 		Steam.leaveLobby(lobby_id)
 		lobby_id = 0
 	
-	get_tree().change_scene_to_file("res://Scene/World.tscn")
+	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_lan_button_pressed() -> void:
@@ -217,3 +221,10 @@ func _on_lan_button_pressed() -> void:
 
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()
+
+
+
+func _on_settings_pressed() -> void:
+	if settings_instance == null:
+			settings_instance = SETTINGS_SCENE.instantiate()
+			add_child(settings_instance)

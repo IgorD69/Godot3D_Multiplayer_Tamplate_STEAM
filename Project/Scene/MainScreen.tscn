@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://cubhhgqrk5x0v"]
 
-[ext_resource type="Script" uid="uid://dw2684s3n2kv2" path="res://Steam/World.gd" id="1_3vc68"]
-[ext_resource type="PackedScene" uid="uid://bb3qcv0kbqbo6" path="res://Scene/Player.tscn" id="2_gx810"]
-[ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="3_3vc68"]
+[ext_resource type="Script" uid="uid://dw2684s3n2kv2" path="res://Steam/World.gd" id="1_47utw"]
+[ext_resource type="PackedScene" uid="uid://bb3qcv0kbqbo6" path="res://Scene/Player.tscn" id="2_jgi5y"]
+[ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="3_3sins"]
 
-[node name="MainSceen" type="Control" unique_id=2021502316]
+[node name="MainScreen" type="Control" unique_id=2021502316]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_3vc68")
-PLAYER_SCENE = ExtResource("2_gx810")
+script = ExtResource("1_47utw")
+PLAYER_SCENE = ExtResource("2_jgi5y")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1869115639]
 unique_name_in_owner = true
@@ -58,7 +58,7 @@ offset_left = 64.0
 offset_top = 321.0
 offset_right = 236.0
 offset_bottom = 373.0
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 text = "Main Manu"
 
 [node name="SinglePlayer" type="TabBar" parent="UI" unique_id=1280689145]
@@ -71,7 +71,7 @@ offset_left = 737.0
 offset_top = 63.0
 offset_right = 901.0
 offset_bottom = 105.0
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Single Player"
 
@@ -85,7 +85,7 @@ offset_left = 64.0
 offset_top = 63.0
 offset_right = 233.96362
 offset_bottom = 104.0
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 action_mode = 0
 text = "Host"
@@ -97,7 +97,7 @@ offset_left = 320.0
 offset_top = 321.0
 offset_right = 544.0
 offset_bottom = 376.0
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 text = "Join by ID"
 
 [node name="Friends" type="Button" parent="UI/Multiplayer" unique_id=502271004]
@@ -106,7 +106,7 @@ offset_left = 64.0
 offset_top = 131.0
 offset_right = 234.0
 offset_bottom = 172.74107
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Join Friend
 "
@@ -118,15 +118,16 @@ offset_left = 784.0
 offset_top = 459.0
 offset_right = 921.0
 offset_bottom = 515.0
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 text = "Copy Lobby-ID"
 
 [node name="Settings" type="Button" parent="UI" unique_id=1934092907]
+unique_name_in_owner = true
 offset_left = 737.0
 offset_top = 373.0
 offset_right = 907.0
 offset_bottom = 411.5965
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Settings"
 
@@ -135,7 +136,7 @@ offset_left = 737.0
 offset_top = 459.0
 offset_right = 907.0
 offset_bottom = 497.5965
-theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Quit Game"
 

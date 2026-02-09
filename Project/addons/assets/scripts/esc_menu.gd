@@ -21,12 +21,12 @@ func _on_resume_pressed() -> void:
 
 func _on_main_menu_pressed() -> void:
 	Net.cleanup_network() # Aceasta va opri peer-ul și va reseta lobby_id
-	get_tree().change_scene_to_file("res://Scene/World.tscn")
+	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 	
 	#if lobby_id != 0:
 		#Steam.leaveLobby(lobby_id)
 		#lobby_id = 0
 	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	#
-	#get_tree().change_scene_to_file("res://Scene/World.tscn")
+	#get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 	

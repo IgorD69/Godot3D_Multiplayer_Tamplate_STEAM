@@ -56,7 +56,7 @@ func _on_peer_disconnected(id: int):
 
 func _on_server_disconnected():
 	cleanup_network()
-	get_tree().change_scene_to_file("res://Scene/World.tscn")
+	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 
 # ACEASTA ESTE FUNCȚIA CARE SPAWNEAZĂ
 @rpc("any_peer", "call_local", "reliable")
