@@ -10,10 +10,6 @@ anchors_preset = 0
 script = ExtResource("1_3vc68")
 PLAYER_SCENE = ExtResource("2_gx810")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=3665235]
-_spawnable_scenes = PackedStringArray("uid://bb3qcv0kbqbo6")
-spawn_path = NodePath("..")
-
 [node name="UI" type="CanvasLayer" parent="." unique_id=1869115639]
 unique_name_in_owner = true
 follow_viewport_enabled = true
@@ -46,21 +42,13 @@ placeholder_text = "Host ID"
 
 [node name="JoinInput" type="Label" parent="UI/Control" unique_id=437367482]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 600.0
 offset_top = 10.0
 offset_right = 944.0
 offset_bottom = 52.0
 horizontal_alignment = 2
-
-[node name="ExitButton" type="Button" parent="UI/Control" unique_id=467388850]
-layout_mode = 0
-offset_left = 737.0
-offset_top = 459.0
-offset_right = 907.0
-offset_bottom = 497.5965
-theme_override_fonts/font = ExtResource("3_3vc68")
-text = "Quit Game"
 
 [node name="LeaveRoom" type="Button" parent="UI/Control" unique_id=2121205769]
 unique_name_in_owner = true
@@ -84,6 +72,7 @@ offset_top = 63.0
 offset_right = 901.0
 offset_bottom = 105.0
 theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_font_sizes/font_size = 24
 text = "Single Player"
 
 [node name="Multiplayer" type="TabBar" parent="UI" unique_id=425648208]
@@ -97,6 +86,7 @@ offset_top = 63.0
 offset_right = 233.96362
 offset_bottom = 104.0
 theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_font_sizes/font_size = 24
 action_mode = 0
 text = "Host"
 
@@ -112,11 +102,12 @@ text = "Join by ID"
 
 [node name="Friends" type="Button" parent="UI/Multiplayer" unique_id=502271004]
 layout_mode = 0
-offset_left = 286.0
-offset_top = 63.0
-offset_right = 456.0
-offset_bottom = 104.74107
+offset_left = 64.0
+offset_top = 131.0
+offset_right = 234.0
+offset_bottom = 172.74107
 theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_font_sizes/font_size = 24
 text = "Join Friend
 "
 
@@ -131,14 +122,23 @@ theme_override_fonts/font = ExtResource("3_3vc68")
 text = "Copy Lobby-ID"
 
 [node name="Settings" type="Button" parent="UI" unique_id=1934092907]
-offset_left = 64.0
-offset_top = 150.0
-offset_right = 234.0
-offset_bottom = 188.5965
+offset_left = 737.0
+offset_top = 373.0
+offset_right = 907.0
+offset_bottom = 411.5965
 theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_font_sizes/font_size = 24
 text = "Settings"
 
-[connection signal="pressed" from="UI/Control/ExitButton" to="." method="_on_exit_button_pressed"]
+[node name="ExitButton" type="Button" parent="UI" unique_id=467388850]
+offset_left = 737.0
+offset_top = 459.0
+offset_right = 907.0
+offset_bottom = 497.5965
+theme_override_fonts/font = ExtResource("3_3vc68")
+theme_override_font_sizes/font_size = 24
+text = "Quit Game"
+
 [connection signal="pressed" from="UI/Control/LeaveRoom" to="." method="_on_leave_room_pressed"]
 [connection signal="pressed" from="UI/SinglePlayer/LanButton" to="." method="_on_lan_button_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/Host" to="." method="_on_host_pressed"]
@@ -146,3 +146,4 @@ text = "Settings"
 [connection signal="pressed" from="UI/Multiplayer/Friends" to="." method="_on_friends_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/Copy" to="." method="_on_copy_pressed"]
 [connection signal="pressed" from="UI/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="UI/ExitButton" to="." method="_on_exit_button_pressed"]

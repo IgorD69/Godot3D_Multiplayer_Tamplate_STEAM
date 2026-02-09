@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bpqac53a6s8bc"]
+
+[ext_resource type="Texture2D" uid="uid://bj6j8u0gh3ibr" path="res://Models/oldMan_Screenshot_20260205_233654.png" id="1_l7suw"]
+
+[node name="PC_Control" type="Control" unique_id=570319542]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2105626935]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_l7suw")

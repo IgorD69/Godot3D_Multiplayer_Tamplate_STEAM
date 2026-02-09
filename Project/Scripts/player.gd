@@ -1,3 +1,6 @@
+class_name Player
+
+
 extends CharacterBody3D
 
 const SPEED = 5.0
@@ -16,29 +19,35 @@ var accumulated_mouse_input: Vector2 = Vector2.ZERO
 var ik_base_position: Vector3
 var ik_initialized: bool = false
 var esc_menu_instance = null
+var is_frozen: bool = false
+
+
+@onready var crosshair: TextureRect = $Character/Camera3D/Crosshair
+@onready var Animation_Player: AnimationPlayer = $Character/metarig/Skeleton3D/AnimationPlayer
+@export var camera: Camera3D
+
 
 @export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
 
 @export var camera_rotation = 0.05
 @export var arm_camera_rotation = 0.07
-@export var arm_sway_amount = 0.1  # Crescut pentru efect mai vizibil
+@export var arm_sway_amount = 0.1
+
+#IK
+@onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
+@onready var l_two_bone_ik_3d_2: TwoBoneIK3D = $Character/metarig/Skeleton3D/L_TwoBoneIK3D2
+@onready var r_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/R_TwoBoneIK3D
+@onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
+
+@onready var Flash: Node3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight
+@onready var Flash_Light: SpotLight3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D
+@onready var radiation_device: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/RadiationDevice
 
 
-@onready var two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/TwoBoneIK3D
-@onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/HandMarker
-#@onready var arm: Node3D = $Camera3D/Arm
-@onready var arm: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm
+#@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/Portal_Gun_Meshes/AnimationPlayer
 
-#@onready var camera_pivot: SpringArm3D = $CameraPivot
-#@onready var camera: Camera3D = $CameraPivot/Camera3D
 
-@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm/Portal_Gun2/AnimationPlayer
-@onready var FlashLight: SpotLight3D = $Character/metarig/Skeleton3D/BoneAttachment3D/Arm/Portal_Gun2/SpotLight3D
-@onready var camera: Camera3D = $Camera3D
-
-@onready var Animation_Player: AnimationPlayer = $Character/AnimationPlayer
-
-@onready var model: MeshInstance3D = $MOUSE/Model
+#Tab UI
 @onready var tab_canvas: CanvasLayer = $TAB
 @onready var box_container: BoxContainer = $TAB/BoxContainer
 
@@ -50,11 +59,18 @@ var esc_menu_instance = null
 @onready var mask: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/mask
 
 
-func _ready():
-	# Setăm authority-ul bazat pe numele nodului
+
+func _enter_tree():
 	var peer_id = str(name).to_int()
 	if peer_id > 0:
 		set_multiplayer_authority(peer_id)
+
+func _ready():
+	# FORȚEAZĂ CAMERA IMEDIAT DACĂ EȘTI AUTHORITY
+	if is_multiplayer_authority():
+		camera.make_current()
+	else:
+		camera.current = false
 	
 	# DEBUG: Verifică authority-ul
 	print("=== PLAYER DEBUG ===")
@@ -68,6 +84,9 @@ func _ready():
 	
 	add_to_group("Players")
 	
+	if player_name == "":
+		player_name = "Guest_" + str(multiplayer.get_unique_id())
+		
 	# Ascunde TAB-ul la început
 	if tab_canvas:
 		tab_canvas.visible = false
@@ -112,6 +131,9 @@ func _ready():
 			
 	if ik_target:
 		ik_base_position = ik_target.position
+	
+	radiation_device.visible = false
+	Flash.visible = false
 
 func _send_player_name():
 	await get_tree().process_frame
@@ -202,13 +224,36 @@ func _setup_mouse_capture():
 	else:
 		get_viewport().gui_focus_changed.connect(_on_focus_gained, CONNECT_ONE_SHOT)
 
-func _on_focus_gained():
+func _on_focus_gained(_node = null): # Adăugăm un argument opțional
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
+	if multiplayer.multiplayer_peer == null:
+		return
+		
+	if not is_multiplayer_authority():
+		return
+		
+	# SOLUȚIE ERORI EXIT: Verificăm dacă nodul mai este în scenă
+	if not is_inside_tree() or multiplayer.multiplayer_peer == null:
+		return
+		
 	if is_multiplayer_authority():
-		# Doar jucătorul local procesează input-ul
+		if is_frozen:
+			# Aplicăm doar gravitația dacă e înghețat (la PC)
+			if not is_on_floor():
+				velocity.y -= gravity * delta
+			else:
+				velocity.y = 0
+			velocity.x = 0
+			velocity.z = 0
+			move_and_slide()
+			if Animation_Player.current_animation != "Idle":
+				Animation_Player.play("Idle", 0.2)
+			return
+
+		# Logica normală de mișcare
 		if not is_on_floor():
 			velocity.y -= gravity * delta
 		
@@ -230,51 +275,46 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, current_target_speed)
 		
 		move_and_slide()
-		cam_tilt(input_dir.x, delta)
-		arm_tilt(input_dir.x, delta)
-		arm_sway(delta)  # Folosește accumulated_mouse_input
 		
-		# Sincronizează poziția și rotația cu ceilalți jucători
-		sync_transform.rpc(global_position, rotation.y)
+		# Sincronizăm doar dacă peer-ul este încă valid
+		if multiplayer.multiplayer_peer:
+			sync_transform.rpc(global_position, rotation.y)
 
-		var current_speed = Vector3(velocity.x, 0, velocity.z).length()
-		var next_anim = "Idle"
-		var playback_speed = 1.0
+		# Logica de animație
+		_handle_animations(current_target_speed)
 
-		if not is_on_floor():
-			next_anim = "Jump"
-			playback_speed = 1.0 
+func _handle_animations(current_swpeed):
+	var horiz_vel = Vector3(velocity.x, 0, velocity.z).length()
+	var next_anim = "Idle"
+	var playback_speed = 1.0
+
+	if not is_on_floor():
+		next_anim = "Jump"
+	elif horiz_vel > 0.1:
+		if Input.is_action_pressed("sprint"):
+			next_anim = "Run"
+			playback_speed = 1.5
 		else:
-			if current_speed > 0.1:
-				if Input.is_action_pressed("sprint"):
-					next_anim = "Run"
-					playback_speed = 2.0
-				else:
-					next_anim = "Walk"
-					playback_speed = 1.0
-			else:
-				next_anim = "Idle"
-				playback_speed = 0.5
-
-		if Animation_Player.current_animation != next_anim:
-			Animation_Player.play(next_anim, 0.2, playback_speed)
-		else:
-			Animation_Player.speed_scale = playback_speed
-
-		if current_anim != next_anim:
-			current_anim = next_anim
-			play_animation_rpc.rpc(next_anim)
+			next_anim = "Walk"
+	
+	if Animation_Player.current_animation != next_anim:
+		Animation_Player.play(next_anim, 0.2, playback_speed)
+		play_animation_rpc.rpc(next_anim)
+	
+# RPC-urile rămân la fel, dar adaugă verificări de siguranță:
+@rpc("any_peer", "unreliable")
+func sync_transform(pos: Vector3, rot_y: float):
+	if is_inside_tree() and not is_multiplayer_authority():
+		global_position = pos
+		rotation.y = rot_y
 		
-		# RESETEAZĂ accumulated_mouse_input LA SFÂRȘIT
-		accumulated_mouse_input = Vector2.ZERO
-
 func cam_tilt(input_x, delta):
 	if camera:
 		camera.rotation.z = lerp(camera.rotation.z, -input_x * camera_rotation, 10 * delta)
 	
-func arm_tilt(input_x, delta):
-	if arm:
-		arm.rotation.z = lerp(arm.rotation.z, -input_x * camera_rotation, 10 * delta)
+#func arm_tilt(input_x, delta):
+	#if arm:
+		#arm.rotation.z = lerp(arm.rotation.z, -input_x * camera_rotation, 10 * delta)
 
 
 func arm_sway(delta):
@@ -290,12 +330,12 @@ func arm_sway(delta):
 		ik_target.position = lerp(ik_target.position, target_position, 10 * delta)
 		
 	
-# RPC pentru sincronizarea transformării
-@rpc("any_peer", "unreliable")
-func sync_transform(pos: Vector3, rot_y: float):
-	if !is_multiplayer_authority():
-		global_position = pos
-		rotation.y = rot_y
+## RPC pentru sincronizarea transformării
+#@rpc("any_peer", "unreliable")
+#func sync_transform(pos: Vector3, rot_y: float):
+	#if !is_multiplayer_authority():
+		#global_position = pos
+		#rotation.y = rot_y
 
 
 func toggle_esc_menu():
@@ -316,15 +356,34 @@ func _input(event):
 	if !is_multiplayer_authority():
 		return
 	
+	
+	# BLOCK MOUSE LOOK AND TOOLS IF FROZEN
+	if is_frozen:
+		if event.is_action_pressed("esc"):
+			toggle_esc_menu()
+		return
+		
+		
 	if event.is_action_pressed("flash"):
-		if two_bone_ik_3d.active:
-			two_bone_ik_3d.active = false
-			FlashLight.visible = false
+		if r_two_bone_ik_3d.active:
+			r_two_bone_ik_3d.active = false
+			Flash_Light.visible = false
+			Flash.visible = false
 			
 		else:
-			two_bone_ik_3d.active = true
-			FlashLight.visible = true
+			r_two_bone_ik_3d.active = true
+			Flash_Light.visible = true
+			Flash.visible = true
 			
+			
+	if event.is_action_pressed("radiometru"):
+		if l_two_bone_ik_3d_2.active:
+			l_two_bone_ik_3d_2.active = false
+			radiation_device.visible = false
+			
+		else:
+			l_two_bone_ik_3d_2.active = true
+			radiation_device.visible = true
 			
 		
 	if event.is_action_pressed("esc"):
@@ -341,18 +400,14 @@ func _input(event):
 	
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		
 		camera_v_rot -= event.relative.y * MOUSE_SENSITIVITY
-		camera_v_rot = clamp(camera_v_rot, deg_to_rad(-80), deg_to_rad(80))
-		
+		camera_v_rot = clamp(camera_v_rot, deg_to_rad(-90), deg_to_rad(50))
 		camera.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
-		
-		# ACUMULĂM mișcarea mouse-ului pentru arm sway
 		accumulated_mouse_input += event.relative
 	
-	if event.is_action_pressed("L_Click"):
-		play_shoot_animation.rpc("Shoot")
+	#if event.is_action_pressed("L_Click"):
+		#play_shoot_animation.rpc("Shoot")
 
 @rpc("any_peer", "call_local", "reliable")
 func play_animation_rpc(anim_name: String):
@@ -364,8 +419,8 @@ func update_camera_rotation(vertical_rotation: float):
 	if not is_multiplayer_authority():
 		camera.rotation.x = vertical_rotation
 
-@rpc("any_peer", "call_local", "reliable")
-func play_shoot_animation(_tip: String):
-	if PortalAnim:
-		PortalAnim.stop()
-		PortalAnim.play("Shoot")
+#@rpc("any_peer", "call_local", "reliable")
+#func play_shoot_animation(_tip: String):
+	#if PortalAnim:
+		#PortalAnim.stop()
+		#PortalAnim.play("Shoot")

@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c8k8giesfgmeu" path="res://Models/Factorry Assets/Coal_Screenshot_20260205_125431.png" id="1_glyai"]
 [ext_resource type="PackedScene" uid="uid://batts1x68a3ii" path="res://interaction/interaction_component.tscn" id="2_epcf5"]
+[ext_resource type="Texture2D" uid="uid://b4otwxv3t0foy" path="res://Models/ricks_portal_gun/CoalColision_Screenshot_20260205_125431.png" id="3_4721n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ux8fq"]
 resource_name = "Material.001"
@@ -42,8 +43,45 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_krr11")
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_glyai"]
-radius = 0.6832084
+[sub_resource type="BoxShape3D" id="BoxShape3D_4721n"]
+size = Vector3(1, 1.6411133, 1.5766602)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfd26"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("3_4721n")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_3df2r"]
+_surfaces = [{
+"aabb": AABB(-0.7922959, -0.931706, -1.045692, 1.7206484, 2.1319487, 1.8516171),
+"format": 34896613377,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAQADAAIAAwABAAQAAAAEAAEABQADAAQAAAACAAYAAgADAAcAAwAFAAcAAgAHAAYACAAAAAYABgAHAAgABAAAAAkABQAEAAkACQAAAAgACQAHAAUACQAIAAcA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("utJXMwAAAAABJAAA0GAAAL+43Ckg7wAAAACDTtHeAAARC7QyFg4AAIcC3cIyMgAA//8LTd9wAACBd+Xb//8AANDFluxSUgAARlz//88PAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_08pj4"]
+resource_name = "CoalColision_Cube_001"
+_surfaces = [{
+"aabb": AABB(-0.7922959, -0.931706, -1.045692, 1.7206484, 2.1319487, 1.8516171),
+"attribute_data": PackedByteArray("t1yTe2kxo2LFVf8//5/fcbdqZX9reeNnQnUX/f9fHOKkaOa6x6ASxUJ1F/2kaOa6t1yTe38k/39pMaNix6ASxaRo5rrYn7Sj2J+0o7dqZX//n99xa3njZ9aa7ib/n99xcMTYe3y5YEP/3yR6QnUX/cegEsX/n6nqt1yTe2Zp4jZreeNnZmniNqt2AADWmu4mZmniNtaa7iZreeNnpGjmurdqZX/Yn7SjcMTYe/+f33F8uWBDaTGjYv8f/z/FVf8/"),
+"format": 34896613399,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8A"),
+"material": SubResource("StandardMaterial3D_gfd26"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 48,
+"vertex_data": PackedByteArray("utJXMwAAr8EBJAAA0GCvwb+43Ckg76/B0MWW7FJS/eS60lczAAD95P//C03fcP3kAACDTtHe8tIBJAAA0GDy0hELtDIWDvLShwLdwjIyqdYAAINO0d6p1hELtDIWDqnWutJXMwAA6NgRC7QyFg7o2AEkAADQYOjYhwLdwjIyj+wRC7QyFg6P7EZc///PD4/sRlz//88P9fa60lczAAD19tDFluxSUvX2//8LTd9wItaBd+Xb//8i1tDFluxSUiLWRlz//88PbOSBd+Xb//9s5IcC3cIyMmzkAACDTtHehLSHAt3CMjKEtIF35dv//4S0utJXMwAALM2/uNwpIO8szf//C03fcCzNv7jcKSDvP8IAAINO0d4/woF35dv//z/Cv7jcKSDv282Bd+Xb///bzf//C03fcNvNEQu0MhYO6Py60lczAADo/EZc///PD+j8Rlz//88PifTQxZbsUlKJ9IF35dv//4n0ASQAANBgYKoAAINO0d5gqr+43Ckg72Cqiw8jX4sPI1+LDyNfQDF2K0AxditAMXYroMNm6KDDZuigw2boc9Mv1nPTL9Zz0y/W/g23eP4Nt3j+Dbd4G8fNwxvHzcMbx83D4zQVMeM0FTHjNBUxvigXG74oFxu+KBcbKXUityl1IrcpdSK3c8wZzXPMGc1zzBnNuwLksLsC5LC7AuSwkPJh/5DyYf+Q8mH/LyfmGi8n5hovJ+YaGMFTwBjBU8AYwVPAYMbbA2DG2wNgxtsDDCMUkwwjFJMMIxST")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_3df2r")
 
 [node name="Coal" type="RigidBody3D" unique_id=1576908908]
 
@@ -52,11 +90,20 @@ transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0)
 mesh = SubResource("ArrayMesh_25eux")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=608258660]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.0016044825, 0, -0.016127951)
-shape = SubResource("SphereShape3D_glyai")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1707980615]
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0.011407472, -0.014304824)
+shape = SubResource("BoxShape3D_4721n")
 
 [node name="InteractionComponent" parent="." unique_id=2009653683 node_paths=PackedStringArray("object_referance") instance=ExtResource("2_epcf5")]
 object_referance = NodePath("..")
 interaction_type = 0
 maximum_rotation = 110.0
+base_throw_force = 30.0
+min_throw_strength = 10.0
+max_throw_strength = 50.0
+
+[node name="CoalColision" type="MeshInstance3D" parent="." unique_id=618861963]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
+visible = false
+mesh = SubResource("ArrayMesh_08pj4")
+skeleton = NodePath("")
