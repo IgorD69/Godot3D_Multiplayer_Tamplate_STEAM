@@ -339,56 +339,41 @@ func arm_sway(delta):
 
 
 func toggle_esc_menu():
-	# 1. Verificăm dacă instanța (copia de pe ecran) există
-	if esc_menu_instance != null:
+	if is_instance_valid(esc_menu_instance):
 		esc_menu_instance.queue_free()
 		esc_menu_instance = null
+		
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
-		# 2. Dacă nu există, folosim MATRIȚA (ESC_MENU_SCENE) pentru a crea una
 		esc_menu_instance = ESC_MENU_SCENE.instantiate()
-		add_child(esc_menu_instance)
+		get_tree().root.add_child(esc_menu_instance)
+		
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
 
 
 func _input(event):
 	if !is_multiplayer_authority():
 		return
 	
-	
-	# BLOCK MOUSE LOOK AND TOOLS IF FROZEN
-	if is_frozen:
-		if event.is_action_pressed("esc"):
-			toggle_esc_menu()
-		return
-		
-		
-	if event.is_action_pressed("flash"):
-		if r_two_bone_ik_3d.active:
-			r_two_bone_ik_3d.active = false
-			Flash_Light.visible = false
-			Flash.visible = false
-			
-		else:
-			r_two_bone_ik_3d.active = true
-			Flash_Light.visible = true
-			Flash.visible = true
-			
-			
-	if event.is_action_pressed("radiometru"):
-		if l_two_bone_ik_3d_2.active:
-			l_two_bone_ik_3d_2.active = false
-			radiation_device.visible = false
-			
-		else:
-			l_two_bone_ik_3d_2.active = true
-			radiation_device.visible = true
-			
-		
 	if event.is_action_pressed("esc"):
 		toggle_esc_menu()
+		get_viewport().set_input_as_handled()
+		return # Oprim execuția restului funcției pentru acest frame
+
+	if esc_menu_instance != null or is_frozen:
+		return
+
+	# 3. UNELTE (Flashlight, Radiometru)
+	if event.is_action_pressed("flash"):
+		r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
+		Flash_Light.visible = r_two_bone_ik_3d.active
+		Flash.visible = r_two_bone_ik_3d.active
 			
+	if event.is_action_pressed("radiometru"):
+		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
+		radiation_device.visible = l_two_bone_ik_3d_2.active
+			
+	# 4. TAB MENU (Player List)
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:
 			tab_canvas.visible = true
@@ -398,6 +383,7 @@ func _input(event):
 		if tab_canvas:
 			tab_canvas.visible = false
 	
+	# 5. CAMERA (Mouse Motion)
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera_v_rot -= event.relative.y * MOUSE_SENSITIVITY

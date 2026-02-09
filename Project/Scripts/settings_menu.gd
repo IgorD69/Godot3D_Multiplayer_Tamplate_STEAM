@@ -14,3 +14,7 @@ func _on_audio_settings_pressed() -> void:
 func _on_controls_settings_pressed() -> void:
 	controlsContainer.show()
 	audioContainer.hide() 
+
+func _input(event: InputEvent) -> void:
+	if event.is_action("esc"):
+		_on_back_pressed()

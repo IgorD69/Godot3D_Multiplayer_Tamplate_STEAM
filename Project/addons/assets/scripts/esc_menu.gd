@@ -5,28 +5,26 @@ extends CanvasLayer
 var settings_instance = null
 
 func _on_settings_pressed() -> void:
-	hide()
-	if settings_instance == null:
+	if not is_instance_valid(settings_instance):
+		hide()
 		settings_instance = SETTINGS_SCENE.instantiate()
 		add_child(settings_instance)
 		
-		settings_instance.tree_exited.connect(func(): settings_instance = null)
-	else:
-		settings_instance.queue_free()
-		settings_instance = null
+		settings_instance.tree_exited.connect(func(): 
+			settings_instance = null
+			show())
+
+
+func _on_main_menu_pressed() -> void:
+	Net.cleanup_network()
+	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("esc"):
+		get_viewport().set_input_as_handled()
+		_on_resume_pressed()
 
 func _on_resume_pressed() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	queue_free() 
-
-func _on_main_menu_pressed() -> void:
-	Net.cleanup_network() # Aceasta va opri peer-ul și va reseta lobby_id
-	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
-	
-	#if lobby_id != 0:
-		#Steam.leaveLobby(lobby_id)
-		#lobby_id = 0
-	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	#
-	#get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
-	
+	get_tree().paused = false 
+	queue_free()

@@ -225,6 +225,8 @@ func _on_exit_button_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	if settings_instance == null:
-			settings_instance = SETTINGS_SCENE.instantiate()
-			add_child(settings_instance)
+	if not is_instance_valid(settings_instance):
+		settings_instance = SETTINGS_SCENE.instantiate()
+		add_child(settings_instance)
+		
+		settings_instance.tree_exited.connect(func(): settings_instance = null)
