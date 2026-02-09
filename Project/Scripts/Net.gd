@@ -89,12 +89,19 @@ func start_steam_host():
 		return true
 	return false
 
+# În Net.gd (Singleton)
+
 func cleanup_network():
 	if multiplayer.multiplayer_peer:
 		multiplayer.multiplayer_peer.close()
 		multiplayer.multiplayer_peer = null
-	if lobby_id != 0:
-		Steam.leaveLobby(lobby_id)
-		lobby_id = 0
+	
 	is_host = false
+	get_tree().paused = false 
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	#Căutăm orice meniu ESC rămas orfan în root și îl ștergem
+	var root = get_tree().root
+	for child in root.get_children():
+		if child.name.contains("EscMenu") or child is CanvasLayer and child.scene_file_path.contains("EscMenu"):
+			child.queue_free()

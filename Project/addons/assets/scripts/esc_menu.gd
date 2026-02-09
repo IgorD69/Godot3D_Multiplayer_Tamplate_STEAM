@@ -17,6 +17,7 @@ func _on_settings_pressed() -> void:
 
 func _on_main_menu_pressed() -> void:
 	Net.cleanup_network()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 	
 func _input(event: InputEvent) -> void:

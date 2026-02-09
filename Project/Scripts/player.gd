@@ -71,6 +71,10 @@ func _ready():
 		camera.make_current()
 	else:
 		camera.current = false
+		
+	if is_multiplayer_authority():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		esc_menu_instance = null
 	
 	# DEBUG: Verifică authority-ul
 	print("=== PLAYER DEBUG ===")
@@ -235,6 +239,12 @@ func _physics_process(delta):
 	if not is_multiplayer_authority():
 		return
 		
+	if is_instance_valid(esc_menu_instance) or is_frozen:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+		move_and_slide()
+		return
+		
 	# SOLUȚIE ERORI EXIT: Verificăm dacă nodul mai este în scenă
 	if not is_inside_tree() or multiplayer.multiplayer_peer == null:
 		return
@@ -339,28 +349,32 @@ func arm_sway(delta):
 
 
 func toggle_esc_menu():
-	if is_instance_valid(esc_menu_instance):
-		esc_menu_instance.queue_free()
+	var existing_menu = get_tree().root.get_node_or_null("EscMenu")
+	
+	if is_instance_valid(esc_menu_instance) or existing_menu:
+		# Dacă am găsit unul, îl închidem pe acela
+		var menu_to_close = esc_menu_instance if esc_menu_instance else existing_menu
+		menu_to_close.queue_free()
 		esc_menu_instance = null
-		
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
+		# 2. Creăm unul nou DOAR dacă nu am găsit nimic
 		esc_menu_instance = ESC_MENU_SCENE.instantiate()
+		esc_menu_instance.name = "EscMenu" # Îi dăm nume fix ca să îl găsim data viitoare
 		get_tree().root.add_child(esc_menu_instance)
-		
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _input(event):
-	if !is_multiplayer_authority():
-		return
+	if !is_multiplayer_authority(): return
 	
 	if event.is_action_pressed("esc"):
 		toggle_esc_menu()
 		get_viewport().set_input_as_handled()
-		return # Oprim execuția restului funcției pentru acest frame
+		return
 
-	if esc_menu_instance != null or is_frozen:
+	# Dacă meniul e deschis, tăiem restul input-ului (cameră, mișcare, unelte)
+	if is_instance_valid(esc_menu_instance):
 		return
 
 	# 3. UNELTE (Flashlight, Radiometru)
