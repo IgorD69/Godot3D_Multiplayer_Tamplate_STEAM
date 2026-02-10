@@ -31,6 +31,9 @@ func start_steam_host():
 	print("HOST: Eroare la pornirea host-ului: ", res)
 	return false
 
+	Steam.setRichPresence("connect", "--connect-lobby=" + str(lobby_id))
+	print("Rich Presence setat pentru Join direct.")
+
 func start_steam_client(p_lobby_id: int):
 	var host_id = Steam.getLobbyOwner(p_lobby_id)
 	print("CLIENT: Încerc să mă conectez la host_id: ", host_id)
