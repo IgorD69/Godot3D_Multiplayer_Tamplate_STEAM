@@ -54,6 +54,7 @@ enabled=PackedStringArray("res://addons/ambientcg/plugin.cfg", "res://addons/gd-
 [global_group]
 
 Player=""
+SpawnContainer=""
 
 [input]
 

@@ -21,6 +21,10 @@ var ik_initialized: bool = false
 var esc_menu_instance = null
 var is_frozen: bool = false
 
+@export var camera_rotation = 0.05
+
+@onready var Transition_anim: AnimationPlayer = $Transition/AnimationPlayer
+@onready var transition: ColorRect = $Transition
 
 @onready var crosshair: TextureRect = $Character/Camera3D/Crosshair
 @onready var Animation_Player: AnimationPlayer = $Character/metarig/Skeleton3D/AnimationPlayer
@@ -29,9 +33,7 @@ var is_frozen: bool = false
 
 @export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
 
-@export var camera_rotation = 0.05
-@export var arm_camera_rotation = 0.07
-@export var arm_sway_amount = 0.1
+
 
 #IK
 @onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
@@ -66,9 +68,22 @@ func _enter_tree():
 		set_multiplayer_authority(peer_id)
 
 func _ready():
-	# FORȚEAZĂ CAMERA IMEDIAT DACĂ EȘTI AUTHORITY
+	
+	await get_tree().create_timer(0.5).timeout # Așteptăm să se termine spawn-ul complet
 	if is_multiplayer_authority():
 		camera.make_current()
+		print("CAMERA: Forțată pe peer ", multiplayer.get_unique_id())
+	
+	Net.notify_client_ready.rpc_id(1)
+	
+	var peer_id = str(name).to_int()
+	set_multiplayer_authority(peer_id)
+	
+	# 2. Controlăm camera
+	if is_multiplayer_authority():
+		camera.make_current()
+		Transition_anim.play("FadeOut")
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
 		camera.current = false
 		
@@ -115,9 +130,19 @@ func _ready():
 	print("After wait - Is authority: ", is_multiplayer_authority())
 	
 	if is_multiplayer_authority():
+		transition.visible = true 
+		
+		Transition_anim.play("FadeOut") 
+		
+		print("Pornesc animația de FadeOut pentru jucătorul local.")
+	else:
+		transition.visible = false
+	
+	if is_multiplayer_authority():
 		print("✓ Setting up LOCAL player controls")
 		if camera:
 			camera.make_current()
+			Transition_anim.play("FadeOut")
 		head.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		helmet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		ochelari.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
@@ -244,7 +269,6 @@ func _physics_process(delta):
 
 	# GESTIONARE BLOCARE
 	if is_instance_valid(esc_menu_instance) or is_frozen:
-		# DACĂ ZBORI ÎN SUS (velocity.y > 0) și ești în meniu, tăiem forța imediat
 		if velocity.y > 0:
 			velocity.y = 0
 		
@@ -263,7 +287,6 @@ func _physics_process(delta):
 		
 	if is_multiplayer_authority():
 		if is_frozen:
-			# Aplicăm doar gravitația dacă e înghețat (la PC)
 			if not is_on_floor():
 				velocity.y -= gravity * delta
 			else:
@@ -333,31 +356,6 @@ func sync_transform(pos: Vector3, rot_y: float):
 func cam_tilt(input_x, delta):
 	if camera:
 		camera.rotation.z = lerp(camera.rotation.z, -input_x * camera_rotation, 10 * delta)
-	
-#func arm_tilt(input_x, delta):
-	#if arm:
-		#arm.rotation.z = lerp(arm.rotation.z, -input_x * camera_rotation, 10 * delta)
-
-
-func arm_sway(delta):
-	if ik_target and ik_initialized:
-		# Decay natural al mouse input-ului
-		accumulated_mouse_input = lerp(accumulated_mouse_input, Vector2.ZERO, 5 * delta)
-		
-		# Aplică sway cu valori mici
-		var sway_offset_x = accumulated_mouse_input.y * 0.0001
-		var sway_offset_y = accumulated_mouse_input.x * 0.0001
-		
-		var target_position = ik_base_position + Vector3(sway_offset_y, sway_offset_x, 0)
-		ik_target.position = lerp(ik_target.position, target_position, 10 * delta)
-		
-	
-## RPC pentru sincronizarea transformării
-#@rpc("any_peer", "unreliable")
-#func sync_transform(pos: Vector3, rot_y: float):
-	#if !is_multiplayer_authority():
-		#global_position = pos
-		#rotation.y = rot_y
 
 
 func toggle_esc_menu():

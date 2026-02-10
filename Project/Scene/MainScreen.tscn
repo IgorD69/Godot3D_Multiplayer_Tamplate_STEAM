@@ -114,10 +114,10 @@ text = "Join Friend
 [node name="Copy" type="Button" parent="UI/Multiplayer" unique_id=1337875879]
 visible = false
 layout_mode = 0
-offset_left = 784.0
-offset_top = 459.0
-offset_right = 921.0
-offset_bottom = 515.0
+offset_left = 470.0
+offset_top = 299.0
+offset_right = 607.0
+offset_bottom = 355.0
 theme_override_fonts/font = ExtResource("3_3sins")
 text = "Copy Lobby-ID"
 
@@ -133,9 +133,9 @@ text = "Settings"
 
 [node name="ExitButton" type="Button" parent="UI" unique_id=467388850]
 offset_left = 737.0
-offset_top = 459.0
+offset_top = 458.0
 offset_right = 907.0
-offset_bottom = 497.5965
+offset_bottom = 496.5965
 theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Quit Game"

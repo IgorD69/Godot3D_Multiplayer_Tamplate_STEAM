@@ -30,8 +30,7 @@ func _input(event: InputEvent) -> void:
 	if is_near_pc and event.is_action_pressed("interact"):
 		if not is_using_pc:
 			enter_pc()
-		else:
-			exit_pc()
+		
 		get_viewport().set_input_as_handled()
 	
 	# Use ESC to exit only if using the PC

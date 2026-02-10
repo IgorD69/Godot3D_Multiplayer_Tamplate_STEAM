@@ -1,14 +1,17 @@
 [gd_scene format=4 uid="uid://beehu2dulgjte"]
 
 [ext_resource type="Texture2D" uid="uid://bqhehy1wwin25" path="res://Models/Factorry Assets/Factorry_23.jpg" id="1_8sewn"]
-[ext_resource type="Script" uid="uid://dj3qvvytabemt" path="res://addons/assets/scripts/factory.gd" id="1_iaag0"]
+[ext_resource type="Script" uid="uid://dj3qvvytabemt" path="res://Scripts/factory.gd" id="1_iaag0"]
 [ext_resource type="Texture2D" uid="uid://c2vdikgasxwcp" path="res://Models/Factorry Assets/Factorry_5.jpg" id="2_8sewn"]
 [ext_resource type="Texture2D" uid="uid://xvpf0d5qqtn" path="res://Models/oldPCTexture.png" id="3_dmtjc"]
 [ext_resource type="PackedScene" uid="uid://k7sx6rdehj4o" path="res://Scene/tray_button.tscn" id="3_i8usg"]
 [ext_resource type="PackedScene" uid="uid://ce5w7q02q7w6r" path="res://objects/barrel.tscn" id="5_xvlbi"]
+[ext_resource type="PackedScene" uid="uid://cawvmlnl0ttgk" path="res://Models/Factorry Assets/Rottar.glb" id="7_b8xy4"]
 [ext_resource type="PackedScene" uid="uid://xivybfni25mk" path="res://Models/Factorry Assets/StoneCUtter.glb" id="7_s8oih"]
+[ext_resource type="PackedScene" uid="uid://cjvk8uhlqjdm7" path="res://Models/Factorry Assets/Crank.glb" id="8_rgfit"]
 [ext_resource type="Texture2D" uid="uid://prsnen3r43s3" path="res://Models/Factorry Assets/gEARS_50.jpg" id="8_s8oih"]
 [ext_resource type="PackedScene" uid="uid://mwr2bdy5qk5k" path="res://objects/GEARS_Machiene.tscn" id="9_i8usg"]
+[ext_resource type="PackedScene" uid="uid://0uwn38btsk78" path="res://Models/Factorry Assets/BigWheel.glb" id="9_quf42"]
 [ext_resource type="PackedScene" uid="uid://dfr0kyfq81nww" path="res://objects/coal.tscn" id="9_tuhq5"]
 [ext_resource type="PackedScene" uid="uid://c2ojogoumanna" path="res://exported-model.glb" id="11_dmtjc"]
 [ext_resource type="Texture2D" uid="uid://djyxnc76usv54" path="res://Models/Factorry Assets/Lada_Screenshot_20260205_180158-1.png" id="13_e48ja"]
@@ -1292,7 +1295,7 @@ size = Vector3(62.88406, 1, 70.27582)
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1485907396]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.392401, 2.5359392, -5.5731316)
 light_color = Color(1, 0.7411765, 0.27450982, 1)
-light_energy = 15.862
+light_energy = 3.902
 light_specular = 1.827
 shadow_enabled = true
 omni_range = 59.92194
@@ -1329,8 +1332,17 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.233055, -2.0033786, 17.852203)
 shape = SubResource("ConcavePolygonShape3D_e48ja")
 
+[node name="Rottar" parent="Floor" unique_id=1448049237 instance=ExtResource("7_b8xy4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4455299, 0.6449356, -11.449711)
+
+[node name="Crank" parent="Floor" unique_id=2075922640 instance=ExtResource("8_rgfit")]
+transform = Transform3D(-1.3602547e-08, -0.31118998, 0, -1.3602547e-08, 0, 0.31118998, -0.31118998, 1.3602547e-08, -1.3602546e-08, 19.72073, -0.42300987, 3.611806)
+
+[node name="BigWheel" parent="Floor" unique_id=511991443 instance=ExtResource("9_quf42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.892092, 1.2987843, -26.667595)
+
 [node name="exported-model" parent="." unique_id=513002097 instance=ExtResource("11_dmtjc")]
-transform = Transform3D(-1.7094998, 0, -6.37994, 0, 6.605, 0, 6.37994, 0, -1.7094998, 17.545662, -1.5141186, -0.9189334)
+transform = Transform3D(-1.7094998, 0, -6.37994, 0, 6.605, 0, 6.37994, 0, -1.7094998, 13.175411, -1.5141186, 15.391064)
 
 [node name="Propps" type="Node3D" parent="." unique_id=1837105720]
 
@@ -1419,11 +1431,7 @@ skeleton = NodePath("")
 [node name="ExtractionMachene" parent="." unique_id=183543731 instance=ExtResource("14_iaag0")]
 transform = Transform3D(13.704201, 0, -9.724676, 0, 16.804, 0, 9.724676, 0, 13.704201, -21.886688, 211.94283, -1071.0222)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1723833221]
-_spawnable_scenes = PackedStringArray("uid://bb3qcv0kbqbo6")
-spawn_path = NodePath("../Players")
-
-[node name="Players" type="Node3D" parent="." unique_id=1173808667]
+[node name="Players" type="Node3D" parent="." unique_id=1173808667 groups=["SpawnContainer"]]
 
 [node name="PC" type="StaticBody3D" parent="." unique_id=994898391]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.426957, -0.6656208, -2.7982888)
