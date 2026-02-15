@@ -26,7 +26,6 @@ grow_vertical = 2
 size_flags_horizontal = 0
 
 [node name="Audio" type="TabBar" parent="SettingsMenu" unique_id=1327297801]
-visible = false
 layout_mode = 0
 focus_neighbor_left = NodePath("../Video")
 focus_neighbor_right = NodePath("../Controls")
@@ -91,6 +90,7 @@ focus_neighbor_top = NodePath("../../..")
 focus_neighbor_bottom = NodePath("../Music")
 max_value = 1.0
 step = 0.05
+value = 1.0
 
 [node name="Music" type="HSlider" parent="SettingsMenu/Audio/HBoxContainer/VBoxContainer2" unique_id=1286528040]
 custom_minimum_size = Vector2(120, 0)
@@ -101,6 +101,7 @@ focus_neighbor_top = NodePath("../Master")
 focus_neighbor_bottom = NodePath("../SoundEffects")
 max_value = 1.0
 step = 0.05
+value = 1.0
 
 [node name="SoundEffects" type="HSlider" parent="SettingsMenu/Audio/HBoxContainer/VBoxContainer2" unique_id=992900530]
 custom_minimum_size = Vector2(120, 0)
@@ -110,6 +111,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Music")
 max_value = 1.0
 step = 0.05
+value = 1.0
 
 [node name="Controls" type="TabBar" parent="SettingsMenu" unique_id=29609772]
 visible = false
@@ -122,7 +124,6 @@ theme_override_font_sizes/font_size = 20
 metadata/_tab_index = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/Controls" unique_id=1227373296]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -153,6 +154,7 @@ theme_override_font_sizes/font_size = 24
 text = "Mouse Sensitivity"
 
 [node name="FOV" type="Label" parent="SettingsMenu/Controls/VBoxContainer" unique_id=701592618]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 6
@@ -175,10 +177,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 focus_neighbor_top = NodePath("../..")
 focus_neighbor_bottom = NodePath("../FOV_Slider")
-max_value = 1.0
+min_value = 0.05
+max_value = 2.0
 step = 0.05
+value = 0.5
 
 [node name="FOV_Slider" type="HSlider" parent="SettingsMenu/Controls/VBoxContainer2" unique_id=87566046]
+visible = false
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -186,6 +191,57 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../MouseSensitivitySlider")
 min_value = 60.0
 value = 75.0
+
+[node name="KeybindsMenu" type="TabBar" parent="SettingsMenu" unique_id=1656267993]
+layout_mode = 0
+focus_neighbor_left = NodePath("../Video")
+focus_neighbor_right = NodePath(".")
+theme = ExtResource("1_ja44g")
+theme_override_font_sizes/font_size = 20
+metadata/_tab_index = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/KeybindsMenu" unique_id=301820356]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -158.0
+offset_top = -91.0
+offset_right = 157.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/KeybindsMenu" unique_id=377568571]
+layout_mode = 0
+offset_left = -159.5
+offset_top = -91.0
+offset_right = 34.5
+offset_bottom = 87.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SettingsMenu/KeybindsMenu" unique_id=98714062]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 38.5
+offset_top = -91.0
+offset_right = 158.5
+offset_bottom = 87.0
+
+[node name="Keybinds" type="Button" parent="SettingsMenu" unique_id=690855267]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = -408.0
+offset_top = -114.0
+offset_right = -218.0
+offset_bottom = -84.0
+focus_neighbor_bottom = NodePath("../Controls/VBoxContainer2/MouseSensitivitySlider")
+theme = ExtResource("1_ja44g")
+theme_override_font_sizes/font_size = 24
+text = "Keybinds"
+alignment = 0
 
 [node name="AudioSettings" type="Button" parent="SettingsMenu" unique_id=182935269]
 custom_minimum_size = Vector2(100, 0)
@@ -213,19 +269,6 @@ theme_override_font_sizes/font_size = 24
 text = "Controls Settings"
 alignment = 0
 
-[node name="Keybinds" type="Button" parent="SettingsMenu" unique_id=690855267]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 0
-offset_left = -408.0
-offset_top = -114.0
-offset_right = -218.0
-offset_bottom = -84.0
-focus_neighbor_bottom = NodePath("../Controls/VBoxContainer2/MouseSensitivitySlider")
-theme = ExtResource("1_ja44g")
-theme_override_font_sizes/font_size = 24
-text = "Keybinds"
-alignment = 0
-
 [node name="Back" type="Button" parent="SettingsMenu" unique_id=848715881]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
@@ -238,6 +281,10 @@ theme = ExtResource("1_ja44g")
 theme_override_font_sizes/font_size = 24
 text = "Back"
 
+[connection signal="value_changed" from="SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Master" to="." method="_on_master_value_changed"]
+[connection signal="value_changed" from="SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Music" to="." method="_on_music_value_changed"]
+[connection signal="value_changed" from="SettingsMenu/Audio/HBoxContainer/VBoxContainer2/SoundEffects" to="." method="_on_sound_effects_value_changed"]
+[connection signal="value_changed" from="SettingsMenu/Controls/VBoxContainer2/MouseSensitivitySlider" to="." method="_on_mouse_sensitivity_slider_value_changed"]
 [connection signal="pressed" from="SettingsMenu/AudioSettings" to="." method="_on_audio_settings_pressed"]
 [connection signal="pressed" from="SettingsMenu/ControlsSettings" to="." method="_on_controls_settings_pressed"]
 [connection signal="pressed" from="SettingsMenu/Back" to="." method="_on_back_pressed"]

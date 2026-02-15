@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dl034mxfa502y" path="res://addons/assets/scripts/esc_menu.gd" id="1_6ijls"]
 [ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="2_ixgor"]
+[ext_resource type="Theme" uid="uid://cb2tqos08yhkd" path="res://addons/assets/MinimalUI/MinimalUI.tres" id="3_kcvp8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6ijls"]
 blend_mode = 2
@@ -41,6 +42,47 @@ offset_right = 192.0
 offset_bottom = 471.0
 theme_override_fonts/font = ExtResource("2_ixgor")
 text = "MainMenu"
+
+[node name="PlayerList" type="TabBar" parent="." unique_id=1385650569]
+offset_left = 668.0
+offset_top = 179.0
+offset_right = 668.0
+offset_bottom = 179.0
+focus_neighbor_left = NodePath("../Video")
+focus_neighbor_right = NodePath("../Controls")
+focus_neighbor_bottom = NodePath("HBoxContainer/VBoxContainer2/Master")
+theme = ExtResource("3_kcvp8")
+theme_override_font_sizes/font_size = 20
+metadata/_tab_index = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerList" unique_id=1380124694]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -156.0
+offset_right = 264.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PlayerList/HBoxContainer" unique_id=1463917186]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Master" type="HSlider" parent="PlayerList/HBoxContainer/VBoxContainer2" unique_id=761108462]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../../..")
+max_value = 1.0
+step = 0.05
+value = 1.0
 
 [connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]

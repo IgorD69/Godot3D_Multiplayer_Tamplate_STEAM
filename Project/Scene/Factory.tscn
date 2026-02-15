@@ -35,6 +35,11 @@ background_mode = 2
 sky = SubResource("Sky_oitlh")
 tonemap_mode = 2
 glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.34852633, 0.1759069, 0.11940635, 1)
+fog_light_energy = 0.65
+fog_density = 0.0001
+volumetric_fog_density = 0.0719
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g08mm"]
 resource_name = "Material.004"

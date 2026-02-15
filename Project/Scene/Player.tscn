@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://c25hbgf4v1r3m" path="res://Models/icons8-target-24.png" id="10_liw1m"]
 [ext_resource type="Texture2D" uid="uid://bj6j8u0gh3ibr" path="res://Models/oldMan_Screenshot_20260205_233654.png" id="12_inyuv"]
 [ext_resource type="Texture2D" uid="uid://c2hqaj6y5o7h2" path="res://Models/oldMan_Screenshot_20260205_125649.png" id="13_6q824"]
+[ext_resource type="AudioStream" uid="uid://8apl7t5p3t64" path="res://Music/Background/freesound_community-industrial_machine_tone-23639.mp3" id="19_4b564"]
 
 [sub_resource type="Animation" id="Animation_g4w5s"]
 resource_name = "walkAnim"
@@ -1278,6 +1279,9 @@ albedo_texture = ExtResource("3_parcb")
 subsurf_scatter_enabled = true
 uv1_scale = Vector3(0.34, 0.34, 0.34)
 uv1_triplanar = true
+use_z_clip_scale = true
+z_clip_scale = 0.5
+use_fov_override = true
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_q3xbo"]
 resource_name = "oldMan_geometry_0"
@@ -1348,6 +1352,10 @@ blend_shape_mode = 0
 albedo_color = Color(1, 0.85490197, 0.7019608, 1)
 albedo_texture = ExtResource("4_4b564")
 uv1_triplanar = true
+use_z_clip_scale = true
+z_clip_scale = 0.5
+use_fov_override = true
+stencil_flags = 2
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_3su45"]
 resource_name = "oldMan_geometry_0_004"
@@ -1510,6 +1518,8 @@ resource_name = "Material.001"
 cull_mode = 2
 albedo_texture = ExtResource("5_inyuv")
 texture_filter = 2
+use_z_clip_scale = true
+z_clip_scale = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_10e2g"]
 _surfaces = [{
@@ -1582,6 +1592,61 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_stop5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ruj13"]
+resource_name = "Material.001"
+transparency = 4
+cull_mode = 2
+albedo_color = Color(0.793966, 0.71810514, 0.23128022, 0.0625)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_f7xhm"]
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"format": 34896613377,
+"index_count": 42,
+"index_data": PackedByteArray("AAABAAIAAwABAAAAAwAAAAIABAADAAIABQADAAQABQAEAAIABgADAAUAAwAGAAEABwAFAAIABgAFAAcABgAHAAIACAAGAAIAAQAGAAgAAQAIAAIA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 9,
+"vertex_data": PackedByteArray("/38AAAAAAACB2gAAfSUAAP9/////fwAAfSUAAH0lAAAAAAAA/38AAH0lAACB2gAAgdoAAIHaAAD/fwAA//8AAP//AAD/fwAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_qonp2"]
+resource_name = "FlashLightCone_Cone"
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"attribute_data": PackedByteArray("/z+OgnFrjZT/P/+/cWuNlHB9/7//P/+/cH3/v3FrcOv/P/+/cWtw6/8/b/3/P/+//z9v/Y4UcOv/P/+/jhRw648C/7//P/+/jZSNlHDrjZT/v46CcOtw62/9/7+NlHDrjoL/v/+/b/2PAv+/jhSNlP8//7+OFI2U/z+Ogv8//78="),
+"format": 34896613399,
+"index_count": 42,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAEgAVABMAEwAVABYAFQASABcAFwASABgAFQAXABkAGgAbABwAHQAeAB8A"),
+"material": SubResource("StandardMaterial3D_ruj13"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("/38AAAAA9emB2gAAfSX16f9/////f/XpgdoAAH0lpdb//wAA/3+l1v9/////f6XW//8AAP9/A8GB2gAAgdoDwf9/////fwPBgdoAAIHaXqT/fwAA//9epP9/////f16k/38AAP//XqR9JQAAgdpepP9/////f16kfSUAAIHaA8EAAAAA/38Dwf9/////fwPBfSUAAH0l/z+B2gAAfSX/P/9/AAAAAP8/gdoAAIHa/z///wAA/3//P30lAACB2v8/AAAAAP9//z//fwAA////PwAAAAD/f6XWfSUAAH0lpdb/f////3+l1n0lAAB9JfXp/38AAAAA9en/f////3/16T3XjmA9145gPdeOYH6+X1l+vl9Zfr5fWROzbmATs25gE7NuYKqxGW6qsRluqrEZbhnuVM4Z7lTOGe5Uzm7g68xu4OvMbuDrzAAA/38AAP9/AAD/fwAA/38AAP9/AAD/fwAA/38AAP9/X9mAwV/ZgMFf2YDBjeDAqI3gwKiN4MCo")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_f7xhm")
+
+[sub_resource type="Gradient" id="Gradient_parcb"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4b564"]
+gradient = SubResource("Gradient_parcb")
+fill_from = Vector2(0.57954544, 0.54545456)
+fill_to = Vector2(0, 0.4715909)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_parcb"]
+transparency = 1
+albedo_color = Color(0.92941177, 0.94509804, 0.6627451, 1)
+albedo_texture = SubResource("GradientTexture2D_4b564")
+emission_enabled = true
+disable_receive_shadows = true
+use_z_clip_scale = true
+z_clip_scale = 0.5
+use_fov_override = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_adgam"]
 render_priority = 0
@@ -1983,6 +2048,7 @@ skeleton = NodePath("../..")
 
 [node name="R_TwoBoneIK3D" type="TwoBoneIK3D" parent="Character/metarig/Skeleton3D" unique_id=623737105]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33371705, 1.1555294, 0.5131954)
+active = false
 setting_count = 1
 settings/0/target_node = NodePath("../R_HandMarker")
 settings/0/pole_node = NodePath("../R_Elbow")
@@ -2024,7 +2090,7 @@ bone_name = "spine.003"
 bone = 3
 
 [node name="CameraBoneAtachment" type="BoneAttachment3D" parent="Character/metarig/Skeleton3D" unique_id=535308092]
-transform = Transform3D(0.99928474, -0.014838257, 0.034771368, 0.012743619, 0.9981346, 0.05971506, -0.035592433, -0.05922903, 0.9976096, -0.006812784, 1.9487883, -0.124005586)
+transform = Transform3D(0.99928427, -0.0148424385, 0.034783356, 0.012747083, 0.99813455, 0.059715025, -0.03560464, -0.059228778, 0.99760926, -0.00681448, 1.9487883, -0.12400547)
 bone_name = "spine.006"
 bone_idx = 6
 
@@ -2035,7 +2101,7 @@ update_rotation = false
 update_scale = false
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D" unique_id=100745014]
-transform = Transform3D(0.883032, -0.13224816, -0.45029247, 0.3955694, -0.30657303, 0.86575794, -0.2525425, -0.9426149, -0.21840036, 0.47119474, -0.56855464, -0.67115355)
+transform = Transform3D(0.98046476, -0.014739723, -0.19613716, 0.05941423, -0.92840946, 0.3667762, -0.18750173, -0.3712648, -0.9093978, 0.57632804, -0.9533218, -0.26493818)
 bone_name = "hand.R"
 bone_idx = 14
 use_external_skeleton = true
@@ -2061,9 +2127,17 @@ light_energy = 12.585
 light_volumetric_fog_energy = 0.1
 light_specular = 0.0
 shadow_enabled = true
+distance_fade_enabled = true
 spot_range = 405.065
 spot_angle = 38.5
 spot_angle_attenuation = 2.957653
+
+[node name="light_cone" type="MeshInstance3D" parent="Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D" unique_id=1005289831]
+transform = Transform3D(2.4656901, -0.5402797, 0.45660117, 0.40382013, 0.6491315, -2.3857226, -0.55353266, 6.473568, 0.2440631, 0.5160694, -0.6139015, -6.282822)
+visible = false
+mesh = SubResource("ArrayMesh_qonp2")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_parcb")
 
 [node name="L_HandMarker" type="Marker3D" parent="Character/metarig/Skeleton3D" unique_id=1042096103]
 transform = Transform3D(-0.26737288, 0.9635931, 1.509958e-07, 0.9635931, 0.26737288, 0, -4.0372182e-08, 1.4549852e-07, -1, 0.4506827, 1.3421853, 0.44941992)
@@ -2072,7 +2146,7 @@ transform = Transform3D(-0.26737288, 0.9635931, 1.509958e-07, 0.9635931, 0.26737
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0.67287195, 0.7671207, 0.28186518)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Character/metarig/Skeleton3D" unique_id=1646337219]
-transform = Transform3D(-0.98720264, 0.015595246, -0.15869972, -0.077328205, -0.91718245, 0.3908922, -0.13946068, 0.3981621, 0.90665144, 0.5859081, 1.0069764, 0.035220966)
+transform = Transform3D(-0.987204, 0.015603306, -0.15868995, -0.07733161, -0.91718245, 0.39089152, -0.13944861, 0.3981619, 0.90665346, 0.58591163, 1.0069783, 0.03521374)
 bone_name = "hand.L"
 bone_idx = 10
 
@@ -2080,7 +2154,7 @@ bone_idx = 10
 transform = Transform3D(0.05876536, -0.049385514, 0.022532333, 0.048050445, 0.03187585, -0.055453524, 0.02525451, 0.054267906, 0.053077362, 0.08697325, 0.24705029, 0.13883793)
 
 [node name="Camera3D" type="Camera3D" parent="Character" unique_id=1381917686]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.0060386127, 0.9625151, -0.24354106)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.0060417475, 0.9625151, -0.24354097)
 far = 6000.0
 
 [node name="InteractionRayCast" type="RayCast3D" parent="Character/Camera3D" unique_id=429656247]
@@ -2097,7 +2171,6 @@ gizmo_extents = 0.0
 
 [node name="PostProces" type="MeshInstance3D" parent="Character/Camera3D" unique_id=685489453]
 transform = Transform3D(-0.9999992, 0.000532743, 0.0011688237, 0.00034497786, 0.9878945, -0.15512717, -0.0012373173, -0.15512665, -0.9878938, 0.000989278, -0.06310105, -0.14381701)
-visible = false
 cast_shadow = 0
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_adgam")
@@ -2187,8 +2260,17 @@ color = Color(0.09411765, 0, 0, 1)
 libraries/ = SubResource("AnimationLibrary_wd545")
 
 [node name="VoicePlayer" type="AudioStreamPlayer3D" parent="." unique_id=1024697536]
+max_distance = 30.0
+emission_angle_enabled = true
 
 [node name="FlashTestMesh" type="MeshInstance3D" parent="." unique_id=1276346447]
 transform = Transform3D(5.210172, 0, 0, 0, 6.832316e-07, -5.210172, 0, 5.210172, 6.832316e-07, -0.029000003, 0.14400001, -7.4162617)
 visible = false
 mesh = SubResource("PlaneMesh_parcb")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=4494187]
+stream = ExtResource("19_4b564")
+volume_db = -35.568
+pitch_scale = 0.93
+autoplay = true
+bus = &"Music"

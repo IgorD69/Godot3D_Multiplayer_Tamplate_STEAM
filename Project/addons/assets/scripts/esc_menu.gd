@@ -2,7 +2,57 @@ extends CanvasLayer
 
 @export var SETTINGS_SCENE: PackedScene = preload("uid://dsr4sx6v6qsiv")
 
+# Referința către containerul unde vom pune sliderele (VBoxContainer2 din screenshot-ul tău)
+@onready var player_list_container = $PlayerList/HBoxContainer/VBoxContainer2
 var settings_instance = null
+
+func _ready() -> void:
+	# Generăm lista de volume imediat ce se deschide meniul
+	refresh_player_volumes()
+
+func refresh_player_volumes() -> void:
+	for child in player_list_container.get_children():
+		child.queue_free()
+	
+	await get_tree().process_frame
+	
+	var all_players = get_tree().get_nodes_in_group("Players")
+	
+	for p in all_players:
+		if p.is_multiplayer_authority():
+			continue
+		
+		if "player_name" in p and "voice_player" in p:
+			create_voice_control(p)
+
+func create_voice_control(player_node) -> void:
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 2)
+	
+	var label = Label.new()
+	label.text = player_node.player_name
+	label.add_theme_font_size_override("font_size", 14)
+	vbox.add_child(label)
+	
+	# Slider-ul de Volum
+	var slider = HSlider.new()
+	slider.min_value = 0.0
+	slider.max_value = 2.0 
+	slider.step = 0.05
+	slider.custom_minimum_size.x = 150
+	
+	if player_node.voice_player:
+		slider.value = db_to_linear(player_node.voice_player.volume_db)
+	
+	# Conectăm slider-ul direct la vocea jucătorului respectiv
+	slider.value_changed.connect(func(value):
+		if is_instance_valid(player_node) and player_node.voice_player:
+			player_node.voice_player.volume_db = linear_to_db(value)
+	)
+	
+	vbox.add_child(slider)
+	player_list_container.add_child(vbox)
+
 
 func _on_settings_pressed() -> void:
 	if not is_instance_valid(settings_instance):
@@ -14,23 +64,15 @@ func _on_settings_pressed() -> void:
 			settings_instance = null
 			show())
 
-	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("esc"):
 		get_viewport().set_input_as_handled()
 		_on_resume_pressed()
 		
 func _on_main_menu_pressed() -> void:
-	# 1. Curățăm rețeaua
 	Net.cleanup_network()
-	
-	# 2. Ne asigurăm că mouse-ul este vizibil ÎNAINTE de a schimba scena
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
-	# 3. Ștergem meniul de ESC imediat (pentru a nu rămâne suprapus)
 	queue_free() 
-	
-	# 4. Schimbăm scena
 	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
 
 func _on_resume_pressed() -> void:

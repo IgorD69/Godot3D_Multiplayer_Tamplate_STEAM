@@ -5,7 +5,8 @@ extends CharacterBody3D
 const SPEED = 5.0
 const SPRINT_SPEED = 10.0
 const JUMP_VELOCITY = 4.5
-const MOUSE_SENSITIVITY = 0.002
+
+var MOUSE_SENSITIVITY = Global.mouse_sensitivity
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_moving_state: bool = false 
@@ -38,6 +39,7 @@ var mic_player: AudioStreamPlayer = null
 @export var camera_rotation = 0.05
 
 
+
 @onready var Transition_anim: AnimationPlayer = $Transition/AnimationPlayer
 @onready var transition: ColorRect = $Transition
 
@@ -53,6 +55,8 @@ var mic_player: AudioStreamPlayer = null
 @onready var r_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/R_TwoBoneIK3D
 @onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
 
+
+@onready var light_cone: MeshInstance3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D/light_cone
 @onready var Flash: Node3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight
 @onready var Flash_Light: SpotLight3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D
 @onready var radiation_device: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/RadiationDevice
@@ -83,6 +87,7 @@ func _ready():
 	var peer_id = str(name).to_int()
 	set_multiplayer_authority(peer_id)
 	
+		
 	if is_multiplayer_authority():
 		camera.make_current()
 		Transition_anim.play("FadeOut")
@@ -143,6 +148,7 @@ func _ready():
 		helmet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		ochelari.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		mask.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		light_cone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY 
 		
 		call_deferred("_setup_mouse_capture")
 		call_deferred("_send_player_name")
