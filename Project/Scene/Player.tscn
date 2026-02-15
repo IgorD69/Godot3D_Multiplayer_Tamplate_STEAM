@@ -2261,6 +2261,7 @@ libraries/ = SubResource("AnimationLibrary_wd545")
 
 [node name="VoicePlayer" type="AudioStreamPlayer3D" parent="." unique_id=1024697536]
 max_distance = 30.0
+bus = &"Voices"
 emission_angle_enabled = true
 
 [node name="FlashTestMesh" type="MeshInstance3D" parent="." unique_id=1276346447]

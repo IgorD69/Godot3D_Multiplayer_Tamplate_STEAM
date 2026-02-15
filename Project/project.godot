@@ -40,6 +40,7 @@ AmbientFileHandler="*uid://dnh8sqjyu74hs"
 AmbientMaterialMaker="*uid://nig0lamfd3mv"
 FishEyeCanvas="*uid://clxtksbsd371a"
 Net="*uid://d1vlwc3l4of51"
+SettingsManager="*uid://c3oulib0vyq2s"
 
 [display]
 

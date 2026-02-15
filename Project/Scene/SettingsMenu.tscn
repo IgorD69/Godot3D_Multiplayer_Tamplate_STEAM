@@ -26,6 +26,7 @@ grow_vertical = 2
 size_flags_horizontal = 0
 
 [node name="Audio" type="TabBar" parent="SettingsMenu" unique_id=1327297801]
+visible = false
 layout_mode = 0
 focus_neighbor_left = NodePath("../Video")
 focus_neighbor_right = NodePath("../Controls")
@@ -193,6 +194,7 @@ min_value = 60.0
 value = 75.0
 
 [node name="KeybindsMenu" type="TabBar" parent="SettingsMenu" unique_id=1656267993]
+visible = false
 layout_mode = 0
 focus_neighbor_left = NodePath("../Video")
 focus_neighbor_right = NodePath(".")

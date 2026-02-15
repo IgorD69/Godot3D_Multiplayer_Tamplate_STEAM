@@ -21,6 +21,7 @@ func _ready() -> void:
 
 # --- NAVIGARE ---
 func _on_back_pressed() -> void:
+	SettingsManager.save_settings()
 	queue_free()
 
 func _on_audio_settings_pressed() -> void:
