@@ -22,7 +22,7 @@ var is_frozen: bool = false
 var hand_sway_offset: Vector2 = Vector2.ZERO
 var hand_sway_velocity: Vector2 = Vector2.ZERO
 var walk_cycle_time: float = 0.0
-
+var is_moving: bool
 
 
 # Voice Chat VARS (LAN Support - funcționează fără Steam)
@@ -48,7 +48,7 @@ var mic_player: AudioStreamPlayer = null
 @export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
 
 #IK
-#@onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
+@onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
 @onready var l_two_bone_ik_3d_2: TwoBoneIK3D = $Character/metarig/Skeleton3D/L_TwoBoneIK3D2
 @onready var r_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/R_TwoBoneIK3D
 @onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
@@ -358,7 +358,8 @@ func _physics_process(delta):
 			velocity.z = 0
 			move_and_slide()
 			if Animation_Player.current_animation != "Idle":
-				Animation_Player.play("Idle", 0.2)
+				Animation_Player.play("Idle", 0.15, 0.15)
+				r_hand_marker.position.y = 1.2
 			return
 	
 		# Logica normală de mișcare
@@ -388,10 +389,18 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction.x * current_target_speed
 			velocity.z = direction.z * current_target_speed
+			is_moving = true
+			
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_target_speed)
 			velocity.z = move_toward(velocity.z, 0, current_target_speed)
+			is_moving = false
+			
 		
+		if !is_moving:
+			r_hand_marker.position.y = 1.2
+			
+			
 		move_and_slide()
 		
 		if multiplayer.multiplayer_peer:
@@ -466,6 +475,7 @@ func _handle_animations(current_swpeed):
 	if not is_on_floor():
 		next_anim = "Jump"
 	elif horiz_vel > 0.1:
+		r_hand_marker.position.y = 1.1
 		if Input.is_action_pressed("sprint"):
 			next_anim = "Run"
 			playback_speed = 1.5
@@ -500,6 +510,32 @@ func toggle_esc_menu():
 		get_tree().root.add_child(esc_menu_instance)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+@rpc("any_peer", "unreliable_ordered", "call_local")
+func show_flash():
+	if !is_multiplayer_authority():
+		return
+	
+	if Input.is_action_pressed("flash"):
+		r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
+		Flash_Light.visible = r_two_bone_ik_3d.active
+		Flash.visible = r_two_bone_ik_3d.active
+	
+	
+	# RPC-ul care execută schimbarea vizuală pe toate instanțele
+@rpc("any_peer", "call_local", "reliable")
+func sync_flashlight(is_on: bool):
+	if r_two_bone_ik_3d:
+		r_two_bone_ik_3d.active = is_on
+	
+	if Flash:
+		Flash.visible = is_on
+	
+	if Flash_Light:
+		Flash_Light.visible = is_on
+		
+	if Flash:
+		Flash.visible = is_on
+		
 func _input(event):
 	if !is_multiplayer_authority(): 
 		return
@@ -512,12 +548,11 @@ func _input(event):
 	if is_instance_valid(esc_menu_instance):
 		return
 
-	# Voice key se handlează automat în _handle_voice_capture()
-			
 	if event.is_action_pressed("flash"):
-		r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
-		Flash_Light.visible = r_two_bone_ik_3d.active
-		Flash.visible = r_two_bone_ik_3d.active
+		var new_state = !Flash.visible 
+		sync_flashlight.rpc(new_state)
+			
+	
 			
 	if event.is_action_pressed("radiometru"):
 		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
