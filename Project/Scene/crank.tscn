@@ -1,5 +1,7 @@
 [gd_scene format=4 uid="uid://dl3n3lqvb4tbs"]
 
+[ext_resource type="PackedScene" uid="uid://batts1x68a3ii" path="res://interaction/interaction_component.tscn" id="1_47b0t"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_83vvq"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_uu4dp"]
@@ -100,21 +102,35 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_0ap6t")
 
-[node name="Crank" type="Node3D" unique_id=2075922640]
+[sub_resource type="BoxShape3D" id="BoxShape3D_47b0t"]
 
-[node name="Cylinder" type="MeshInstance3D" parent="." unique_id=373871893]
+[node name="Crank" type="RigidBody3D" unique_id=1688048269]
+
+[node name="CrankNode3d" type="Node3D" parent="." unique_id=209929414]
+
+[node name="Crank" type="Node3D" parent="CrankNode3d" unique_id=2075922640]
+
+[node name="Cylinder" type="MeshInstance3D" parent="CrankNode3d/Crank" unique_id=373871893]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 0.2803954, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_kabrt")
 skeleton = NodePath("")
 
-[node name="Cylinder_001" type="MeshInstance3D" parent="." unique_id=1313864173]
+[node name="Cylinder_001" type="MeshInstance3D" parent="CrankNode3d/Crank" unique_id=1313864173]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, -0.2803954, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_dfgyv")
 skeleton = NodePath("")
 
-[node name="Cylinder_002" type="MeshInstance3D" parent="." unique_id=1246031225]
+[node name="Cylinder_002" type="MeshInstance3D" parent="CrankNode3d/Crank" unique_id=1246031225]
 transform = Transform3D(0.13378403, 0, 0, 0, 0.030135171, 0, 0, 0, 0.13378403, 0, 0.06354769, 0)
 mesh = SubResource("ArrayMesh_56ylc")
 skeleton = NodePath("")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=931840002]
+[node name="InteractionComponent" parent="." unique_id=1657677481 node_paths=PackedStringArray("object_referance", "pivit_point") instance=ExtResource("1_47b0t")]
+object_referance = NodePath("..")
+interaction_type = 2
+maximum_rotation = 360.0
+pivit_point = NodePath("../CrankNode3d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1159971120]
+transform = Transform3D(1.95, 0, 0, 0, 0.54677105, 8.523721e-08, 0, -2.390012e-08, 1.95, 0, 0, 0)
+shape = SubResource("BoxShape3D_47b0t")

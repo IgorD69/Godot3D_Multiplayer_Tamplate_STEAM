@@ -1826,8 +1826,9 @@ _data = {
 &"RESET": SubResource("Animation_g743h")
 }
 
-[node name="Player" type="CharacterBody3D" unique_id=2096496475 node_paths=PackedStringArray("camera")]
+[node name="Player" type="CharacterBody3D" unique_id=2096496475 node_paths=PackedStringArray("voice_player", "camera")]
 script = ExtResource("1_jvxg0")
+voice_player = NodePath("VoicePlayer")
 camera = NodePath("Character/Camera3D")
 
 [node name="Character" type="Node3D" parent="." unique_id=1160474415]
@@ -2175,7 +2176,7 @@ settings/0/extend_end_bone = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43837127, 1.2552103, -0.53474087)
 
 [node name="R_HandMarker" type="Marker3D" parent="Character/metarig/Skeleton3D" unique_id=1137084969]
-transform = Transform3D(0.28106865, 0.9596877, -6.2851e-08, -0.9596877, 0.28106865, -8.389859e-08, -6.285097e-08, 8.389856e-08, 1, -0.4004641, 1.3196052, 0.47503656)
+transform = Transform3D(0.28106865, 0.9596877, -6.2851e-08, -0.9596877, 0.28106865, -8.389859e-08, -6.285097e-08, 8.389856e-08, 1, -0.40046415, 1.3799357, 0.47503656)
 
 [node name="LookAtModifier3D" type="LookAtModifier3D" parent="Character/metarig/Skeleton3D" unique_id=1066476829]
 target_node = NodePath("../../../Camera3D/LookAT")
@@ -2366,3 +2367,5 @@ color = Color(0.09411765, 0, 0, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Transition" unique_id=2053242363]
 libraries/ = SubResource("AnimationLibrary_wd545")
+
+[node name="VoicePlayer" type="AudioStreamPlayer3D" parent="." unique_id=1024697536]

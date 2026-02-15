@@ -7,6 +7,9 @@ var LAN: bool = false
 
 var is_focused: bool
 
+var mic_player: AudioStreamPlayer = null
+var recording_bus_index: int = -1
+
 func _focus() -> void:
 	is_focused = true
 	print("FOCUSE")

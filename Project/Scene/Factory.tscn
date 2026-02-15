@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://ce5w7q02q7w6r" path="res://objects/barrel.tscn" id="5_xvlbi"]
 [ext_resource type="PackedScene" uid="uid://cawvmlnl0ttgk" path="res://Models/Factorry Assets/Rottar.glb" id="7_b8xy4"]
 [ext_resource type="PackedScene" uid="uid://xivybfni25mk" path="res://Models/Factorry Assets/StoneCUtter.glb" id="7_s8oih"]
-[ext_resource type="PackedScene" uid="uid://cjvk8uhlqjdm7" path="res://Models/Factorry Assets/Crank.glb" id="8_rgfit"]
 [ext_resource type="Texture2D" uid="uid://prsnen3r43s3" path="res://Models/Factorry Assets/gEARS_50.jpg" id="8_s8oih"]
 [ext_resource type="PackedScene" uid="uid://mwr2bdy5qk5k" path="res://objects/GEARS_Machiene.tscn" id="9_i8usg"]
 [ext_resource type="PackedScene" uid="uid://0uwn38btsk78" path="res://Models/Factorry Assets/BigWheel.glb" id="9_quf42"]
@@ -20,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://dwbkanrlfuac" path="res://Scene/extraction_machene.tscn" id="14_iaag0"]
 [ext_resource type="Texture2D" uid="uid://b2d4jm8yvopp5" path="res://Models/MOUSE_1.png" id="15_f1ff6"]
 [ext_resource type="PackedScene" uid="uid://bpqac53a6s8bc" path="res://Scene/pc_control.tscn" id="17_kxgub"]
+[ext_resource type="PackedScene" uid="uid://dl3n3lqvb4tbs" path="res://Scene/crank.tscn" id="20_b8xy4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qxdst"]
 sky_top_color = Color(0.31692132, 0.16890651, 0.16400301, 1)
@@ -1335,9 +1335,6 @@ shape = SubResource("ConcavePolygonShape3D_e48ja")
 [node name="Rottar" parent="Floor" unique_id=1448049237 instance=ExtResource("7_b8xy4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4455299, 0.6449356, -11.449711)
 
-[node name="Crank" parent="Floor" unique_id=2075922640 instance=ExtResource("8_rgfit")]
-transform = Transform3D(-1.3602547e-08, -0.31118998, 0, -1.3602547e-08, 0, 0.31118998, -0.31118998, 1.3602547e-08, -1.3602546e-08, 19.72073, -0.42300987, 3.611806)
-
 [node name="BigWheel" parent="Floor" unique_id=511991443 instance=ExtResource("9_quf42")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.892092, 1.2987843, -26.667595)
 
@@ -1476,6 +1473,9 @@ far = 1.0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PC/PCArea" unique_id=2034452686]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38382787, -0.0949707)
 shape = SubResource("BoxShape3D_udmw2")
+
+[node name="Crank" parent="." unique_id=1688048269 instance=ExtResource("20_b8xy4")]
+transform = Transform3D(-0.047681767, -0.99886256, 0, 0.99886256, -0.047681767, 0, 0, 0, 1, 9.99189, 3.2721376, -6.9138393)
 
 [connection signal="body_entered" from="PC/PCArea" to="PC" method="_on_pc_area_body_entered"]
 [connection signal="body_exited" from="PC/PCArea" to="PC" method="_on_pc_area_body_exited"]

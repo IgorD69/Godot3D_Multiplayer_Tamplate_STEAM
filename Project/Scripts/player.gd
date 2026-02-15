@@ -1,13 +1,11 @@
 class_name Player
 
-
 extends CharacterBody3D
 
 const SPEED = 5.0
 const SPRINT_SPEED = 10.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.002
-
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_moving_state: bool = false 
@@ -16,12 +14,29 @@ var current_anim: String = ""
 var player_name: String = ""
 var hand: Marker3D
 var accumulated_mouse_input: Vector2 = Vector2.ZERO
-var ik_base_position: Vector3
+var ik_base_position: Vector3 = Vector3(-0.4, 1.38, 0.475)  # SETEAZĂ POZIȚIA MANUALĂ CA FALLBACK
 var ik_initialized: bool = false
 var esc_menu_instance = null
 var is_frozen: bool = false
 
+var hand_sway_offset: Vector2 = Vector2.ZERO
+var hand_sway_velocity: Vector2 = Vector2.ZERO
+var walk_cycle_time: float = 0.0
+
+
+
+# Voice Chat VARS (LAN Support - funcționează fără Steam)
+@export var voice_player: AudioStreamPlayer3D
+var playback: AudioStreamGeneratorPlayback = null
+var audio_effect_capture: AudioEffectCapture = null
+var recording_bus_index: int = -1
+var mic_stream: AudioStreamMicrophone = null
+var mic_player: AudioStreamPlayer = null
+
+
+
 @export var camera_rotation = 0.05
+
 
 @onready var Transition_anim: AnimationPlayer = $Transition/AnimationPlayer
 @onready var transition: ColorRect = $Transition
@@ -30,13 +45,10 @@ var is_frozen: bool = false
 @onready var Animation_Player: AnimationPlayer = $Character/metarig/Skeleton3D/AnimationPlayer
 @export var camera: Camera3D
 
-
 @export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
 
-
-
 #IK
-@onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
+#@onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
 @onready var l_two_bone_ik_3d_2: TwoBoneIK3D = $Character/metarig/Skeleton3D/L_TwoBoneIK3D2
 @onready var r_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/R_TwoBoneIK3D
 @onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
@@ -45,14 +57,9 @@ var is_frozen: bool = false
 @onready var Flash_Light: SpotLight3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D
 @onready var radiation_device: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/RadiationDevice
 
-
-#@onready var PortalAnim: AnimationPlayer = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/Portal_Gun_Meshes/AnimationPlayer
-
-
 #Tab UI
 @onready var tab_canvas: CanvasLayer = $TAB
 @onready var box_container: BoxContainer = $TAB/BoxContainer
-
 
 #HEAD MESHES
 @onready var head: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/head
@@ -60,16 +67,13 @@ var is_frozen: bool = false
 @onready var ochelari: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/ochelari
 @onready var mask: MeshInstance3D = $Character/metarig/Skeleton3D/HEAD/mask
 
-
-
 func _enter_tree():
 	var peer_id = str(name).to_int()
 	if peer_id > 0:
 		set_multiplayer_authority(peer_id)
 
 func _ready():
-	
-	await get_tree().create_timer(0.5).timeout # Așteptăm să se termine spawn-ul complet
+	await get_tree().create_timer(0.5).timeout
 	if is_multiplayer_authority():
 		camera.make_current()
 		print("CAMERA: Forțată pe peer ", multiplayer.get_unique_id())
@@ -79,7 +83,6 @@ func _ready():
 	var peer_id = str(name).to_int()
 	set_multiplayer_authority(peer_id)
 	
-	# 2. Controlăm camera
 	if is_multiplayer_authority():
 		camera.make_current()
 		Transition_anim.play("FadeOut")
@@ -91,14 +94,12 @@ func _ready():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		esc_menu_instance = null
 	
-	# DEBUG: Verifică authority-ul
 	print("=== PLAYER DEBUG ===")
 	print("Player name in scene: ", name)
 	print("Multiplayer unique ID: ", multiplayer.get_unique_id())
 	print("Player authority ID: ", get_multiplayer_authority())
 	print("Is multiplayer authority: ", is_multiplayer_authority())
 	
-	#if Global.LAN == true:
 	player_name = Steam.getPersonaName()
 	
 	add_to_group("Players")
@@ -106,11 +107,9 @@ func _ready():
 	if player_name == "":
 		player_name = "Guest_" + str(multiplayer.get_unique_id())
 		
-	# Ascunde TAB-ul la început
 	if tab_canvas:
 		tab_canvas.visible = false
 	
-	# Caută sau creează nodul "hand"
 	if camera:
 		hand = camera.get_node_or_null("hand")
 		if hand == null:
@@ -124,16 +123,13 @@ func _ready():
 	else:
 		print("ERROR: Camera not found for player: ", name)
 	
-	# Așteptăm un frame pentru ca multiplayer să fie complet inițializat
 	await get_tree().process_frame
 	
 	print("After wait - Is authority: ", is_multiplayer_authority())
 	
 	if is_multiplayer_authority():
 		transition.visible = true 
-		
 		Transition_anim.play("FadeOut") 
-		
 		print("Pornesc animația de FadeOut pentru jucătorul local.")
 	else:
 		transition.visible = false
@@ -148,30 +144,92 @@ func _ready():
 		ochelari.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		mask.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		
-		# Amână capturarea mouse-ului până când fereastra este în focus
 		call_deferred("_setup_mouse_capture")
-		
-		# Trimitem numele jucătorului după ce totul este gata
 		call_deferred("_send_player_name")
 	else:
 		print("✓ Setting up REMOTE player (no controls)")
 		if camera:
 			camera.current = false
-			
-	if ik_target:
-		ik_base_position = ik_target.position
+	
+	# SALVĂM POZIȚIA DE BAZĂ DUPĂ CE TOTUL E ÎNCĂRCAT
+	await get_tree().process_frame
+	await get_tree().process_frame
+
 	
 	radiation_device.visible = false
 	Flash.visible = false
 
+	# CONFIGURARE VOICE CHAT LAN - funcționează fără Steam
+	_setup_voice_chat()
+
+func _setup_voice_chat():
+	# 1. Setup AudioStreamPlayer3D pentru redare (TOȚI jucătorii)
+	if voice_player == null:
+		voice_player = AudioStreamPlayer3D.new()
+		voice_player.name = "VoicePlayer"
+		add_child(voice_player)
+	
+	var stream_gen = AudioStreamGenerator.new()
+	stream_gen.mix_rate = 44100  # 44.1 kHz standard
+	stream_gen.buffer_length = 0.1  # 100ms buffer
+	
+	voice_player.stream = stream_gen
+	voice_player.max_distance = 50.0  # Distanța maximă de auzire
+	voice_player.unit_size = 10.0
+	voice_player.play()
+	playback = voice_player.get_stream_playback()
+	
+	print("✓ Voice playback ready pentru: ", name)
+	
+	# 2. Setup AudioEffectCapture pentru înregistrare (DOAR local player)
+	if is_multiplayer_authority():
+		_setup_voice_recording()
+
+	var mic_player = AudioStreamPlayer.new()
+	mic_player.stream = mic_stream
+	mic_player.bus = "VoiceCapture_" + str(name)
+	mic_player.name = "MicrophonePlayer"
+	add_child(mic_player)
+	
+	# Pornim player-ul, dar controlăm transmisia prin cod
+	mic_player.play()
+	
+	# Curățăm buffer-ul inițial ca să nu avem "ecou" din trecut la prima apăsare
+	if audio_effect_capture:
+		audio_effect_capture.clear_buffer()
+	
+	print("✓ Voice recording initialized (Muted by default) for: ", name)
+	
+func _setup_voice_recording():
+	recording_bus_index = AudioServer.get_bus_count()
+	AudioServer.add_bus(recording_bus_index)
+	var bus_name = "VoiceCapture_" + str(name)
+	AudioServer.set_bus_name(recording_bus_index, bus_name)
+	
+	# --- MODIFICAREA CRUCIALĂ AICI ---
+	# Dezactivăm trimiterea către Master. 
+	# Vrem ca datele să ajungă DOAR în AudioEffectCapture, nu în boxe.
+	AudioServer.set_bus_mute(recording_bus_index, true) 
+	# ---------------------------------
+
+	var capture_effect = AudioEffectCapture.new()
+	AudioServer.add_bus_effect(recording_bus_index, capture_effect)
+	audio_effect_capture = capture_effect
+	
+	var mic_stream = AudioStreamMicrophone.new()
+	mic_player = AudioStreamPlayer.new()
+	mic_player.stream = mic_stream
+	mic_player.bus = bus_name
+	add_child(mic_player)
+	mic_player.play()
+
 func _send_player_name():
 	await get_tree().process_frame
 	
-	var world = get_parent()
-	if world and world.has_method("get_player_name"):
-		var my_name = world.get_player_name()
-		set_player_name.rpc(my_name)
-		print("Sending player name: ", my_name, " for peer: ", name)
+	# Folosim direct player_name care e deja setat în _ready()
+	if player_name != "":
+		set_player_name.rpc(player_name)
+		print("Sending player name: ", player_name, " for peer: ", name)
 		
 		if multiplayer.get_unique_id() != 1:
 			request_all_player_names.rpc_id(1)
@@ -204,7 +262,8 @@ func receive_player_name(peer_id: int, p_name: String) -> void:
 	if player and player.has_method("set_player_name_direct"):
 		player.set_player_name_direct(p_name)
 	
-	call_deferred("update_all_player_lists")
+	# Trebuie să fie RPC call, nu call_deferred direct
+	update_all_player_lists.rpc()
 
 func set_player_name_direct(new_name: String) -> void:
 	player_name = new_name
@@ -253,15 +312,19 @@ func _setup_mouse_capture():
 	else:
 		get_viewport().gui_focus_changed.connect(_on_focus_gained, CONNECT_ONE_SHOT)
 
-func _on_focus_gained(_node = null): # Adăugăm un argument opțional
+func _on_focus_gained(_node = null):
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
-	if multiplayer.multiplayer_peer == null or not is_multiplayer_authority() or not is_inside_tree():
+	# VERIFICARE CRITICĂ - oprește procesarea dacă nodul e în curs de ștergere
+	if not is_inside_tree() or is_queued_for_deletion():
+		return
+	
+	if multiplayer.multiplayer_peer == null or not is_multiplayer_authority():
 		return
 
-	# GRAVITAȚIA (Esențială!)
+	# GRAVITAȚIA
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	elif velocity.y < 0:
@@ -281,7 +344,7 @@ func _physics_process(delta):
 			sync_transform.rpc(global_position, rotation.y)
 		return
 		
-	# SOLUȚIE ERORI EXIT: Verificăm dacă nodul mai este în scenă
+	# SOLUȚIE ERORI EXIT
 	if not is_inside_tree() or multiplayer.multiplayer_peer == null:
 		return
 		
@@ -297,7 +360,7 @@ func _physics_process(delta):
 			if Animation_Player.current_animation != "Idle":
 				Animation_Player.play("Idle", 0.2)
 			return
-
+	
 		# Logica normală de mișcare
 		if not is_on_floor():
 			velocity.y -= gravity * delta
@@ -306,10 +369,20 @@ func _physics_process(delta):
 			velocity.y = JUMP_VELOCITY
 		
 		var current_target_speed = SPEED
-		if Input.is_action_pressed("sprint"):
+		var is_sprinting = Input.is_action_pressed("sprint")
+		if is_sprinting:
 			current_target_speed = SPRINT_SPEED
 		
 		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		
+		# Aplică sway-ul de la mouse
+		hand_sway_velocity = hand_sway_velocity.lerp(Vector2.ZERO, delta * 8.0)
+		hand_sway_offset += hand_sway_velocity * delta * 2.0
+		
+		# Limitează offset-ul total
+		hand_sway_offset.x = clamp(hand_sway_offset.x, -0.1, 0.1)
+		hand_sway_offset.y = clamp(hand_sway_offset.y, -0.1, 0.1)
+		
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		
 		if direction:
@@ -321,12 +394,69 @@ func _physics_process(delta):
 		
 		move_and_slide()
 		
-		# Sincronizăm doar dacă peer-ul este încă valid
 		if multiplayer.multiplayer_peer:
 			sync_transform.rpc(global_position, rotation.y)
 
-		# Logica de animație
 		_handle_animations(current_target_speed)
+		
+		# ===== VOICE CHAT - CAPTURARE CONTINUĂ =====
+		_handle_voice_capture()
+
+# FUNCȚIE pentru capturare voce LAN (fără Steam)
+func _handle_voice_capture():
+	if not is_multiplayer_authority() or audio_effect_capture == null:
+		return
+	
+	if Input.is_action_pressed("voice_key"):
+		var available_frames = audio_effect_capture.get_frames_available()
+		
+		if available_frames > 0:
+			var audio_data = audio_effect_capture.get_buffer(available_frames)
+			
+			var byte_array = PackedByteArray()
+			for frame in audio_data:
+				var float_value = (frame.x + frame.y) / 2.0
+				byte_array.append_array(PackedFloat32Array([float_value]).to_byte_array())
+			
+			send_voice_to_peers.rpc(byte_array)
+	else:
+		# Când nu apeși V, doar curățăm buffer-ul ca să nu se adune lag
+		if audio_effect_capture.get_frames_available() > 0:
+			audio_effect_capture.clear_buffer()
+
+# MODIFICARE AICI: Verifică ID-ul ca să nu te auzi pe tine
+@rpc("any_peer", "unreliable_ordered", "call_local")
+func send_voice_to_peers(buffer: PackedByteArray):
+	var sender_id = multiplayer.get_remote_sender_id()
+	if sender_id == 0: sender_id = multiplayer.get_unique_id()
+	
+	# DACĂ SUNT EU, NU REDA SUNETUL (Asta elimină ecoul!)
+	if sender_id == multiplayer.get_unique_id():
+		return
+		
+	_play_voice(buffer)
+
+func _play_voice(data: PackedByteArray):
+	# Verificare pentru crash
+	
+	if not is_inside_tree() or is_queued_for_deletion():
+		return
+	
+	if playback == null:
+		if voice_player and voice_player.stream:
+			playback = voice_player.get_stream_playback()
+		if playback == null:
+			return
+	
+	# Convertim bytes înapoi la float array
+	var float_array = data.to_float32_array()
+	
+	if float_array.size() == 0:
+		return
+	
+	# Adăugăm frames la playback (convertim mono la stereo)
+	for i in range(float_array.size()):
+		playback.push_frame(Vector2(float_array[i], float_array[i]))
 
 func _handle_animations(current_swpeed):
 	var horiz_vel = Vector3(velocity.x, 0, velocity.z).length()
@@ -345,8 +475,7 @@ func _handle_animations(current_swpeed):
 	if Animation_Player.current_animation != next_anim:
 		Animation_Player.play(next_anim, 0.2, playback_speed)
 		play_animation_rpc.rpc(next_anim)
-	
-# RPC-urile rămân la fel, dar adaugă verificări de siguranță:
+
 @rpc("any_peer", "unreliable")
 func sync_transform(pos: Vector3, rot_y: float):
 	if is_inside_tree() and not is_multiplayer_authority():
@@ -357,37 +486,34 @@ func cam_tilt(input_x, delta):
 	if camera:
 		camera.rotation.z = lerp(camera.rotation.z, -input_x * camera_rotation, 10 * delta)
 
-
 func toggle_esc_menu():
 	var existing_menu = get_tree().root.get_node_or_null("EscMenu")
 	
 	if is_instance_valid(esc_menu_instance) or existing_menu:
-		# Dacă am găsit unul, îl închidem pe acela
 		var menu_to_close = esc_menu_instance if esc_menu_instance else existing_menu
 		menu_to_close.queue_free()
 		esc_menu_instance = null
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
-		# 2. Creăm unul nou DOAR dacă nu am găsit nimic
 		esc_menu_instance = ESC_MENU_SCENE.instantiate()
-		esc_menu_instance.name = "EscMenu" # Îi dăm nume fix ca să îl găsim data viitoare
+		esc_menu_instance.name = "EscMenu"
 		get_tree().root.add_child(esc_menu_instance)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-
 func _input(event):
-	if !is_multiplayer_authority(): return
+	if !is_multiplayer_authority(): 
+		return
 	
 	if event.is_action_pressed("esc"):
 		toggle_esc_menu()
 		get_viewport().set_input_as_handled()
 		return
 
-	# Dacă meniul e deschis, tăiem restul input-ului (cameră, mișcare, unelte)
 	if is_instance_valid(esc_menu_instance):
 		return
 
-	# 3. UNELTE (Flashlight, Radiometru)
+	# Voice key se handlează automat în _handle_voice_capture()
+			
 	if event.is_action_pressed("flash"):
 		r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
 		Flash_Light.visible = r_two_bone_ik_3d.active
@@ -397,7 +523,6 @@ func _input(event):
 		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
 		radiation_device.visible = l_two_bone_ik_3d_2.active
 			
-	# 4. TAB MENU (Player List)
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:
 			tab_canvas.visible = true
@@ -407,7 +532,6 @@ func _input(event):
 		if tab_canvas:
 			tab_canvas.visible = false
 	
-	# 5. CAMERA (Mouse Motion)
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera_v_rot -= event.relative.y * MOUSE_SENSITIVITY
@@ -415,9 +539,6 @@ func _input(event):
 		camera.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
 		accumulated_mouse_input += event.relative
-	
-	#if event.is_action_pressed("L_Click"):
-		#play_shoot_animation.rpc("Shoot")
 
 @rpc("any_peer", "call_local", "reliable")
 func play_animation_rpc(anim_name: String):
@@ -428,9 +549,3 @@ func play_animation_rpc(anim_name: String):
 func update_camera_rotation(vertical_rotation: float):
 	if not is_multiplayer_authority():
 		camera.rotation.x = vertical_rotation
-
-#@rpc("any_peer", "call_local", "reliable")
-#func play_shoot_animation(_tip: String):
-	#if PortalAnim:
-		#PortalAnim.stop()
-		#PortalAnim.play("Shoot")
