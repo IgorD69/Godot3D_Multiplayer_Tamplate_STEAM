@@ -39,10 +39,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.43333334, 0.98),
+"times": PackedFloat32Array(0, 0.5, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.050831288), Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0.050831288), Vector3(0, 0, 0), Vector3(0, 0, 0.050831288)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iaag0"]
@@ -52,7 +52,7 @@ _data = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bt4lu"]
-size = Vector3(1, 10.726227, 1)
+size = Vector3(2.7871094, 29.02161, 4.4451294)
 
 [node name="TrayButton" type="StaticBody3D" unique_id=180132092]
 script = ExtResource("1_fhway")

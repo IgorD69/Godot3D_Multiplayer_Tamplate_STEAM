@@ -2134,8 +2134,9 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_parcb")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D" unique_id=393750881]
-transform = Transform3D(0.99866056, -0.020396702, 0.047551185, 0.04971254, 0.12343145, -0.9911071, 0.0143460035, 0.9921435, 0.12428005, 0.014363408, 0.017232895, -0.124265105)
-omni_range = 0.3831958
+transform = Transform3D(0.99866056, -0.020396642, 0.047551066, 0.04971242, 0.123431526, -0.99110705, 0.014345944, 0.99214333, 0.12428014, 0.007880956, -0.0037726164, -0.004219763)
+light_color = Color(0.92941177, 0.84705883, 0.54509807, 1)
+omni_range = 0.18689466
 
 [node name="L_HandMarker" type="Marker3D" parent="Character/metarig/Skeleton3D" unique_id=1042096103]
 transform = Transform3D(-0.26737288, 0.9635931, 1.509958e-07, 0.9635931, 0.26737288, 0, -4.0372182e-08, 1.4549852e-07, -1, 0.4506827, 1.3421853, 0.44941992)

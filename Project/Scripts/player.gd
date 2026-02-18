@@ -398,6 +398,7 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, current_target_speed)
 			is_moving = false
 			
+		cam_tilt(input_dir.x, delta)
 		#
 		#if !is_moving:
 			#r_hand_marker.position.y = 1.2
