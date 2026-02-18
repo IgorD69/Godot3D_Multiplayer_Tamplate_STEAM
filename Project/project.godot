@@ -33,14 +33,14 @@ driver/enable_input=true
 
 [autoload]
 
-Global="*res://Global.gd"
-AmbientAPI="*uid://cmbh88h6yljhy"
-AmbientParser="*uid://dcdrqnwmpgvk4"
-AmbientFileHandler="*uid://dnh8sqjyu74hs"
-AmbientMaterialMaker="*uid://nig0lamfd3mv"
-FishEyeCanvas="*uid://clxtksbsd371a"
+Global="*uid://cmbgvr2gex3i4"
 Net="*uid://d1vlwc3l4of51"
 SettingsManager="*uid://c3oulib0vyq2s"
+FishEyeCanvas="*uid://clxtksbsd371a"
+AmbientParser="*uid://dcdrqnwmpgvk4"
+AmbientAPI="*uid://cmbh88h6yljhy"
+AmbientMaterialMaker="*uid://nig0lamfd3mv"
+AmbientFileHandler="*uid://dnh8sqjyu74hs"
 
 [display]
 

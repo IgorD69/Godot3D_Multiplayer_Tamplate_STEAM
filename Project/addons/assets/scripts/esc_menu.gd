@@ -1,13 +1,9 @@
 extends CanvasLayer
 
-@export var SETTINGS_SCENE: PackedScene = preload("uid://dsr4sx6v6qsiv")
-
-# Referința către containerul unde vom pune sliderele (VBoxContainer2 din screenshot-ul tău)
 @onready var player_list_container = $PlayerList/HBoxContainer/VBoxContainer2
 var settings_instance = null
 
 func _ready() -> void:
-	# Generăm lista de volume imediat ce se deschide meniul
 	refresh_player_volumes()
 
 func refresh_player_volumes() -> void:
@@ -44,7 +40,6 @@ func create_voice_control(player_node) -> void:
 	if player_node.voice_player:
 		slider.value = db_to_linear(player_node.voice_player.volume_db)
 	
-	# Conectăm slider-ul direct la vocea jucătorului respectiv
 	slider.value_changed.connect(func(value):
 		if is_instance_valid(player_node) and player_node.voice_player:
 			player_node.voice_player.volume_db = linear_to_db(value)
@@ -57,7 +52,7 @@ func create_voice_control(player_node) -> void:
 func _on_settings_pressed() -> void:
 	if not is_instance_valid(settings_instance):
 		hide()
-		settings_instance = SETTINGS_SCENE.instantiate()
+		settings_instance = Global.SETTINGS_SCENE.instantiate()
 		add_child(settings_instance)
 		
 		settings_instance.tree_exited.connect(func(): 
@@ -73,7 +68,7 @@ func _on_main_menu_pressed() -> void:
 	Net.cleanup_network()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	queue_free() 
-	get_tree().change_scene_to_file("res://Scene/MainScreen.tscn")
+	get_tree().change_scene_to_packed(Global.MAIN_SCREEN)
 
 func _on_resume_pressed() -> void:
 	if get_tree().current_scene.name != "MainScreen":

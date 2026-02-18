@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b37j032c8ev8k"]
+
+[sub_resource type="Animation" id="Animation_4b564"]
+resource_name = "FadeOut"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.09411765, 0, 0, 1), Color(0.09411765, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_g743h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.09411765, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wd545"]
+_data = {
+&"FadeOut": SubResource("Animation_4b564"),
+&"RESET": SubResource("Animation_g743h")
+}
+
+[node name="Transition" type="ColorRect" unique_id=63098407]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09411765, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=355210508]
+libraries/ = SubResource("AnimationLibrary_wd545")

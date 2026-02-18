@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxvg60x4rpl7c"]
+[gd_scene format=3 uid="uid://cxvg60x4rpl7c"]
 
-[ext_resource type="PackedScene" uid="uid://c2ojogoumanna" path="res://exported-model.glb" id="1_070hc"]
+[ext_resource type="PackedScene" uid="uid://c2ojogoumanna" path="res://AnimationLibrary/exported-model.glb" id="1_070hc"]
 
 [node name="exported-model" instance=ExtResource("1_070hc")]
 
