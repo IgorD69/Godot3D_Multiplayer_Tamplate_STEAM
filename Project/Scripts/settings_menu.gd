@@ -1,15 +1,16 @@
 extends CanvasLayer
 
 # --- REFERINȚE UI ---
-@onready var audioContainer: TabBar = $SettingsMenu/Audio
-@onready var controlsContainer: TabBar = $SettingsMenu/Controls
+@onready var audioContainer: TabBar = $CanvasGroup/SettingsMenu/Audio
+@onready var controlsContainer: TabBar = $CanvasGroup/SettingsMenu/Controls
 
-@onready var mouse_sensitivity_slider: HSlider = $SettingsMenu/Controls/VBoxContainer2/MouseSensitivitySlider
-@onready var fov_slider: HSlider = $SettingsMenu/Controls/VBoxContainer2/FOV_Slider
 
-@onready var master: HSlider = $SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Master
-@onready var music: HSlider = $SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Music
-@onready var sound_effects: HSlider = $SettingsMenu/Audio/HBoxContainer/VBoxContainer2/SoundEffects
+@onready var mouse_sensitivity_slider: HSlider = $CanvasGroup/SettingsMenu/Controls/VBoxContainer2/MouseSensitivitySlider
+#@onready var fov_slider: HSlider = $SettingsMenu/Controls/VBoxContainer2/FOV_Slider
+
+@onready var master: HSlider = $CanvasGroup/SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Master
+@onready var music: HSlider = $CanvasGroup/SettingsMenu/Audio/HBoxContainer/VBoxContainer2/Music
+@onready var sound_effects: HSlider = $CanvasGroup/SettingsMenu/Audio/HBoxContainer/VBoxContainer2/SoundEffects
 
 # --- CONFIGURARE AUDIO ---
 @export var master_bus_name: String = "Master"
@@ -64,9 +65,6 @@ func _apply_to_local_player() -> void:
 		if player.is_multiplayer_authority():
 			if "MOUSE_SENSITIVITY" in player:
 				player.MOUSE_SENSITIVITY = Global.mouse_sensitivity
-			
-			#if camera:
-				#camera.fov = Global.fov
 
 # --- SINCRONIZARE VIZUALĂ SLIDERE ---
 func update_sliders_to_current_volumes() -> void:

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8k8giesfgmeu"
 path.s3tc="res://.godot/imported/Coal_Screenshot_20260205_125431.png-247f46bb10bb2d78ae94393fdc451ecd.s3tc.ctex"
+path.etc2="res://.godot/imported/Coal_Screenshot_20260205_125431.png-247f46bb10bb2d78ae94393fdc451ecd.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/Coal_Screenshot_20260205_125431.png"
-dest_files=["res://.godot/imported/Coal_Screenshot_20260205_125431.png-247f46bb10bb2d78ae94393fdc451ecd.s3tc.ctex"]
+dest_files=["res://.godot/imported/Coal_Screenshot_20260205_125431.png-247f46bb10bb2d78ae94393fdc451ecd.s3tc.ctex", "res://.godot/imported/Coal_Screenshot_20260205_125431.png-247f46bb10bb2d78ae94393fdc451ecd.etc2.ctex"]
 
 [params]
 

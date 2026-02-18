@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://nawrj5ri8s3g"
 path.s3tc="res://.godot/imported/Concrete047A_2K-JPG_AmbientOcclusion.jpg-a9ade36f78e932c921a96063c782aa68.s3tc.ctex"
+path.etc2="res://.godot/imported/Concrete047A_2K-JPG_AmbientOcclusion.jpg-a9ade36f78e932c921a96063c782aa68.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://AmbientCG/Extracted/Concrete047A_2K-JPG_AmbientOcclusion.jpg"
-dest_files=["res://.godot/imported/Concrete047A_2K-JPG_AmbientOcclusion.jpg-a9ade36f78e932c921a96063c782aa68.s3tc.ctex"]
+dest_files=["res://.godot/imported/Concrete047A_2K-JPG_AmbientOcclusion.jpg-a9ade36f78e932c921a96063c782aa68.s3tc.ctex", "res://.godot/imported/Concrete047A_2K-JPG_AmbientOcclusion.jpg-a9ade36f78e932c921a96063c782aa68.etc2.ctex"]
 
 [params]
 

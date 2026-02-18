@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c25hbgf4v1r3m"
 path.s3tc="res://.godot/imported/icons8-target-24.png-fbc74a622458b85a8512f991fd4842c4.s3tc.ctex"
+path.etc2="res://.godot/imported/icons8-target-24.png-fbc74a622458b85a8512f991fd4842c4.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Models/icons8-target-24.png"
-dest_files=["res://.godot/imported/icons8-target-24.png-fbc74a622458b85a8512f991fd4842c4.s3tc.ctex"]
+dest_files=["res://.godot/imported/icons8-target-24.png-fbc74a622458b85a8512f991fd4842c4.s3tc.ctex", "res://.godot/imported/icons8-target-24.png-fbc74a622458b85a8512f991fd4842c4.etc2.ctex"]
 
 [params]
 

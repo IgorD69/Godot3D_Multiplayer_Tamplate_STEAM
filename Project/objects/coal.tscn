@@ -43,9 +43,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_krr11")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4721n"]
-size = Vector3(1, 1.6411133, 1.5766602)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfd26"]
 resource_name = "Material.001"
 cull_mode = 2
@@ -83,16 +80,18 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_3df2r")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4721n"]
+points = PackedVector3Array(0.010931611, 0.8995244, 0.80592513, -0.17214835, 1.2002428, -0.9315065, -0.7754532, 0.6910458, -0.6826546, -0.7922959, -0.27788895, 0.5657731, 0.4493466, -0.5831983, 0.6837648, 0.92835253, -0.2902015, -0.22935647, 0.5372655, 1.0385101, -0.45029628, 0.62400526, -0.50431454, -1.045692, -0.71801966, -0.50953174, -0.94383126, -0.55043495, -0.931706, -0.34553564)
+
 [node name="Coal" type="RigidBody3D" unique_id=1576908908]
+collision_layer = 4
+collision_mask = 2
+sleeping = true
 
 [node name="Cube" type="MeshInstance3D" parent="." unique_id=1768802080]
 transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0)
 mesh = SubResource("ArrayMesh_25eux")
 skeleton = NodePath("")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1707980615]
-transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0.011407472, -0.014304824)
-shape = SubResource("BoxShape3D_4721n")
 
 [node name="InteractionComponent" parent="." unique_id=2009653683 node_paths=PackedStringArray("object_referance") instance=ExtResource("2_epcf5")]
 object_referance = NodePath("..")
@@ -107,3 +106,7 @@ transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
 visible = false
 mesh = SubResource("ArrayMesh_08pj4")
 skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1041367228]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_4721n")

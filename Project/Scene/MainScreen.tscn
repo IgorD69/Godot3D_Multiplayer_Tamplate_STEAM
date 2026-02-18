@@ -4,6 +4,102 @@
 [ext_resource type="PackedScene" uid="uid://bb3qcv0kbqbo6" path="res://Scene/Player.tscn" id="2_jgi5y"]
 [ext_resource type="FontFile" uid="uid://dsisvfrdgqau" path="res://Fonts/Cubic_11_1.013_R.ttf" id="3_3sins"]
 
+[sub_resource type="Animation" id="Animation_47utw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/LeftSideCanvasGroup:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1000, 373)]
+}
+
+[sub_resource type="Animation" id="Animation_jgi5y"]
+resource_name = "pop"
+length = 0.13333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/LeftSideCanvasGroup:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.13333334),
+"transitions": PackedFloat32Array(1, 2.9281716, 1),
+"update": 0,
+"values": [Vector2(1000, 373), Vector2(650, 373), Vector2(707.74, 373)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3sins"]
+_data = {
+&"RESET": SubResource("Animation_47utw"),
+&"pop": SubResource("Animation_jgi5y")
+}
+
+[sub_resource type="Animation" id="Animation_3sins"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-300, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-300, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_af1mn"]
+resource_name = "right_pop"
+length = 0.13333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-300, 0), Vector2(30, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f8kud"]
+_data = {
+&"RESET": SubResource("Animation_3sins"),
+&"right_pop": SubResource("Animation_af1mn")
+}
+
 [node name="MainScreen" type="Control" unique_id=2021502316]
 layout_mode = 3
 anchors_preset = 0
@@ -20,6 +116,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.03137255, 0, 0, 1)
 
 [node name="Control" type="TabBar" parent="UI" unique_id=1348305540]
@@ -61,11 +158,33 @@ offset_bottom = 373.0
 theme_override_fonts/font = ExtResource("3_3sins")
 text = "Main Manu"
 
-[node name="SinglePlayer" type="TabBar" parent="UI" unique_id=1280689145]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="LeftSideCanvasGroup" type="CanvasGroup" parent="UI" unique_id=480254953]
+position = Vector2(1000, 373)
 
-[node name="LanButton" type="Button" parent="UI/SinglePlayer" unique_id=37941725]
+[node name="Settings" type="Button" parent="UI/LeftSideCanvasGroup" unique_id=1934092907]
+unique_name_in_owner = true
+offset_right = 170.0
+offset_bottom = 38.596497
+theme_override_fonts/font = ExtResource("3_3sins")
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="UI/LeftSideCanvasGroup" unique_id=467388850]
+offset_left = 29.26001
+offset_top = 85.0
+offset_right = 199.26001
+offset_bottom = 123.5965
+theme_override_fonts/font = ExtResource("3_3sins")
+theme_override_font_sizes/font_size = 24
+text = "Quit Game"
+
+[node name="SinglePlayer" type="TabBar" parent="UI/LeftSideCanvasGroup" unique_id=1280689145]
+offset_left = -707.74
+offset_top = -373.0
+offset_right = -667.74
+offset_bottom = -333.0
+
+[node name="LanButton" type="Button" parent="UI/LeftSideCanvasGroup/SinglePlayer" unique_id=37941725]
 layout_mode = 0
 offset_left = 737.0
 offset_top = 63.0
@@ -75,11 +194,20 @@ theme_override_fonts/font = ExtResource("3_3sins")
 theme_override_font_sizes/font_size = 24
 text = "Single Player"
 
-[node name="Multiplayer" type="TabBar" parent="UI" unique_id=425648208]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/LeftSideCanvasGroup" unique_id=1751538538]
+root_node = NodePath("../../..")
+libraries/ = SubResource("AnimationLibrary_3sins")
+autoplay = &"pop"
+speed_scale = 0.25
+
+[node name="RightSideCanvasGroup" type="CanvasGroup" parent="UI" unique_id=27894390]
+position = Vector2(-300, 0)
+
+[node name="Multiplayer" type="TabBar" parent="UI/RightSideCanvasGroup" unique_id=425648208]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Host" type="Button" parent="UI/Multiplayer" unique_id=1043740546]
+[node name="Host" type="Button" parent="UI/RightSideCanvasGroup/Multiplayer" unique_id=1043740546]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 63.0
@@ -90,17 +218,7 @@ theme_override_font_sizes/font_size = 24
 action_mode = 0
 text = "Host"
 
-[node name="Join" type="Button" parent="UI/Multiplayer" unique_id=652689619]
-visible = false
-layout_mode = 0
-offset_left = 320.0
-offset_top = 321.0
-offset_right = 544.0
-offset_bottom = 376.0
-theme_override_fonts/font = ExtResource("3_3sins")
-text = "Join by ID"
-
-[node name="Friends" type="Button" parent="UI/Multiplayer" unique_id=502271004]
+[node name="Friends" type="Button" parent="UI/RightSideCanvasGroup/Multiplayer" unique_id=502271004]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 131.0
@@ -111,7 +229,17 @@ theme_override_font_sizes/font_size = 24
 text = "Join Friend
 "
 
-[node name="Copy" type="Button" parent="UI/Multiplayer" unique_id=1337875879]
+[node name="Join" type="Button" parent="UI/RightSideCanvasGroup/Multiplayer" unique_id=652689619]
+visible = false
+layout_mode = 0
+offset_left = 320.0
+offset_top = 321.0
+offset_right = 544.0
+offset_bottom = 376.0
+theme_override_fonts/font = ExtResource("3_3sins")
+text = "Join by ID"
+
+[node name="Copy" type="Button" parent="UI/RightSideCanvasGroup/Multiplayer" unique_id=1337875879]
 visible = false
 layout_mode = 0
 offset_left = 470.0
@@ -121,30 +249,18 @@ offset_bottom = 355.0
 theme_override_fonts/font = ExtResource("3_3sins")
 text = "Copy Lobby-ID"
 
-[node name="Settings" type="Button" parent="UI" unique_id=1934092907]
-unique_name_in_owner = true
-offset_left = 737.0
-offset_top = 373.0
-offset_right = 907.0
-offset_bottom = 411.5965
-theme_override_fonts/font = ExtResource("3_3sins")
-theme_override_font_sizes/font_size = 24
-text = "Settings"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/RightSideCanvasGroup" unique_id=1631521728]
+libraries/ = SubResource("AnimationLibrary_f8kud")
+autoplay = &"right_pop"
+speed_scale = 0.25
 
-[node name="ExitButton" type="Button" parent="UI" unique_id=467388850]
-offset_left = 737.0
-offset_top = 458.0
-offset_right = 907.0
-offset_bottom = 496.5965
-theme_override_fonts/font = ExtResource("3_3sins")
-theme_override_font_sizes/font_size = 24
-text = "Quit Game"
+[node name="paralax" type="Parallax2D" parent="UI" unique_id=1266274471]
 
 [connection signal="pressed" from="UI/Control/LeaveRoom" to="." method="_on_leave_room_pressed"]
-[connection signal="pressed" from="UI/SinglePlayer/LanButton" to="." method="_on_lan_button_pressed"]
-[connection signal="pressed" from="UI/Multiplayer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="UI/Multiplayer/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="UI/Multiplayer/Friends" to="." method="_on_friends_pressed"]
-[connection signal="pressed" from="UI/Multiplayer/Copy" to="." method="_on_copy_pressed"]
-[connection signal="pressed" from="UI/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="UI/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="UI/LeftSideCanvasGroup/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="UI/LeftSideCanvasGroup/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="UI/LeftSideCanvasGroup/SinglePlayer/LanButton" to="." method="_on_lan_button_pressed"]
+[connection signal="pressed" from="UI/RightSideCanvasGroup/Multiplayer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/RightSideCanvasGroup/Multiplayer/Friends" to="." method="_on_friends_pressed"]
+[connection signal="pressed" from="UI/RightSideCanvasGroup/Multiplayer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/RightSideCanvasGroup/Multiplayer/Copy" to="." method="_on_copy_pressed"]

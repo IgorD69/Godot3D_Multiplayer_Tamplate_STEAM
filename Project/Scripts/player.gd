@@ -4,7 +4,7 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 const SPRINT_SPEED = 10.0
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 6.5
 
 var MOUSE_SENSITIVITY = Global.mouse_sensitivity
 
@@ -15,8 +15,6 @@ var current_anim: String = ""
 var player_name: String = ""
 var hand: Marker3D
 var accumulated_mouse_input: Vector2 = Vector2.ZERO
-var ik_base_position: Vector3 = Vector3(-0.4, 1.38, 0.475)  # SETEAZĂ POZIȚIA MANUALĂ CA FALLBACK
-var ik_initialized: bool = false
 var esc_menu_instance = null
 var is_frozen: bool = false
 
@@ -37,8 +35,6 @@ var mic_player: AudioStreamPlayer = null
 
 
 @export var camera_rotation = 0.05
-
-
 
 @onready var Transition_anim: AnimationPlayer = $Transition/AnimationPlayer
 @onready var transition: ColorRect = $Transition
@@ -365,7 +361,7 @@ func _physics_process(delta):
 			move_and_slide()
 			if Animation_Player.current_animation != "Idle":
 				Animation_Player.play("Idle", 0.15, 0.15)
-				r_hand_marker.position.y = 1.2
+				#r_hand_marker.position.y = 1.2
 			return
 	
 		# Logica normală de mișcare
@@ -402,9 +398,9 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, current_target_speed)
 			is_moving = false
 			
-		
-		if !is_moving:
-			r_hand_marker.position.y = 1.2
+		#
+		#if !is_moving:
+			#r_hand_marker.position.y = 1.2
 			
 			
 		move_and_slide()
@@ -473,21 +469,27 @@ func _play_voice(data: PackedByteArray):
 	for i in range(float_array.size()):
 		playback.push_frame(Vector2(float_array[i], float_array[i]))
 
-func _handle_animations(current_swpeed):
+func _handle_animations(current_speed):
 	var horiz_vel = Vector3(velocity.x, 0, velocity.z).length()
 	var next_anim = "Idle"
 	var playback_speed = 1.0
 
 	if not is_on_floor():
 		next_anim = "Jump"
+		r_hand_marker.position.y = 1.2 # În aer, mâna stă sus
 	elif horiz_vel > 0.1:
-		r_hand_marker.position.y = 1.1
+		# Jucătorul se mișcă
+		r_hand_marker.position.y = 1.138
+		r_hand_marker.position.z = 0.854
 		if Input.is_action_pressed("sprint"):
 			next_anim = "Run"
-			playback_speed = 1.5
+			Animation_Player.speed_scale = 1.5
 		else:
 			next_anim = "Walk"
-	
+	else:
+		next_anim = "Idle"
+		r_hand_marker.position.y = 1.2 # Poziția de repaus
+
 	if Animation_Player.current_animation != next_anim:
 		Animation_Player.play(next_anim, 0.2, playback_speed)
 		play_animation_rpc.rpc(next_anim)
@@ -526,6 +528,15 @@ func show_flash():
 		Flash_Light.visible = r_two_bone_ik_3d.active
 		Flash.visible = r_two_bone_ik_3d.active
 	
+@rpc("any_peer", "unreliable_ordered", "call_local")
+func show_RadioMeter():
+	if !is_multiplayer_authority():
+		return
+	
+	if Input.is_action_pressed("radiometru"):
+		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
+		radiation_device.visible = l_two_bone_ik_3d_2.active
+		
 	
 	# RPC-ul care execută schimbarea vizuală pe toate instanțele
 @rpc("any_peer", "call_local", "reliable")
@@ -541,6 +552,15 @@ func sync_flashlight(is_on: bool):
 		
 	if Flash:
 		Flash.visible = is_on
+		
+@rpc("any_peer", "call_local", "reliable")
+func sync_radioMeter(is_on: bool):
+	if l_two_bone_ik_3d_2:
+		l_two_bone_ik_3d_2.active = is_on
+	
+	if radiation_device:
+		radiation_device.visible = is_on
+	
 		
 func _input(event):
 	if !is_multiplayer_authority(): 
@@ -561,8 +581,10 @@ func _input(event):
 	
 			
 	if event.is_action_pressed("radiometru"):
-		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
-		radiation_device.visible = l_two_bone_ik_3d_2.active
+		var new_state = !radiation_device.visible 
+		sync_radioMeter.rpc(new_state)
+		#l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
+		#radiation_device.visible = l_two_bone_ik_3d_2.active
 			
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:

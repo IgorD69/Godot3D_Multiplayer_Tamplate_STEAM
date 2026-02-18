@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwi7q5nr4lnu3"
 path.s3tc="res://.godot/imported/MOUSE_0.png-05dbd6ffd78ba56b1ce17869c4346c8a.s3tc.ctex"
+path.etc2="res://.godot/imported/MOUSE_0.png-05dbd6ffd78ba56b1ce17869c4346c8a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/MOUSE_0.png"
-dest_files=["res://.godot/imported/MOUSE_0.png-05dbd6ffd78ba56b1ce17869c4346c8a.s3tc.ctex"]
+dest_files=["res://.godot/imported/MOUSE_0.png-05dbd6ffd78ba56b1ce17869c4346c8a.s3tc.ctex", "res://.godot/imported/MOUSE_0.png-05dbd6ffd78ba56b1ce17869c4346c8a.etc2.ctex"]
 
 [params]
 

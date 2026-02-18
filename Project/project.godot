@@ -166,6 +166,12 @@ voice_key={
 
 locale/translations=PackedStringArray("res://addons/maaacks_menus_template/base/translations/menus_translations.en.translation", "res://addons/maaacks_menus_template/base/translations/menus_translations.fr.translation")
 
+[layer_names]
+
+3d_physics/layer_1="Player"
+3d_physics/layer_2="World"
+3d_physics/layer_3="Interactables"
+
 [maaacks_menus_template]
 
 disable_install_audio_busses=true
@@ -186,6 +192,10 @@ ai_assistant_hub/llm_api="ollamaturbo_api"
 ai_assistant_hub/preferences/thinking_target=0
 ai_assistant_hub/preferences/skip_greeting=false
 ai_assistant_hub/preferences/always_scroll_to_bottom=false
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
 
 [steam]
 

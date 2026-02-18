@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c3nfe1gag2n7i"
 path.s3tc="res://.godot/imported/Free_Tree_M_baseColor.png-e6b01bcb2699554dff37163e6da38751.s3tc.ctex"
+path.etc2="res://.godot/imported/Free_Tree_M_baseColor.png-e6b01bcb2699554dff37163e6da38751.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Models/Models/free_pack_-_tree/textures/Free_Tree_M_baseColor.png"
-dest_files=["res://.godot/imported/Free_Tree_M_baseColor.png-e6b01bcb2699554dff37163e6da38751.s3tc.ctex"]
+dest_files=["res://.godot/imported/Free_Tree_M_baseColor.png-e6b01bcb2699554dff37163e6da38751.s3tc.ctex", "res://.godot/imported/Free_Tree_M_baseColor.png-e6b01bcb2699554dff37163e6da38751.etc2.ctex"]
 
 [params]
 

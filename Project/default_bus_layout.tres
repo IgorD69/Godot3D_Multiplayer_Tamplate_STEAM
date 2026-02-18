@@ -6,10 +6,9 @@ room_size = 0.1
 
 [sub_resource type="AudioEffectBandPassFilter" id="AudioEffectBandPassFilter_j3pel"]
 resource_name = "BandPassFilter"
-cutoff_hz = 1068.0
-
-[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_j3pel"]
-resource_name = "HardLimiter"
+cutoff_hz = 1000.0
+resonance = 0.11
+db = 2
 
 [resource]
 bus/1/name = &"Music"
@@ -34,5 +33,3 @@ bus/3/effect/0/effect = SubResource("AudioEffectReverb_j3pel")
 bus/3/effect/0/enabled = true
 bus/3/effect/1/effect = SubResource("AudioEffectBandPassFilter_j3pel")
 bus/3/effect/1/enabled = true
-bus/3/effect/2/effect = SubResource("AudioEffectHardLimiter_j3pel")
-bus/3/effect/2/enabled = true

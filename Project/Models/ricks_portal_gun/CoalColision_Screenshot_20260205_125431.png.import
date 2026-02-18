@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4otwxv3t0foy"
 path.s3tc="res://.godot/imported/CoalColision_Screenshot_20260205_125431.png-12a3cc5ab99229d8baed7cc05933dc91.s3tc.ctex"
+path.etc2="res://.godot/imported/CoalColision_Screenshot_20260205_125431.png-12a3cc5ab99229d8baed7cc05933dc91.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/ricks_portal_gun/CoalColision_Screenshot_20260205_125431.png"
-dest_files=["res://.godot/imported/CoalColision_Screenshot_20260205_125431.png-12a3cc5ab99229d8baed7cc05933dc91.s3tc.ctex"]
+dest_files=["res://.godot/imported/CoalColision_Screenshot_20260205_125431.png-12a3cc5ab99229d8baed7cc05933dc91.s3tc.ctex", "res://.godot/imported/CoalColision_Screenshot_20260205_125431.png-12a3cc5ab99229d8baed7cc05933dc91.etc2.ctex"]
 
 [params]
 

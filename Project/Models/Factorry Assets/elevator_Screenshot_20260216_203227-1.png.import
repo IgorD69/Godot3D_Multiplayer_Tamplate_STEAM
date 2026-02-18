@@ -2,21 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djyxnc76usv54"
-path.s3tc="res://.godot/imported/Lada_Screenshot_20260205_180158-1.png-2050e99c9c352861ddcaeb68186a51ba.s3tc.ctex"
-path.etc2="res://.godot/imported/Lada_Screenshot_20260205_180158-1.png-2050e99c9c352861ddcaeb68186a51ba.etc2.ctex"
+uid="uid://2l1s1lkj6po3"
+path.s3tc="res://.godot/imported/elevator_Screenshot_20260216_203227-1.png-2657fe41be121ce450d9cd0a4d4fd641.s3tc.ctex"
+path.etc2="res://.godot/imported/elevator_Screenshot_20260216_203227-1.png-2657fe41be121ce450d9cd0a4d4fd641.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "b3f511c3eb655f9f74443ca41b4b99ff"
+"md5": "da0b659519cbf34a0b218786831e46a2"
 }
 
 [deps]
 
-source_file="res://Models/Factorry Assets/Lada_Screenshot_20260205_180158-1.png"
-dest_files=["res://.godot/imported/Lada_Screenshot_20260205_180158-1.png-2050e99c9c352861ddcaeb68186a51ba.s3tc.ctex", "res://.godot/imported/Lada_Screenshot_20260205_180158-1.png-2050e99c9c352861ddcaeb68186a51ba.etc2.ctex"]
+source_file="res://Models/Factorry Assets/elevator_Screenshot_20260216_203227-1.png"
+dest_files=["res://.godot/imported/elevator_Screenshot_20260216_203227-1.png-2657fe41be121ce450d9cd0a4d4fd641.s3tc.ctex", "res://.godot/imported/elevator_Screenshot_20260216_203227-1.png-2657fe41be121ce450d9cd0a4d4fd641.etc2.ctex"]
 
 [params]
 

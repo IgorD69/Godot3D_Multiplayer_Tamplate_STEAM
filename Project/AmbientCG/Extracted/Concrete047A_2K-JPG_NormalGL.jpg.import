@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://duybnhl3vulkj"
 path.s3tc="res://.godot/imported/Concrete047A_2K-JPG_NormalGL.jpg-d3b5f9a98921f65853040fad7af191fb.s3tc.ctex"
+path.etc2="res://.godot/imported/Concrete047A_2K-JPG_NormalGL.jpg-d3b5f9a98921f65853040fad7af191fb.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://AmbientCG/Extracted/Concrete047A_2K-JPG_NormalGL.jpg"
-dest_files=["res://.godot/imported/Concrete047A_2K-JPG_NormalGL.jpg-d3b5f9a98921f65853040fad7af191fb.s3tc.ctex"]
+dest_files=["res://.godot/imported/Concrete047A_2K-JPG_NormalGL.jpg-d3b5f9a98921f65853040fad7af191fb.s3tc.ctex", "res://.godot/imported/Concrete047A_2K-JPG_NormalGL.jpg-d3b5f9a98921f65853040fad7af191fb.etc2.ctex"]
 
 [params]
 

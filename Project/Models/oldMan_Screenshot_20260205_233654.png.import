@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bj6j8u0gh3ibr"
 path.s3tc="res://.godot/imported/oldMan_Screenshot_20260205_233654.png-a41076e57899b0f6c4605238c36ab769.s3tc.ctex"
+path.etc2="res://.godot/imported/oldMan_Screenshot_20260205_233654.png-a41076e57899b0f6c4605238c36ab769.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/oldMan_Screenshot_20260205_233654.png"
-dest_files=["res://.godot/imported/oldMan_Screenshot_20260205_233654.png-a41076e57899b0f6c4605238c36ab769.s3tc.ctex"]
+dest_files=["res://.godot/imported/oldMan_Screenshot_20260205_233654.png-a41076e57899b0f6c4605238c36ab769.s3tc.ctex", "res://.godot/imported/oldMan_Screenshot_20260205_233654.png-a41076e57899b0f6c4605238c36ab769.etc2.ctex"]
 
 [params]
 

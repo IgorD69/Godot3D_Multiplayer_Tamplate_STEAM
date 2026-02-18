@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwiyprxqnkcqr"
 path.s3tc="res://.godot/imported/Gear_rust.jpg-80cf7dca6faea97063eb4d9d465de949.s3tc.ctex"
+path.etc2="res://.godot/imported/Gear_rust.jpg-80cf7dca6faea97063eb4d9d465de949.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/Gear_rust.jpg"
-dest_files=["res://.godot/imported/Gear_rust.jpg-80cf7dca6faea97063eb4d9d465de949.s3tc.ctex"]
+dest_files=["res://.godot/imported/Gear_rust.jpg-80cf7dca6faea97063eb4d9d465de949.s3tc.ctex", "res://.godot/imported/Gear_rust.jpg-80cf7dca6faea97063eb4d9d465de949.etc2.ctex"]
 
 [params]
 

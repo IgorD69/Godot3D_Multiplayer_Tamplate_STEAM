@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://prsnen3r43s3"
 path.s3tc="res://.godot/imported/gEARS_50.jpg-fb78038d1c9432d8f83d8fb035ad2699.s3tc.ctex"
+path.etc2="res://.godot/imported/gEARS_50.jpg-fb78038d1c9432d8f83d8fb035ad2699.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/gEARS_50.jpg"
-dest_files=["res://.godot/imported/gEARS_50.jpg-fb78038d1c9432d8f83d8fb035ad2699.s3tc.ctex"]
+dest_files=["res://.godot/imported/gEARS_50.jpg-fb78038d1c9432d8f83d8fb035ad2699.s3tc.ctex", "res://.godot/imported/gEARS_50.jpg-fb78038d1c9432d8f83d8fb035ad2699.etc2.ctex"]
 
 [params]
 

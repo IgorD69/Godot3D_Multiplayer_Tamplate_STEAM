@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dmis1cfxk4e6o"
 path.s3tc="res://.godot/imported/all_in_one_baseColor.png-85545838034cbc76d9d1745b5f0e398a.s3tc.ctex"
+path.etc2="res://.godot/imported/all_in_one_baseColor.png-85545838034cbc76d9d1745b5f0e398a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Models/ricks_portal_gun/textures/all_in_one_baseColor.png"
-dest_files=["res://.godot/imported/all_in_one_baseColor.png-85545838034cbc76d9d1745b5f0e398a.s3tc.ctex"]
+dest_files=["res://.godot/imported/all_in_one_baseColor.png-85545838034cbc76d9d1745b5f0e398a.s3tc.ctex", "res://.godot/imported/all_in_one_baseColor.png-85545838034cbc76d9d1745b5f0e398a.etc2.ctex"]
 
 [params]
 

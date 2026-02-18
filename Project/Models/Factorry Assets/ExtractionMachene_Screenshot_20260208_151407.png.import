@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ceokrtw6om8j7"
 path.s3tc="res://.godot/imported/ExtractionMachene_Screenshot_20260208_151407.png-d0860ca3f6282698e49a46618c8f2086.s3tc.ctex"
+path.etc2="res://.godot/imported/ExtractionMachene_Screenshot_20260208_151407.png-d0860ca3f6282698e49a46618c8f2086.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/ExtractionMachene_Screenshot_20260208_151407.png"
-dest_files=["res://.godot/imported/ExtractionMachene_Screenshot_20260208_151407.png-d0860ca3f6282698e49a46618c8f2086.s3tc.ctex"]
+dest_files=["res://.godot/imported/ExtractionMachene_Screenshot_20260208_151407.png-d0860ca3f6282698e49a46618c8f2086.s3tc.ctex", "res://.godot/imported/ExtractionMachene_Screenshot_20260208_151407.png-d0860ca3f6282698e49a46618c8f2086.etc2.ctex"]
 
 [params]
 

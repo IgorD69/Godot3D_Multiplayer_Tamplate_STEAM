@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bi518ntn8ae6y"
 path.s3tc="res://.godot/imported/StoneCUtter_AnotherGreenRust.png-ba9558b795f7b1442c16d803171af514.s3tc.ctex"
+path.etc2="res://.godot/imported/StoneCUtter_AnotherGreenRust.png-ba9558b795f7b1442c16d803171af514.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/StoneCUtter_AnotherGreenRust.png"
-dest_files=["res://.godot/imported/StoneCUtter_AnotherGreenRust.png-ba9558b795f7b1442c16d803171af514.s3tc.ctex"]
+dest_files=["res://.godot/imported/StoneCUtter_AnotherGreenRust.png-ba9558b795f7b1442c16d803171af514.s3tc.ctex", "res://.godot/imported/StoneCUtter_AnotherGreenRust.png-ba9558b795f7b1442c16d803171af514.etc2.ctex"]
 
 [params]
 

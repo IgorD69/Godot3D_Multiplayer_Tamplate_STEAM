@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bqhehy1wwin25"
 path.s3tc="res://.godot/imported/Factorry_23.jpg-96d10363b0e698f352a89591dcf276b5.s3tc.ctex"
+path.etc2="res://.godot/imported/Factorry_23.jpg-96d10363b0e698f352a89591dcf276b5.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/Factorry Assets/Factorry_23.jpg"
-dest_files=["res://.godot/imported/Factorry_23.jpg-96d10363b0e698f352a89591dcf276b5.s3tc.ctex"]
+dest_files=["res://.godot/imported/Factorry_23.jpg-96d10363b0e698f352a89591dcf276b5.s3tc.ctex", "res://.godot/imported/Factorry_23.jpg-96d10363b0e698f352a89591dcf276b5.etc2.ctex"]
 
 [params]
 
