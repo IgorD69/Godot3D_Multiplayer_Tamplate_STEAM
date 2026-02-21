@@ -2,14 +2,17 @@ class_name Player
 
 extends CharacterBody3D
 
-const SPEED = 5.0
+const WALK_SPEED = 5.0
 const SPRINT_SPEED = 10.0
 const JUMP_VELOCITY = 6.5
+const CROUCH_SPEED = 2.0
+
+
 
 var MOUSE_SENSITIVITY = Global.mouse_sensitivity
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var is_moving_state: bool = false 
+var is_moving_state: bool = false
 var camera_v_rot: float = 0.0
 var current_anim: String = ""
 var player_name: String = ""
@@ -17,6 +20,7 @@ var hand: Marker3D
 var accumulated_mouse_input: Vector2 = Vector2.ZERO
 var esc_menu_instance = null
 var is_frozen: bool = false
+var is_crouching: bool = false
 
 var hand_sway_offset: Vector2 = Vector2.ZERO
 var hand_sway_velocity: Vector2 = Vector2.ZERO
@@ -34,6 +38,10 @@ var mic_player: AudioStreamPlayer = null
 
 
 
+@onready var tall_col_shape: CollisionShape3D = $TallColShape
+@onready var short_col_shape: CollisionShape3D = $ShortColShape
+
+
 @export var camera_rotation = 0.05
 
 @onready var Transition_anim: AnimationPlayer = $Transition/AnimationPlayer
@@ -43,19 +51,16 @@ var mic_player: AudioStreamPlayer = null
 @onready var Animation_Player: AnimationPlayer = $Character/metarig/Skeleton3D/AnimationPlayer
 @export var camera: Camera3D
 
-#@export var ESC_MENU_SCENE = preload("uid://b84p0jqodhcxg") 
-
 #IK
 @onready var r_hand_marker: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
-@onready var l_two_bone_ik_3d_2: TwoBoneIK3D = $Character/metarig/Skeleton3D/L_TwoBoneIK3D2
+@onready var l_hand_marker: Marker3D = $Character/metarig/Skeleton3D/L_HandMarker
 @onready var r_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/R_TwoBoneIK3D
-@onready var ik_target: Marker3D = $Character/metarig/Skeleton3D/R_HandMarker
+@onready var l_two_bone_ik_3d: TwoBoneIK3D = $Character/metarig/Skeleton3D/L_TwoBoneIK3D
 
 
-@onready var light_cone: MeshInstance3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D/light_cone
-@onready var Flash: Node3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight
-@onready var Flash_Light: SpotLight3D = $Character/metarig/Skeleton3D/CameraBoneAtachment/RemoteTransform3D/BoneAttachment3D/FlashLight/SpotLight3D
+@onready var Flash: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D2/FlashLight
 @onready var radiation_device: Node3D = $Character/metarig/Skeleton3D/BoneAttachment3D/RadiationDevice
+@onready var Flash_Light: SpotLight3D = $Character/Camera3D/SpotLight3D
 
 #Tab UI
 @onready var tab_canvas: CanvasLayer = $TAB
@@ -105,6 +110,9 @@ func _ready():
 	
 	add_to_group("Players")
 	
+	r_two_bone_ik_3d.active = false
+	l_two_bone_ik_3d.active = false
+
 	if player_name == "":
 		player_name = "Guest_" + str(multiplayer.get_unique_id())
 		
@@ -118,20 +126,15 @@ func _ready():
 			hand.name = "hand"
 			hand.position = Vector3(0, 0, -1.5)
 			camera.add_child(hand)
-			print("Hand marker created for player: ", name)
-		else:
-			print("Hand marker found for player: ", name)
-	else:
-		print("ERROR: Camera not found for player: ", name)
-	
+			
 	await get_tree().process_frame
 	
 	print("After wait - Is authority: ", is_multiplayer_authority())
 	
 	if is_multiplayer_authority():
-		transition.visible = true 
-		Transition_anim.play("FadeOut") 
-		print("Pornesc animația de FadeOut pentru jucătorul local.")
+		transition.visible = true
+		Transition_anim.play("FadeOut")
+		#print("Pornesc animația de FadeOut pentru jucătorul local.")
 	else:
 		transition.visible = false
 	
@@ -144,12 +147,11 @@ func _ready():
 		helmet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		ochelari.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 		mask.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
-		light_cone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY 
 		
 		call_deferred("_setup_mouse_capture")
 		call_deferred("_send_player_name")
 	else:
-		print("✓ Setting up REMOTE player (no controls)")
+		#print("✓ Setting up REMOTE player (no controls)")
 		if camera:
 			camera.current = false
 	
@@ -172,16 +174,16 @@ func _setup_voice_chat():
 		add_child(voice_player)
 	
 	var stream_gen = AudioStreamGenerator.new()
-	stream_gen.mix_rate = 44100  # 44.1 kHz standard
-	stream_gen.buffer_length = 0.1  # 100ms buffer
+	stream_gen.mix_rate = 44100
+	stream_gen.buffer_length = 0.1
 	
 	voice_player.stream = stream_gen
-	voice_player.max_distance = 50.0  # Distanța maximă de auzire
+	voice_player.max_distance = 50.0
 	voice_player.unit_size = 10.0
 	voice_player.play()
 	playback = voice_player.get_stream_playback()
 	
-	print("✓ Voice playback ready pentru: ", name)
+	#print("✓ Voice playback ready pentru: ", name)
 	
 	# 2. Setup AudioEffectCapture pentru înregistrare (DOAR local player)
 	if is_multiplayer_authority():
@@ -200,7 +202,7 @@ func _setup_voice_chat():
 	if audio_effect_capture:
 		audio_effect_capture.clear_buffer()
 	
-	print("✓ Voice recording initialized (Muted by default) for: ", name)
+	#print("✓ Voice recording initialized (Muted by default) for: ", name)
 	
 func _setup_voice_recording():
 	recording_bus_index = AudioServer.get_bus_count()
@@ -209,9 +211,9 @@ func _setup_voice_recording():
 	AudioServer.set_bus_name(recording_bus_index, bus_name)
 	
 	# --- MODIFICAREA CRUCIALĂ AICI ---
-	# Dezactivăm trimiterea către Master. 
+	# Dezactivăm trimiterea către Master. 
 	# Vrem ca datele să ajungă DOAR în AudioEffectCapture, nu în boxe.
-	AudioServer.set_bus_mute(recording_bus_index, true) 
+	AudioServer.set_bus_mute(recording_bus_index, true)
 	# ---------------------------------
 
 	var capture_effect = AudioEffectCapture.new()
@@ -337,13 +339,13 @@ func _physics_process(delta):
 		if velocity.y > 0:
 			velocity.y = 0
 		
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
+		velocity.z = move_toward(velocity.z, 0, WALK_SPEED)
 		
 		move_and_slide()
 		
-		if multiplayer.multiplayer_peer:
-			sync_transform.rpc(global_position, rotation.y)
+		#if multiplayer.multiplayer_peer:
+			#sync_transform.rpc(global_position, rotation.y, r_hand_marker.position, l_hand_marker.position)
 		return
 		
 	# SOLUȚIE ERORI EXIT
@@ -359,9 +361,8 @@ func _physics_process(delta):
 			velocity.x = 0
 			velocity.z = 0
 			move_and_slide()
-			if Animation_Player.current_animation != "Idle":
-				Animation_Player.play("Idle", 0.15, 0.15)
-				#r_hand_marker.position.y = 1.2
+			if Animation_Player.current_animation != "oldMan(animLibrary)/Idle":
+				Animation_Player.play("oldMan(animLibrary)/Idle")
 			return
 	
 		# Logica normală de mișcare
@@ -371,10 +372,15 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
 		
-		var current_target_speed = SPEED
-		var is_sprinting = Input.is_action_pressed("sprint")
-		if is_sprinting:
+			
+		var current_target_speed = WALK_SPEED
+		
+		if Input.is_action_pressed("crouch"):
+			current_target_speed = CROUCH_SPEED
+		elif Input.is_action_pressed("sprint"):
 			current_target_speed = SPRINT_SPEED
+		else:
+			current_target_speed = WALK_SPEED
 		
 		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		
@@ -399,17 +405,12 @@ func _physics_process(delta):
 			is_moving = false
 			
 		cam_tilt(input_dir.x, delta)
-		#
-		#if !is_moving:
-			#r_hand_marker.position.y = 1.2
-			
-			
 		move_and_slide()
 		
 		if multiplayer.multiplayer_peer:
-			sync_transform.rpc(global_position, rotation.y)
+			sync_transform.rpc(global_position, rotation.y, r_hand_marker.position, l_hand_marker.position)
 
-		_handle_animations(current_target_speed)
+		_handle_animations(current_target_speed, delta)
 		
 		# ===== VOICE CHAT - CAPTURARE CONTINUĂ =====
 		_handle_voice_capture()
@@ -432,7 +433,6 @@ func _handle_voice_capture():
 			
 			send_voice_to_peers.rpc(byte_array)
 	else:
-		# Când nu apeși V, doar curățăm buffer-ul ca să nu se adune lag
 		if audio_effect_capture.get_frames_available() > 0:
 			audio_effect_capture.clear_buffer()
 
@@ -442,14 +442,12 @@ func send_voice_to_peers(buffer: PackedByteArray):
 	var sender_id = multiplayer.get_remote_sender_id()
 	if sender_id == 0: sender_id = multiplayer.get_unique_id()
 	
-	# DACĂ SUNT EU, NU REDA SUNETUL (Asta elimină ecoul!)
 	if sender_id == multiplayer.get_unique_id():
 		return
 		
 	_play_voice(buffer)
 
 func _play_voice(data: PackedByteArray):
-	# Verificare pentru crash
 	
 	if not is_inside_tree() or is_queued_for_deletion():
 		return
@@ -460,46 +458,81 @@ func _play_voice(data: PackedByteArray):
 		if playback == null:
 			return
 	
-	# Convertim bytes înapoi la float array
 	var float_array = data.to_float32_array()
 	
 	if float_array.size() == 0:
 		return
 	
-	# Adăugăm frames la playback (convertim mono la stereo)
 	for i in range(float_array.size()):
 		playback.push_frame(Vector2(float_array[i], float_array[i]))
 
-func _handle_animations(current_speed):
+
+func _handle_animations(current_speed, delta: float):
 	var horiz_vel = Vector3(velocity.x, 0, velocity.z).length()
-	var next_anim = "Idle"
+	var next_anim = "oldMan(animLibrary)/Idle"
 	var playback_speed = 1.0
+
+	# INIȚIALIZARE: Plecăm de la poziția curentă, nu de la zero!
+	var R_target_hand_pos = r_hand_marker.position
+	var L_target_hand_pos = l_hand_marker.position
 
 	if not is_on_floor():
 		next_anim = "Jump"
-		r_hand_marker.position.y = 1.2 # În aer, mâna stă sus
+		R_target_hand_pos = Vector3(-0.285, 1.2, 0.5)
+		L_target_hand_pos = Vector3(0.451, 1.342, 0.5)
+		
 	elif horiz_vel > 0.1:
-		# Jucătorul se mișcă
-		r_hand_marker.position.y = 1.138
-		r_hand_marker.position.z = 0.854
-		if Input.is_action_pressed("sprint"):
-			next_anim = "Run"
-			Animation_Player.speed_scale = 1.5
+		if Input.is_action_pressed("crouch"):
+			next_anim = "oldMan(animLibrary)/CrouchWalk"
+			R_target_hand_pos = Vector3(-0.285, 0.48, 0.657)
+			L_target_hand_pos = Vector3(0.45, 0.48, 0.657)
+		elif Input.is_action_pressed("sprint"):
+			next_anim = "oldMan(animLibrary)/RunAnim"
+			playback_speed = 1.5
+			R_target_hand_pos = Vector3(-0.285, 1.0, 0.54)
+			L_target_hand_pos = Vector3(0.5, 1.0, 0.54)
 		else:
 			next_anim = "Walk"
+			R_target_hand_pos = Vector3(-0.285, 1.5, 0.5)
+			L_target_hand_pos = Vector3(0.5, 1.5, 0.5)
+			
+	elif Input.is_action_pressed("crouch"):
+		next_anim = "oldMan(animLibrary)/Crouch"
+		R_target_hand_pos = Vector3(-0.285, 0.559, 0.135)
+		L_target_hand_pos = Vector3(0.5, 0.48, 0.657)
 	else:
-		next_anim = "Idle"
-		r_hand_marker.position.y = 1.2 # Poziția de repaus
+		# IDLE
+		next_anim = "oldMan(animLibrary)/Idle"
+		R_target_hand_pos = Vector3(-0.285, 1.662, 0.47)
+		L_target_hand_pos = Vector3(0.5, 1.662, 0.47)
 
+	# APLICARE LERP
+	r_hand_marker.position = r_hand_marker.position.lerp(R_target_hand_pos, delta * 10.0)
+	l_hand_marker.position = l_hand_marker.position.lerp(L_target_hand_pos, delta * 10.0)
+
+	
+	# Apply Animations
 	if Animation_Player.current_animation != next_anim:
-		Animation_Player.play(next_anim, 0.2, playback_speed)
+		Animation_Player.play(next_anim, 0.2)
 		play_animation_rpc.rpc(next_anim)
 
+@rpc("any_peer", "call_remote")
+func play_animation_rpc(anim_name: String):
+	Animation_Player.play(anim_name, 0.2)
+
 @rpc("any_peer", "unreliable")
-func sync_transform(pos: Vector3, rot_y: float):
-	if is_inside_tree() and not is_multiplayer_authority():
+func sync_transform(pos: Vector3, rot_y: float, r_hand_pos: Vector3, l_hand_pos: Vector3):
+	if not is_multiplayer_authority():
 		global_position = pos
 		rotation.y = rot_y
+		
+		r_hand_marker.position = r_hand_pos
+		l_hand_marker.position = l_hand_pos
+		
+		if r_two_bone_ik_3d and Flash:
+			r_two_bone_ik_3d.active = Flash.visible
+		if l_two_bone_ik_3d and radiation_device:
+			l_two_bone_ik_3d.active = radiation_device.visible
 		
 func cam_tilt(input_x, delta):
 	if camera:
@@ -519,27 +552,26 @@ func toggle_esc_menu():
 		get_tree().root.add_child(esc_menu_instance)
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-@rpc("any_peer", "unreliable_ordered", "call_local")
-func show_flash():
-	if !is_multiplayer_authority():
-		return
-	
-	if Input.is_action_pressed("flash"):
-		r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
-		Flash_Light.visible = r_two_bone_ik_3d.active
-		Flash.visible = r_two_bone_ik_3d.active
-	
-@rpc("any_peer", "unreliable_ordered", "call_local")
-func show_RadioMeter():
-	if !is_multiplayer_authority():
-		return
-	
-	if Input.is_action_pressed("radiometru"):
-		l_two_bone_ik_3d_2.active = !l_two_bone_ik_3d_2.active
-		radiation_device.visible = l_two_bone_ik_3d_2.active
+#@rpc("any_peer", "unreliable_ordered", "call_local")
+#func show_flash():
+	#if !is_multiplayer_authority():
+		#return
+	#
+	#if Input.is_action_pressed("flash"):
+		#r_two_bone_ik_3d.active = !r_two_bone_ik_3d.active
+		#Flash_Light.visible = r_two_bone_ik_3d.active
+		#Flash.visible = r_two_bone_ik_3d.active
+	#
+#@rpc("any_peer", "unreliable_ordered", "call_local")
+#func show_RadioMeter():
+	#if !is_multiplayer_authority():
+		#return
+	#
+	#if Input.is_action_pressed("radiometru"):
+		#l_two_bone_ik_3d.active = !l_two_bone_ik_3d.active
+		#radiation_device.visible = l_two_bone_ik_3d.active
 		
 	
-	# RPC-ul care execută schimbarea vizuală pe toate instanțele
 @rpc("any_peer", "call_local", "reliable")
 func sync_flashlight(is_on: bool):
 	if r_two_bone_ik_3d:
@@ -556,18 +588,18 @@ func sync_flashlight(is_on: bool):
 		
 @rpc("any_peer", "call_local", "reliable")
 func sync_radioMeter(is_on: bool):
-	if l_two_bone_ik_3d_2:
-		l_two_bone_ik_3d_2.active = is_on
+	if l_two_bone_ik_3d:
+		l_two_bone_ik_3d.active = is_on
 	
 	if radiation_device:
 		radiation_device.visible = is_on
 	
-		
 func _input(event):
-	if !is_multiplayer_authority(): 
+	if !is_multiplayer_authority():
 		return
 	
 	if event.is_action_pressed("esc"):
+		if is_frozen: return
 		toggle_esc_menu()
 		get_viewport().set_input_as_handled()
 		return
@@ -575,16 +607,28 @@ func _input(event):
 	if is_instance_valid(esc_menu_instance):
 		return
 
+	# LANTERNA (F)
 	if event.is_action_pressed("flash"):
-		var new_state = !Flash.visible 
-		sync_flashlight.rpc(new_state)
-			
-	
-			
+		var new_flash_state = !Flash.visible
+		sync_flashlight.rpc(new_flash_state)
+		
+	# RADIOMETRU (Q)
 	if event.is_action_pressed("radiometru"):
-		var new_state = !radiation_device.visible 
-		sync_radioMeter.rpc(new_state)
+		# Folosim starea vizibilității pentru a comuta
+		var new_radio_state = !radiation_device.visible
+		sync_radioMeter.rpc(new_radio_state)
 			
+	# CROUCH (CTRL)
+	if event.is_action_pressed("crouch"):
+		is_crouching = !is_crouching
+		if is_crouching:
+			tall_col_shape.disabled = false
+			short_col_shape.disabled = true
+		else:
+			tall_col_shape.disabled = true
+			short_col_shape.disabled = false
+
+	# TAB UI
 	if event.is_action_pressed("ui_tab"):
 		if tab_canvas:
 			tab_canvas.visible = true
@@ -594,18 +638,13 @@ func _input(event):
 		if tab_canvas:
 			tab_canvas.visible = false
 	
+	# MOUSE LOOK
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera_v_rot -= event.relative.y * MOUSE_SENSITIVITY
-		camera_v_rot = clamp(camera_v_rot, deg_to_rad(-90), deg_to_rad(50))
+		camera_v_rot = clamp(camera_v_rot, deg_to_rad(-90), deg_to_rad(90))
 		camera.rotation.x = camera_v_rot
 		update_camera_rotation.rpc(camera_v_rot)
-		accumulated_mouse_input += event.relative
-
-@rpc("any_peer", "call_local", "reliable")
-func play_animation_rpc(anim_name: String):
-	if Animation_Player and Animation_Player.has_animation(anim_name):
-		Animation_Player.play(anim_name, 0.2)
 
 @rpc("any_peer", "unreliable")
 func update_camera_rotation(vertical_rotation: float):

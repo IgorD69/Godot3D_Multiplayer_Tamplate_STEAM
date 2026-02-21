@@ -58,11 +58,13 @@ func _on_settings_pressed() -> void:
 		settings_instance.tree_exited.connect(func(): 
 			settings_instance = null
 			show())
-
+			
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("esc"):
 		get_viewport().set_input_as_handled()
 		_on_resume_pressed()
+
+
 		
 func _on_main_menu_pressed() -> void:
 	Net.cleanup_network()

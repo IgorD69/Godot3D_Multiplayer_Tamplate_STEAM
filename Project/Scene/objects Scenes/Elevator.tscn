@@ -1,15 +1,14 @@
-[gd_scene format=4 uid="uid://bjaet63yly68v"]
+[gd_scene format=4 uid="uid://dor6tgyldoppi"]
 
-[ext_resource type="Script" uid="uid://grtpmg6m85os" path="res://Scripts/Objects_Scripts/elevator.gd" id="1_2y2d0"]
-[ext_resource type="Texture2D" uid="uid://2l1s1lkj6po3" path="res://Models/Factorry Assets/elevator_Screenshot_20260216_203227-1.png" id="1_k7raq"]
-[ext_resource type="Script" uid="uid://dehe1ps2ltq3x" path="res://Scripts/Objects_Scripts/Elevator_botton.gd" id="3_2y2d0"]
-[ext_resource type="Texture2D" uid="uid://c8k8giesfgmeu" path="res://Models/Factorry Assets/Coal_Screenshot_20260205_125431.png" id="3_t3ej7"]
-[ext_resource type="AudioStream" uid="uid://e75ylxqkvsmt" path="res://Music/DrawerSounds/Button.mp3" id="4_2y2d0"]
+[ext_resource type="Script" uid="uid://grtpmg6m85os" path="res://Scripts/Objects_Scripts/elevator.gd" id="1_ot7wu"]
+[ext_resource type="Texture2D" uid="uid://2l1s1lkj6po3" path="res://Models/Factorry Assets/elevator_Screenshot_20260216_203227-1.png" id="2_86sj8"]
+[ext_resource type="Texture2D" uid="uid://c8k8giesfgmeu" path="res://Models/Factorry Assets/Coal_Screenshot_20260205_125431.png" id="3_6dwyd"]
+[ext_resource type="AudioStream" uid="uid://e75ylxqkvsmt" path="res://Music/DrawerSounds/Button.mp3" id="4_tkt06"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bq1wa"]
 resource_name = "Material.001"
 cull_mode = 2
-albedo_texture = ExtResource("1_k7raq")
+albedo_texture = ExtResource("2_86sj8")
 uv1_triplanar = true
 texture_filter = 2
 
@@ -112,45 +111,9 @@ size = Vector3(0.11932373, 1.1070557, 1.4423828)
 [sub_resource type="BoxShape3D" id="BoxShape3D_yrdgh"]
 size = Vector3(0.11932373, 1.5098419, 0.31054688)
 
-[sub_resource type="Animation" id="Animation_7ilnr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("StaticBody3D/Gate:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1.8723192, 0.79565114, -0.33675355)]
-}
-
-[sub_resource type="Animation" id="Animation_k7raq"]
-resource_name = "doorClose"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("StaticBody3D/Gate:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4666667, 0.54, 0.72),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(1.8723192, 0.79565114, -0.33675355), Vector3(1.8723192, -0.5932266, -0.33675355), Vector3(1.8723192, -0.518151, -0.33675355), Vector3(1.8723192, -0.5932266, -0.33675355)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_cu46k"]
-_data = {
-&"RESET": SubResource("Animation_7ilnr"),
-&"doorClose": SubResource("Animation_k7raq")
-}
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhway"]
 albedo_color = Color(0.99215686, 0.29411766, 0.57254905, 1)
-albedo_texture = ExtResource("3_t3ej7")
+albedo_texture = ExtResource("3_6dwyd")
 uv1_scale = Vector3(0.275, 0.275, 0.275)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_tuhq5"]
@@ -195,104 +158,161 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_bt4lu"]
 size = Vector3(4.0968323, 67.82477, 4.4451294)
 
-[node name="elevator" type="Node3D" unique_id=1705124673]
-script = ExtResource("1_2y2d0")
+[sub_resource type="Animation" id="Animation_7ilnr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gate:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(3.7470818, 1.5263418, -0.6844977)]
+}
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=483749541]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+[sub_resource type="Animation" id="Animation_vyti4"]
+resource_name = "UP"
+length = 40.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 40),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 371.703, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_k7raq"]
+resource_name = "doorClose"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gate:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.52, 0.6333333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(3.7470818, 1.5263418, -0.6844977), Vector3(3.7470818, -1.1434808, -0.6844977), Vector3(3.7470818, -1.059979, -0.6844977), Vector3(3.7470818, -1.1786256, -0.6844977)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cu46k"]
+_data = {
+&"RESET": SubResource("Animation_7ilnr"),
+&"UP": SubResource("Animation_vyti4"),
+&"doorClose": SubResource("Animation_k7raq")
+}
+
+[node name="Elevator" type="Node3D" unique_id=2041879294]
+
+[node name="elevator" type="AnimatableBody3D" parent="." unique_id=1248063816]
 collision_layer = 7
 collision_mask = 7
+script = ExtResource("1_ot7wu")
 
-[node name="Plane" type="MeshInstance3D" parent="StaticBody3D" unique_id=303764240]
+[node name="Plane" type="MeshInstance3D" parent="elevator" unique_id=303764240]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+layers = 7
 mesh = SubResource("ArrayMesh_2823l")
 skeleton = NodePath("")
 
-[node name="Gate" type="MeshInstance3D" parent="StaticBody3D" unique_id=790828551]
-transform = Transform3D(0.17962095, 0, 0, 0, 0, 0.274151, 0, -0.022720857, 0, 1.8723192, 0.79565114, -0.33675355)
+[node name="Gate" type="MeshInstance3D" parent="elevator" unique_id=790828551]
+transform = Transform3D(0.3592419, 0, 0, 0, 0, 0.548302, 0, -0.045441713, 0, 3.7470818, 1.5263418, -0.6844977)
+layers = 7
 mesh = SubResource("ArrayMesh_jekb1")
 skeleton = NodePath("")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="StaticBody3D/Gate" unique_id=151718016]
+[node name="StaticBody3D" type="StaticBody3D" parent="elevator/Gate" unique_id=151718016]
+collision_layer = 7
+collision_mask = 7
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/Gate/StaticBody3D" unique_id=1169823293]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="elevator/Gate/StaticBody3D" unique_id=1169823293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99994814, -5.0128474, -14.763958, 1.6272697)
 shape = SubResource("BoxShape3D_mceb8")
 
-[node name="FloorCol" type="CollisionShape3D" parent="StaticBody3D" unique_id=333875694]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.008361816, -0.99193394, 0.017028809)
+[node name="FloorCol" type="CollisionShape3D" parent="elevator" unique_id=333875694]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.016723633, -1.9838679, 0.034057617)
 shape = SubResource("BoxShape3D_k7raq")
 
-[node name="Slope" type="CollisionShape3D" parent="StaticBody3D" unique_id=1844131459]
-transform = Transform3D(0.8233246, 0.56757075, 0, -0.56757075, 0.8233246, 0, 0, 0, 1, 1.0211792, -1.023557, 0.017028809)
+[node name="Slope" type="CollisionShape3D" parent="elevator" unique_id=1844131459]
+transform = Transform3D(1.6466492, 1.1351415, 0, -1.1351415, 1.6466492, 0, 0, 0, 2, 2.0423584, -2.047114, 0.034057617)
 shape = SubResource("BoxShape3D_2y2d0")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" unique_id=197220581]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.19753265, 0.32213587, -0.9329261)
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="elevator" unique_id=197220581]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, -0.3950653, 0.64427173, -1.8658522)
 shape = SubResource("BoxShape3D_4q6da")
 
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D" unique_id=1625691531]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.06954956, 0.32213596, 0.94309205)
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="elevator" unique_id=1625691531]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, -0.13909912, 0.6442719, 1.8861841)
 shape = SubResource("BoxShape3D_cu46k")
 
-[node name="CollisionShape3D5" type="CollisionShape3D" parent="StaticBody3D" unique_id=504126972]
-transform = Transform3D(-4.371139e-08, 1, 0, 4.371139e-08, 0, 1, 1, 4.371139e-08, -4.3711385e-08, -0.96164674, 0.32213593, -0.018038854)
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="elevator" unique_id=504126972]
+transform = Transform3D(-8.742278e-08, 2, 0, 8.742278e-08, 0, 2, 2, 8.742278e-08, -8.742277e-08, -1.9232935, 0.64427185, -0.036077708)
 shape = SubResource("BoxShape3D_t3ej7")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=1843410788]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001159668, 1.5714977, 0.017028809)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="elevator" unique_id=1843410788]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.002319336, 3.1429954, 0.034057617)
 shape = SubResource("BoxShape3D_7ilnr")
 
-[node name="FrontLedtCol" type="CollisionShape3D" parent="StaticBody3D" unique_id=865047111]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0.8025731, 0.33468628, 0.79891217)
+[node name="FrontLedtCol" type="CollisionShape3D" parent="elevator" unique_id=865047111]
+transform = Transform3D(1.4142135, 0, 1.4142135, 0, 2, 0, -1.4142135, 0, 1.4142135, 1.6051462, 0.66937256, 1.5978243)
 shape = SubResource("BoxShape3D_sdf3g")
 
-[node name="FrontRightCol" type="CollisionShape3D" parent="StaticBody3D" unique_id=1589781214]
-transform = Transform3D(0.7071067, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.7071067, 0.80407727, 0.33468628, -0.8044468)
+[node name="FrontRightCol" type="CollisionShape3D" parent="elevator" unique_id=1589781214]
+transform = Transform3D(1.4142134, 0, -1.4142137, 0, 2, 0, 1.4142137, 0, 1.4142134, 1.6081545, 0.66937256, -1.6088936)
 shape = SubResource("BoxShape3D_sheom")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1684294505]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94241333, 1.0875854, -0.009277344)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="elevator" unique_id=1684294505]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.8848267, 2.175171, -0.018554688)
 shape = SubResource("BoxShape3D_1kv3y")
 
-[node name="CollisionShape3D6" type="CollisionShape3D" parent="StaticBody3D" unique_id=679810026]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94241333, -0.20006561, 0.5566406)
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="elevator" unique_id=679810026]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.8848267, -0.40013123, 1.1132813)
 shape = SubResource("BoxShape3D_yrdgh")
 
-[node name="CollisionShape3D7" type="CollisionShape3D" parent="StaticBody3D" unique_id=464567765]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94241333, -0.20006561, -0.558341)
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="elevator" unique_id=464567765]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.8848267, -0.40013123, -1.116682)
 shape = SubResource("BoxShape3D_yrdgh")
 
-[node name="Enevator_Anim" type="AnimationPlayer" parent="." unique_id=1182059840]
-libraries/ = SubResource("AnimationLibrary_cu46k")
-autoplay = &"Down"
-
-[node name="Button" type="Node3D" parent="." unique_id=962622138]
+[node name="Button" type="Node3D" parent="elevator" unique_id=962622138]
 transform = Transform3D(-0.48496374, 0.21840176, -0.4107245, -0.017115746, 0.5845521, 0.33104354, 0.4648667, 0.24936609, -0.4162925, 1.5666683, -0.34032944, 1.4734675)
-script = ExtResource("3_2y2d0")
 
-[node name="ButtonMesh" type="MeshInstance3D" parent="Button" unique_id=645115717]
+[node name="ButtonMesh" type="MeshInstance3D" parent="elevator/Button" unique_id=645115717]
 transform = Transform3D(-0.272, -2.7939677e-09, 0, 1.1059456e-08, -0.009165782, 0.2550591, -2.2351742e-08, 0.024740735, 0.094492584, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_fhway")
 mesh = SubResource("CylinderMesh_tuhq5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Button/ButtonMesh" unique_id=1169100907]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="elevator/Button/ButtonMesh" unique_id=1169100907]
 libraries/ = SubResource("AnimationLibrary_iaag0")
 autoplay = &"RESET"
 speed_scale = 3.0
 
-[node name="Button" type="AudioStreamPlayer3D" parent="Button" unique_id=1713155857]
-stream = ExtResource("4_2y2d0")
+[node name="Button" type="AudioStreamPlayer3D" parent="elevator/Button" unique_id=1713155857]
+stream = ExtResource("4_tkt06")
 volume_db = -24.0
 
-[node name="Area3D" type="Area3D" parent="Button" unique_id=1272563649]
+[node name="Area3D" type="Area3D" parent="elevator/Button" unique_id=1272563649]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Button/Area3D" unique_id=1639039537]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="elevator/Button/Area3D" unique_id=1639039537]
 transform = Transform3D(0.27199352, -0.00017455779, 0.0005579754, 0.00053465366, 0.014627504, 0.22637106, -0.0018105358, -0.021957256, 0.15079731, 0.39377004, -0.6759411, 0.70391655)
 shape = SubResource("BoxShape3D_bt4lu")
 debug_color = Color(0.9227449, 0.2407721, 0.3624273, 0.41960785)
 
-[node name="ClickSound" type="AudioStreamPlayer3D" parent="Button" unique_id=1124095170]
-stream = ExtResource("4_2y2d0")
+[node name="ClickSound" type="AudioStreamPlayer3D" parent="elevator/Button" unique_id=1124095170]
+stream = ExtResource("4_tkt06")
 
-[connection signal="body_entered" from="Button/Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Button/Area3D" to="." method="_on_area_3d_body_exited"]
+[node name="Elevator_Anim" type="AnimationPlayer" parent="." unique_id=1182059840]
+root_node = NodePath("../elevator")
+libraries/ = SubResource("AnimationLibrary_cu46k")
+autoplay = &"Down"
+
+[connection signal="body_entered" from="elevator/Button/Area3D" to="elevator" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="elevator/Button/Area3D" to="elevator" method="_on_area_3d_body_exited"]

@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://dwbkanrlfuac"]
 
 [ext_resource type="Texture2D" uid="uid://dukjfh48f8kf1" path="res://Models/Factorry Assets/ExtractionMachene_Screenshot_20260208_152037.png" id="1_48vjr"]
+[ext_resource type="Script" uid="uid://cyaxpub18fu43" path="res://Scripts/Objects_Scripts/extraction_machene.gd" id="1_sdvac"]
 [ext_resource type="Texture2D" uid="uid://ceokrtw6om8j7" path="res://Models/Factorry Assets/ExtractionMachene_Screenshot_20260208_151407.png" id="2_h4lh1"]
 [ext_resource type="Texture2D" uid="uid://bqxmqvj83nyue" path="res://Models/Factorry Assets/SpinGear_Screenshot_20260208_152037.png" id="3_h4lh1"]
 
@@ -228,42 +229,25 @@ _data = {
 &"Spin": SubResource("Animation_7dot8")
 }
 
-[sub_resource type="Animation" id="Animation_0uvhj"]
-resource_name = "Mine"
+[sub_resource type="Animation" id="Animation_6pw2r"]
+resource_name = "DeLoad"
 length = 30.0
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
+tracks/0/path = NodePath("SpinGear:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 30),
+"times": PackedFloat32Array(0, 29.833334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, -2.9670596, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_8l4q2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 3.1415927), Vector3(-8.742278e-08, -8.742278e-08, -3.1415925)]
 }
 
 [sub_resource type="Animation" id="Animation_2ph2u"]
 resource_name = "Rotate"
-length = 30.0
-loop_mode = 2
+length = 50.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -271,20 +255,37 @@ tracks/0/path = NodePath(".:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 30),
+"times": PackedFloat32Array(0, 50.233334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, -2.0263274, 0), Vector3(0, 1.2217305, 0)]
+"values": [Vector3(0, -2.3020892, 0), Vector3(0, 1.2217305, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sdvac"]
+resource_name = "Rotate"
+length = 50.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 50.233334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.2217305, 0), Vector3(0, -2.3020892, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0uvhj"]
 _data = {
-&"Mine": SubResource("Animation_0uvhj"),
-&"RESET": SubResource("Animation_8l4q2"),
-&"Rotate": SubResource("Animation_2ph2u")
+&"DeLoad": SubResource("Animation_6pw2r"),
+&"Rotate": SubResource("Animation_2ph2u"),
+&"Rotate_Backwards": SubResource("Animation_sdvac")
 }
 
 [node name="ExtractionMachene" type="Node3D" unique_id=183543731]
+script = ExtResource("1_sdvac")
 
 [node name="Wheels" type="MeshInstance3D" parent="." unique_id=1262935120]
 transform = Transform3D(-21.973305, 0, 0, 0, 0, -3.0165443, 0, -4.1520905, 0, 63.802597, -15.672217, 14.629768)
@@ -297,7 +298,7 @@ mesh = SubResource("ArrayMesh_1mu20")
 skeleton = NodePath("")
 
 [node name="Rotatte" type="Node3D" parent="." unique_id=89333929]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68.5, 0, 0)
+transform = Transform3D(0.34202015, 0, 0.9396926, 0, 1, 0, -0.9396926, 0, 0.34202015, 68.5, 0, 0)
 
 [node name="RotatingTower" type="MeshInstance3D" parent="Rotatte" unique_id=191761424]
 transform = Transform3D(4.946516, 0, 0, 0, 4.946516, 0, 0, 0, 4.946516, -68.5, 0, 0)
@@ -317,10 +318,10 @@ transform = Transform3D(1, 0, 0, 0, -9.689969e-09, 1, 0, -0.22168064, -4.371139e
 mesh = SubResource("ArrayMesh_tea7p")
 skeleton = NodePath("")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Rotatte/SpinGear" unique_id=1442667247]
+[node name="GearAnim" type="AnimationPlayer" parent="Rotatte/SpinGear" unique_id=1442667247]
 libraries/ = SubResource("AnimationLibrary_8l4q2")
 autoplay = &"Spin"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Rotatte" unique_id=756781886]
+[node name="BaseAnim" type="AnimationPlayer" parent="Rotatte" unique_id=756781886]
 libraries/ = SubResource("AnimationLibrary_0uvhj")
-autoplay = &"Mine"
+autoplay = &"DeLoad"

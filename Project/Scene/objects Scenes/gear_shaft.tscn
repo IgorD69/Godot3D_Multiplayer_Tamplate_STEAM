@@ -103,11 +103,37 @@ _data = {
 &"rotate": SubResource("Animation_xvlbi")
 }
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h8nwu"]
+height = 0.49923706
+radius = 1.2504883
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nk53k"]
+height = 1.9589267
+radius = 0.6743164
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1rm34"]
+height = 2.374727
+radius = 0.3701172
+
 [node name="GearShaft" type="MeshInstance3D" unique_id=819866405]
-transform = Transform3D(-7.549791e-08, -8.742277e-08, -1, -8.742278e-08, -1, 8.742278e-08, -1, 8.7422784e-08, 7.54979e-08, 0, 0, 0)
+transform = Transform3D(-4.371139e-08, -8.742278e-08, -1, 0, -1, 8.742278e-08, -1, 3.821371e-15, 4.371139e-08, 5.2455263, -0.6430424, 4.6734056)
 mesh = SubResource("ArrayMesh_bju11")
 skeleton = NodePath("")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2078643863]
 libraries/ = SubResource("AnimationLibrary_sktms")
 autoplay = &"rotate"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2005200364]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1589499967]
+transform = Transform3D(-4.3711374e-08, -1, 1.6292068e-07, 1, -4.3711374e-08, 1.1924867e-08, -1.1924858e-08, 1.6292068e-07, 1, 0.010848999, 4.741918e-10, -1.767495e-09)
+shape = SubResource("CylinderShape3D_h8nwu")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=1260899278]
+transform = Transform3D(-4.371138e-08, -1, 1.6292068e-07, 1, -4.371138e-08, 1.1924862e-08, -1.192486e-08, 1.6292068e-07, 1, 3.3633325, 1.4701578e-07, -5.4795635e-07)
+shape = SubResource("CylinderShape3D_nk53k")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" unique_id=619337013]
+transform = Transform3D(-4.3711374e-08, -1, 1.6292068e-07, 1, -4.3711374e-08, 1.1924867e-08, -1.1924858e-08, 1.6292068e-07, 1, 1.2201008, 5.3331995e-08, -1.9877959e-07)
+shape = SubResource("CylinderShape3D_1rm34")

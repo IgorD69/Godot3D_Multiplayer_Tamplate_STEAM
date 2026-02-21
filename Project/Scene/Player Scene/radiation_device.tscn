@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b48llc8eg7src"]
+
+[ext_resource type="PackedScene" uid="uid://be2bwfqb50cgk" path="res://Models/Factorry Assets/RadiationDevice.glb" id="1_6njhj"]
+[ext_resource type="AudioStream" uid="uid://cvgu13frrkotl" path="res://Music/Radiation/HighRadiation.mp3" id="2_6njhj"]
+
+[node name="RadiationDevice" unique_id=1889324540 instance=ExtResource("1_6njhj")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." index="2" unique_id=586266574]
+stream = ExtResource("2_6njhj")
+bus = &"SFX"
